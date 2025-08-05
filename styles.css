@@ -433,6 +433,11 @@ h1, h2, h3, h4, h5, h6 {
     text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
 }
 
+/* Hide mobile break on desktop */
+.hero-headline .mobile-break {
+    display: none;
+}
+
 .hero-subheadline {
     font-size: 1.2rem;
     margin-bottom: 2rem;
@@ -1923,6 +1928,16 @@ h1, h2, h3, h4, h5, h6 {
         line-height: 1.1;
         margin-top: 70px; /* Ensure headline is visible */
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    }
+    
+    /* Force line break after first "you" on mobile */
+    .hero-headline {
+        word-break: break-word;
+    }
+    
+    /* Show mobile break only on mobile */
+    .hero-headline .mobile-break {
+        display: inline;
     }
 
     .chapter-title {
