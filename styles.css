@@ -69,9 +69,11 @@ body {
     }
     
     /* Reduce motion for better performance */
+    /* 3D Model commented out
     .hero-3d-model {
         will-change: transform;
     }
+    */
 }
 
 /* Typography */
@@ -243,18 +245,17 @@ h1, h2, h3, h4, h5, h6 {
     flex-wrap: wrap;
 }
 
-.hero-3d-model {
+/* 3D Model commented out - .hero-3d-model {
     position: fixed;
-    top: 10%; /* Reduced from 20% to position model higher in viewport */
+    top: 10%;
     right: 5%;
-    width: 550px; /* Increased from 450px for better PC visibility */
-    height: 700px; /* Increased from 600px for better PC visibility */
+    width: 550px;
+    height: 700px;
     z-index: 1000;
-    pointer-events: none; /* Prevent any mouse interactions */
-    transform: none; /* Ensure no transform changes from CSS */
-    transition: none; /* Remove any transitions */
-    will-change: transform; /* Optimize for rotation only */
-    /* Ensure it's positioned relative to viewport, not any parent */
+    pointer-events: none;
+    transform: none;
+    transition: none;
+    will-change: transform;
     left: auto;
     bottom: auto;
     margin: 0;
@@ -298,7 +299,7 @@ h1, h2, h3, h4, h5, h6 {
 .model-loading p {
     font-size: 0.9rem;
     color: #cccccc;
-}
+} */
 
 .hero-quotes {
     display: grid;
@@ -1485,11 +1486,11 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Responsive Design */
 @media (max-width: 1024px) {
-    .hero-3d-model {
-        top: 8%; /* Adjusted for better tablet positioning */
-        width: 450px; /* Increased from 350px for better tablet visibility */
-        height: 550px; /* Increased from 450px for better tablet visibility */
-    }
+    /* 3D Model commented out - .hero-3d-model {
+        top: 8%;
+        width: 450px;
+        height: 550px;
+    } */
 
     .hero-headline {
         font-size: 3.5rem;
@@ -1583,21 +1584,20 @@ h1, h2, h3, h4, h5, h6 {
 
 
 
-    .hero-3d-model {
+    /* 3D Model commented out - .hero-3d-model {
         position: absolute !important;
-        top: -80px !important; /* Position just above the headline */
+        top: -80px !important;
         right: 2% !important;
-        width: 400px !important; /* Much larger for better visibility */
-        height: 500px !important; /* Much larger for better visibility */
+        width: 400px !important;
+        height: 500px !important;
         z-index: 1000 !important;
         pointer-events: none !important;
         transform: none !important;
-        /* Ensure it stays positioned relative to hero section */
         left: auto !important;
         bottom: auto !important;
         margin: 0 !important;
         padding: 0 !important;
-    }
+    } */
 
     .testimonial-item {
         flex-direction: column;
@@ -1727,21 +1727,20 @@ h1, h2, h3, h4, h5, h6 {
         max-height: 85vh;
     }
 
-    .hero-3d-model {
+    /* 3D Model commented out - .hero-3d-model {
         position: absolute !important;
-        top: -60px !important; /* Position just above the headline */
+        top: -60px !important;
         right: 1% !important;
-        width: 350px !important; /* Much larger for better visibility */
-        height: 450px !important; /* Much larger for better visibility */
+        width: 350px !important;
+        height: 450px !important;
         z-index: 1000 !important;
         pointer-events: none !important;
         transform: none !important;
-        /* Ensure it stays positioned relative to hero section */
         left: auto !important;
         bottom: auto !important;
         margin: 0 !important;
         padding: 0 !important;
-    }
+    } */
 
     .nav-container {
         padding: 0.5rem 1rem;
@@ -1927,21 +1926,20 @@ h1, h2, h3, h4, h5, h6 {
         padding: 0.75rem;
     }
     
-    .hero-3d-model {
+    /* 3D Model commented out - .hero-3d-model {
         position: absolute !important;
-        width: 300px !important; /* Much larger for better visibility */
-        height: 400px !important; /* Much larger for better visibility */
-        top: -50px !important; /* Position just above the headline */
+        width: 300px !important;
+        height: 400px !important;
+        top: -50px !important;
         right: 2% !important;
         z-index: 1000 !important;
         pointer-events: none !important;
         transform: none !important;
-        /* Ensure it stays positioned relative to hero section */
         left: auto !important;
         bottom: auto !important;
         margin: 0 !important;
         padding: 0 !important;
-    }
+    } */
     
     .testimonial-image {
         width: 200px; /* Larger image */
@@ -1986,21 +1984,20 @@ h1, h2, h3, h4, h5, h6 {
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
     }
     
-    .hero-3d-model {
+    /* 3D Model commented out - .hero-3d-model {
         position: absolute !important;
-        width: 320px !important; /* Much larger for better visibility */
-        height: 400px !important; /* Much larger for better visibility */
-        top: -40px !important; /* Position just above the headline */
+        width: 320px !important;
+        height: 400px !important;
+        top: -40px !important;
         right: 2% !important;
         z-index: 1000 !important;
         pointer-events: none !important;
         transform: none !important;
-        /* Ensure it stays positioned relative to hero section */
         left: auto !important;
         bottom: auto !important;
         margin: 0 !important;
         padding: 0 !important;
-    }
+    } */
     
     .chapter {
         padding: 2rem 0;
@@ -2013,9 +2010,9 @@ h1, h2, h3, h4, h5, h6 {
 
 /* High DPI displays */
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-    .hero-3d-model {
+    /* 3D Model commented out - .hero-3d-model {
         transform: scale(0.9);
-    }
+    } */
     
     .testimonial-image img {
         image-rendering: -webkit-optimize-contrast;
@@ -2031,9 +2028,9 @@ h1, h2, h3, h4, h5, h6 {
         transition-duration: 0.01ms !important;
     }
     
-    .hero-3d-model {
+    /* 3D Model commented out - .hero-3d-model {
         animation: none !important;
-    }
+    } */
 }
 
 /* Dark mode support */
@@ -2094,13 +2091,13 @@ h1, h2, h3, h4, h5, h6 {
         transition: transform 0.1s ease;
     }
     
-    /* Optimize 3D model container for mobile */
-    .hero-3d-model {
+    /* 3D Model commented out - Optimize 3D model container for mobile */
+    /* .hero-3d-model {
         position: fixed !important;
-        top: 10% !important; /* Higher up and stuck to viewport */
+        top: 10% !important;
         right: 2% !important;
-        width: 400px !important; /* Much larger for better visibility */
-        height: 500px !important; /* Much larger for better visibility */
+        width: 400px !important;
+        height: 500px !important;
         touch-action: none;
         -webkit-touch-callout: none;
         -webkit-user-select: none;
@@ -2115,7 +2112,7 @@ h1, h2, h3, h4, h5, h6 {
         bottom: auto !important;
         margin: 0 !important;
         padding: 0 !important;
-    }
+    } */
     
     /* Better mobile navigation */
     .nav-toggle {
@@ -2151,12 +2148,12 @@ h1, h2, h3, h4, h5, h6 {
         transform: none;
     }
     
-    /* Optimize 3D model for very small screens */
-    .hero-3d-model {
+    /* 3D Model commented out - Optimize 3D model for very small screens */
+    /* .hero-3d-model {
         position: absolute !important;
-        width: 300px !important; /* Much larger for better visibility */
-        height: 400px !important; /* Much larger for better visibility */
-        top: -40px !important; /* Position just above the headline */
+        width: 300px !important;
+        height: 400px !important;
+        top: -40px !important;
         right: 1% !important;
         opacity: 0.8;
         z-index: 1000 !important;
@@ -2166,7 +2163,7 @@ h1, h2, h3, h4, h5, h6 {
         bottom: auto !important;
         margin: 0 !important;
         padding: 0 !important;
-    }
+    } */
     
     /* Better text sizing for very small screens */
     .hero-headline {
@@ -2206,7 +2203,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Print styles for mobile */
 @media print {
-    .hero-3d-model,
+    /* 3D Model commented out - .hero-3d-model, */
     .nav-toggle,
     .scroll-indicator {
         display: none !important;

@@ -13,7 +13,7 @@ let scene, camera, renderer, model, mixer, clock;
 let isModelLoaded = false;
 let modelContainer = null;
 
-function init3DModel() {
+/* 3D Model commented out - function init3DModel() {
     // Try hero container first, then showcase container
     modelContainer = document.getElementById('hero-credit-card-model') || document.getElementById('credit-card-model');
     if (!modelContainer) {
@@ -26,8 +26,9 @@ function init3DModel() {
         console.error('Three.js not loaded');
         createFallbackModel();
         return;
-    }
+    } */
 
+    /* 3D Model commented out - Scene setup and model loading code
     // Scene setup - completely transparent
     scene = new THREE.Scene();
     scene.background = null; // Completely transparent
@@ -121,7 +122,9 @@ function init3DModel() {
     // Load the GLTF model
     const loader = new THREE.GLTFLoader();
     const modelPath = 'inal.glb';
+    */
     
+    /* 3D Model commented out - Model loading and setup code
     // Show loading indicator
     const loadingIndicator = modelContainer.querySelector('.model-loading');
     if (loadingIndicator) {
@@ -218,9 +221,9 @@ function init3DModel() {
 
     // Start animation loop
     animate();
-}
+    */
 
-function createFallbackModel() {
+/* 3D Model commented out - function createFallbackModel() {
     console.log('Creating clean fallback credit card model');
     
     // Create a simple, clean credit card
@@ -245,9 +248,9 @@ function createFallbackModel() {
     }
     
     animate();
-}
+} */
 
-function animate() {
+/* 3D Model commented out - function animate() {
     requestAnimationFrame(animate);
 
     if (isModelLoaded && model) {
@@ -265,9 +268,9 @@ function animate() {
     if (renderer && scene && camera) {
         renderer.render(scene, camera);
     }
-}
+} */
 
-function onWindowResize() {
+/* 3D Model commented out - function onWindowResize() {
     if (!modelContainer || !camera || !renderer) return;
     
     const isMobile = window.innerWidth <= 768;
@@ -301,9 +304,9 @@ function onWindowResize() {
     });
     
     console.log('Window resized, model container dimensions:', modelContainer.clientWidth, 'x', modelContainer.clientHeight);
-}
+} */
 
-// Stationary 3D model - completely fixed with only rotation
+/* 3D Model commented out - Stationary 3D model - completely fixed with only rotation
 function setupModelTravel() {
     // Set the model to be completely stationary in the top-right corner
     gsap.set('#hero-credit-card-model', {
@@ -326,7 +329,7 @@ function setupModelTravel() {
     });
 
     // Remove all floating/movement animations - keep only rotation
-}
+} */
 
 // GSAP Animations
 function initializeGSAPAnimations() {
@@ -581,17 +584,18 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize hover effects
     initializeHoverEffects();
     
+    // 3D Model commented out
     // Initialize 3D model
-    init3DModel();
+    // init3DModel();
     
     // Setup model travel animations
-    setupModelTravel();
+    // setupModelTravel();
     
-    // Mobile-specific optimizations
-    optimizeForMobile();
+    // 3D Model commented out - Mobile-specific optimizations
+    // optimizeForMobile();
 });
 
-// Mobile optimization function
+/* 3D Model commented out - Mobile optimization function
 function optimizeForMobile() {
     const isMobile = window.innerWidth <= 768;
     
@@ -635,7 +639,7 @@ function optimizeForMobile() {
             optimizeForMobile();
         }, 250);
     });
-}
+} */
 
 // Form submission handler
 function handleFormSubmission() {
