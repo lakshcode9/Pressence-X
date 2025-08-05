@@ -1220,13 +1220,155 @@ function startTickerAutoAdvance() {
 
 // Initialize ticker when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
+    // Start intro animation
+    startIntroAnimation();
+    
+    // Initialize animations
+    initializeAnimations();
+    
+    // Initialize hover effects
+    initializeHoverEffects();
+    
+    // Initialize GSAP animations
+    initializeGSAPAnimations();
+    
     initTickerDots();
     // Uncomment the line below if you want auto-advancing ticker
     // startTickerAutoAdvance();
     
     // Initialize logo slider
     initLogoSlider();
-}); 
+});
+
+// Opening animation function
+function startIntroAnimation() {
+    const introOverlay = document.getElementById('intro-overlay');
+    const body = document.body;
+    
+    // Add intro-active class to body
+    body.classList.add('intro-active');
+    
+    // Create majestic particle effect
+    createMajesticParticles();
+    
+    // Wait for logo animation to complete, then reveal content
+    setTimeout(() => {
+        // Fade out the intro overlay with majestic effect
+        introOverlay.classList.add('fade-out');
+        
+        // Remove intro-active class and reveal content
+        setTimeout(() => {
+            body.classList.remove('intro-active');
+            
+            // Majestic hero content reveal
+            gsap.fromTo('.hero-content', 
+                {
+                    opacity: 0,
+                    y: 50,
+                    scale: 0.9,
+                    rotationX: 15
+                },
+                {
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                    rotationX: 0,
+                    duration: 1.5,
+                    ease: "power3.out",
+                    stagger: 0.3
+                }
+            );
+            
+            // Majestic navbar reveal
+            gsap.fromTo('.navbar', 
+                {
+                    opacity: 0,
+                    y: -30,
+                    scale: 0.95
+                },
+                {
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                    duration: 1.2,
+                    ease: "power3.out"
+                }
+            );
+            
+            // Majestic hero quotes reveal
+            gsap.fromTo('.hero-quotes', 
+                {
+                    opacity: 0,
+                    y: 40,
+                    scale: 0.9
+                },
+                {
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                    duration: 1.5,
+                    ease: "power3.out",
+                    delay: 0.8
+                }
+            );
+            
+            // Remove intro overlay from DOM after animation
+            setTimeout(() => {
+                introOverlay.remove();
+            }, 1500);
+            
+        }, 1000);
+        
+    }, 3000); // Wait 3 seconds for majestic logo animation
+}
+
+// Create majestic particle effect
+function createMajesticParticles() {
+    const introOverlay = document.getElementById('intro-overlay');
+    
+    // Create particle container
+    const particleContainer = document.createElement('div');
+    particleContainer.className = 'majestic-particles';
+    particleContainer.style.cssText = `
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+    `;
+    
+    introOverlay.appendChild(particleContainer);
+    
+    // Create particles
+    for (let i = 0; i < 20; i++) {
+        const particle = document.createElement('div');
+        particle.style.cssText = `
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: rgba(255, 215, 0, 0.6);
+            border-radius: 50%;
+            pointer-events: none;
+        `;
+        
+        // Random position
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.top = Math.random() * 100 + '%';
+        
+        particleContainer.appendChild(particle);
+        
+        // Animate particle
+        gsap.to(particle, {
+            y: -100,
+            opacity: 0,
+            duration: 3 + Math.random() * 2,
+            delay: Math.random() * 2,
+            ease: "power2.out"
+        });
+    }
+} 
 
 // Logo Slider Functions
 function initLogoSlider() {
