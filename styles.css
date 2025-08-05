@@ -996,21 +996,23 @@ h1, h2, h3, h4, h5, h6 {
     z-index: 2;
 }
 
-/* Hover effect: blur other cards when one is hovered */
-.services-grid:hover .service-card:not(:hover) {
-    filter: blur(3px);
-    opacity: 0.6;
-    transform: scale(0.95);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
+/* Hover effect: blur other cards when one is hovered (Desktop only) */
+@media (min-width: 769px) {
+    .services-grid:hover .service-card:not(:hover) {
+        filter: blur(3px);
+        opacity: 0.6;
+        transform: scale(0.95);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
 
-/* Enhanced hover effect for the active card */
-.services-grid:hover .service-card:hover {
-    transform: translateY(-15px) scale(1.05);
-    z-index: 10;
-    filter: blur(0);
-    opacity: 1;
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 0 2px rgba(255, 255, 255, 0.3);
+    /* Enhanced hover effect for the active card */
+    .services-grid:hover .service-card:hover {
+        transform: translateY(-15px) scale(1.05);
+        z-index: 10;
+        filter: blur(0);
+        opacity: 1;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 0 2px rgba(255, 255, 255, 0.3);
+    }
 }
 
 /* Add click indicator */
