@@ -335,6 +335,8 @@ function setupModelTravel() {
 function initializeGSAPAnimations() {
     // Register ScrollTrigger plugin
     gsap.registerPlugin(ScrollTrigger);
+    
+    console.log('GSAP ScrollTrigger registered:', typeof ScrollTrigger !== 'undefined');
 
     // Animate service cards on scroll
     gsap.utils.toArray('.service-card').forEach((card, index) => {
@@ -367,22 +369,52 @@ function initializeGSAPAnimations() {
         const number = text.match(/\d+/);
         if (number) {
             const targetNumber = parseInt(number[0]);
-            gsap.fromTo(price,
-                { textContent: "0" },
-                {
-                    textContent: targetNumber,
-                    duration: 2,
-                    ease: "power2.out",
-                    scrollTrigger: {
-                        trigger: price,
-                        start: "top 80%",
-                        toggleActions: "play none none reverse"
-                    },
-                    onUpdate: function() {
-                        price.textContent = Math.floor(this.targets()[0].textContent) + " NZD";
-                    }
+            console.log('Setting up price animation for:', price.textContent, 'Target:', targetNumber);
+            
+            // Store original text for non-numeric prices
+            const originalText = price.textContent;
+            
+            // Create a simple counter animation
+            const counter = { value: 0 };
+            
+            // Test animation without ScrollTrigger first
+            gsap.to(counter, {
+                value: targetNumber,
+                duration: 2,
+                ease: "power2.out",
+                delay: 1, // Start after 1 second for testing
+                onUpdate: function() {
+                    const currentValue = Math.floor(counter.value);
+                    price.textContent = currentValue + " NZD";
+                    console.log('Price animation update:', currentValue);
+                },
+                onComplete: function() {
+                    // Ensure final value is correct
+                    price.textContent = targetNumber + " NZD";
+                    console.log('Price animation complete:', targetNumber);
                 }
-            );
+            });
+            
+            // Also set up ScrollTrigger version
+            gsap.to(counter, {
+                value: targetNumber,
+                duration: 2,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: price,
+                    start: "top 80%",
+                    toggleActions: "play none none reverse"
+                },
+                onUpdate: function() {
+                    const currentValue = Math.floor(counter.value);
+                    price.textContent = currentValue + " NZD";
+                },
+                onComplete: function() {
+                    price.textContent = targetNumber + " NZD";
+                }
+            });
+        } else {
+            console.log('No number found in price:', price.textContent);
         }
     });
 
