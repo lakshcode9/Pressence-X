@@ -26,36 +26,50 @@ function init3DModel() {
         return;
     }
 
-    // Scene setup
+    // Scene setup - completely transparent
     scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x000000);
+    scene.background = null; // Completely transparent
 
     // Camera setup
     camera = new THREE.PerspectiveCamera(75, modelContainer.clientWidth / modelContainer.clientHeight, 0.1, 1000);
-    camera.position.set(0, 0, 5);
+    camera.position.set(0, 0, 8);
 
-    // Renderer setup
-    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    // Renderer setup - completely transparent
+    renderer = new THREE.WebGLRenderer({ 
+        antialias: true, 
+        alpha: true,
+        preserveDrawingBuffer: false
+    });
     renderer.setSize(modelContainer.clientWidth, modelContainer.clientHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setClearColor(0x000000, 0); // Completely transparent
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     modelContainer.appendChild(renderer.domElement);
 
-    // Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+    // Professional lighting setup like OnlyCard
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
     scene.add(ambientLight);
 
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-    directionalLight.position.set(5, 5, 5);
+    // Main directional light
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1.2);
+    directionalLight.position.set(10, 10, 5);
     directionalLight.castShadow = true;
     directionalLight.shadow.mapSize.width = 2048;
     directionalLight.shadow.mapSize.height = 2048;
+    directionalLight.shadow.camera.near = 0.5;
+    directionalLight.shadow.camera.far = 50;
     scene.add(directionalLight);
 
-    const pointLight = new THREE.PointLight(0xffffff, 0.5);
-    pointLight.position.set(-5, 5, 5);
-    scene.add(pointLight);
+    // Fill light from opposite side
+    const fillLight = new THREE.DirectionalLight(0xffffff, 0.4);
+    fillLight.position.set(-5, 5, 5);
+    scene.add(fillLight);
+
+    // Rim light for edge definition
+    const rimLight = new THREE.DirectionalLight(0xffffff, 0.6);
+    rimLight.position.set(0, -5, 5);
+    scene.add(rimLight);
 
     // Clock for animations
     clock = new THREE.Clock();
@@ -83,7 +97,7 @@ function init3DModel() {
             clearTimeout(loadTimeout);
             console.log('3D model loaded successfully');
             model = gltf.scene;
-            model.scale.set(2, 2, 2);
+            model.scale.set(2.5, 2.5, 2.5);
             model.position.set(0, 0, 0);
             
             // Enable shadows
@@ -119,7 +133,6 @@ function init3DModel() {
         function (error) {
             clearTimeout(loadTimeout);
             console.error('An error occurred loading the model:', error);
-            // Create a fallback cube if model fails to load
             createFallbackModel();
         }
     );
@@ -129,41 +142,92 @@ function init3DModel() {
 }
 
 function createFallbackModel() {
-    console.log('Creating fallback credit card model');
+    console.log('Creating premium fallback credit card model');
     
-    // Create a credit card shape
-    const cardGeometry = new THREE.BoxGeometry(3, 2, 0.1);
+    // Create a premium credit card with rounded edges
+    const cardGeometry = new THREE.BoxGeometry(4, 2.5, 0.1);
     const cardMaterial = new THREE.MeshPhongMaterial({ 
         color: 0x1a1a1a,
         transparent: true,
-        opacity: 0.9
+        opacity: 0.98,
+        shininess: 150,
+        specular: 0x222222
     });
     
     // Main card
     model = new THREE.Mesh(cardGeometry, cardMaterial);
     
-    // Add card details
-    const chipGeometry = new THREE.BoxGeometry(0.5, 0.4, 0.05);
-    const chipMaterial = new THREE.MeshPhongMaterial({ color: 0xffd700 });
+    // Premium metallic chip
+    const chipGeometry = new THREE.BoxGeometry(0.7, 0.6, 0.05);
+    const chipMaterial = new THREE.MeshPhongMaterial({ 
+        color: 0xffd700,
+        shininess: 300,
+        specular: 0x666666,
+        emissive: 0x222222
+    });
     const chip = new THREE.Mesh(chipGeometry, chipMaterial);
-    chip.position.set(-1, 0.3, 0.06);
+    chip.position.set(-1.3, 0.4, 0.05);
     model.add(chip);
     
-    // Add some text/logo elements
-    const logoGeometry = new THREE.PlaneGeometry(1, 0.3);
-    const logoMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff });
+    // Premium logo/emblem
+    const logoGeometry = new THREE.PlaneGeometry(1, 0.5);
+    const logoMaterial = new THREE.MeshPhongMaterial({ 
+        color: 0xffffff,
+        transparent: true,
+        opacity: 0.95,
+        shininess: 100
+    });
     const logo = new THREE.Mesh(logoGeometry, logoMaterial);
-    logo.position.set(0.5, 0.5, 0.06);
+    logo.position.set(0.8, 0.5, 0.05);
     model.add(logo);
     
-    // Add some lines for card details
-    for (let i = 0; i < 4; i++) {
-        const lineGeometry = new THREE.PlaneGeometry(1.5, 0.05);
-        const lineMaterial = new THREE.MeshPhongMaterial({ color: 0xcccccc });
-        const line = new THREE.Mesh(lineGeometry, lineMaterial);
-        line.position.set(0, -0.3 - (i * 0.15), 0.06);
-        model.add(line);
+    // Card number groups (4 groups of 4 digits)
+    for (let group = 0; group < 4; group++) {
+        for (let digit = 0; digit < 4; digit++) {
+            const digitGeometry = new THREE.PlaneGeometry(0.15, 0.08);
+            const digitMaterial = new THREE.MeshPhongMaterial({ 
+                color: 0xcccccc,
+                transparent: true,
+                opacity: 0.8
+            });
+            const digitMesh = new THREE.Mesh(digitGeometry, digitMaterial);
+            digitMesh.position.set(-1.2 + (group * 0.4) + (digit * 0.1), -0.1, 0.05);
+            model.add(digitMesh);
+        }
     }
+    
+    // Expiry date
+    const expiryGeometry = new THREE.PlaneGeometry(0.8, 0.25);
+    const expiryMaterial = new THREE.MeshPhongMaterial({ 
+        color: 0x999999,
+        transparent: true,
+        opacity: 0.7
+    });
+    const expiry = new THREE.Mesh(expiryGeometry, expiryMaterial);
+    expiry.position.set(-0.8, -0.4, 0.05);
+    model.add(expiry);
+    
+    // Cardholder name
+    const nameGeometry = new THREE.PlaneGeometry(1.5, 0.2);
+    const nameMaterial = new THREE.MeshPhongMaterial({ 
+        color: 0x999999,
+        transparent: true,
+        opacity: 0.7
+    });
+    const name = new THREE.Mesh(nameGeometry, nameMaterial);
+    name.position.set(0.2, -0.4, 0.05);
+    model.add(name);
+    
+    // CVV code
+    const cvvGeometry = new THREE.PlaneGeometry(0.3, 0.15);
+    const cvvMaterial = new THREE.MeshPhongMaterial({ 
+        color: 0x666666,
+        transparent: true,
+        opacity: 0.6
+    });
+    const cvv = new THREE.Mesh(cvvGeometry, cvvMaterial);
+    cvv.position.set(1.2, -0.4, 0.05);
+    model.add(cvv);
     
     scene.add(model);
     isModelLoaded = true;
@@ -181,11 +245,11 @@ function animate() {
     requestAnimationFrame(animate);
 
     if (isModelLoaded && model) {
-        // Rotate the model slowly
-        model.rotation.y += 0.005;
+        // Very slow, smooth rotation
+        model.rotation.y += 0.003;
         
-        // Add subtle floating animation
-        model.position.y = Math.sin(Date.now() * 0.001) * 0.1;
+        // Very gentle floating animation
+        model.position.y = Math.sin(Date.now() * 0.0002) * 0.01;
     }
 
     if (mixer) {
@@ -205,104 +269,110 @@ function onWindowResize() {
     renderer.setSize(modelContainer.clientWidth, modelContainer.clientHeight);
 }
 
-// Model travel animation through sections
+// Model travel animation through sections - OnlyCard style
 function setupModelTravel() {
-    // Hero section - model stays in top-right
+    // Hero section - model starts in center-right
     gsap.set('#hero-credit-card-model', {
         top: '50%',
-        right: '5%',
-        scale: 1
+        right: '10%',
+        scale: 1,
+        rotationY: 0
     });
 
-    // About section - model moves to center-right
+    // About section - model moves to top-right with slight rotation
     gsap.to('#hero-credit-card-model', {
-        top: '30%',
-        right: '10%',
-        scale: 0.9,
-        ease: "none",
+        top: '25%',
+        right: '8%',
+        scale: 0.95,
+        rotationY: 10,
+        ease: "power2.out",
         scrollTrigger: {
             trigger: '.about',
             start: "top center",
             end: "bottom center",
-            scrub: true
+            scrub: 2
         }
     });
 
     // Results section - model moves to bottom-right
     gsap.to('#hero-credit-card-model', {
-        top: '70%',
-        right: '15%',
-        scale: 0.8,
-        ease: "none",
+        top: '75%',
+        right: '12%',
+        scale: 0.9,
+        rotationY: -8,
+        ease: "power2.out",
         scrollTrigger: {
             trigger: '.results',
             start: "top center",
             end: "bottom center",
-            scrub: true
+            scrub: 2
         }
     });
 
     // Testimonials section - model moves to center-left
     gsap.to('#hero-credit-card-model', {
         top: '50%',
-        right: '80%',
-        scale: 0.9,
-        ease: "none",
+        right: '85%',
+        scale: 0.95,
+        rotationY: 15,
+        ease: "power2.out",
         scrollTrigger: {
             trigger: '.testimonials',
             start: "top center",
             end: "bottom center",
-            scrub: true
+            scrub: 2
         }
     });
 
     // Services section - model moves to top-left
     gsap.to('#hero-credit-card-model', {
         top: '20%',
-        right: '85%',
-        scale: 1.1,
-        ease: "none",
+        right: '90%',
+        scale: 1.05,
+        rotationY: -12,
+        ease: "power2.out",
         scrollTrigger: {
             trigger: '.services',
             start: "top center",
             end: "bottom center",
-            scrub: true
+            scrub: 2
         }
     });
 
     // Contact section - model moves to bottom-left
     gsap.to('#hero-credit-card-model', {
         top: '80%',
-        right: '80%',
-        scale: 0.8,
-        ease: "none",
+        right: '85%',
+        scale: 0.85,
+        rotationY: 18,
+        ease: "power2.out",
         scrollTrigger: {
             trigger: '.contact',
             start: "top center",
             end: "bottom center",
-            scrub: true
+            scrub: 2
         }
     });
 
-    // Add rotation and floating effects
+    // Continuous smooth rotation based on scroll
     gsap.to('#hero-credit-card-model', {
-        rotation: 360,
+        rotationY: 360,
         ease: "none",
         scrollTrigger: {
             trigger: 'body',
             start: "top top",
             end: "bottom bottom",
-            scrub: true
+            scrub: 3
         }
     });
 
-    // Add floating animation
+    // Very gentle floating animation
     gsap.to('#hero-credit-card-model', {
-        y: -20,
+        y: -10,
         ease: "power2.inOut",
         yoyo: true,
         repeat: -1,
-        duration: 2
+        duration: 4
     });
 }
 
