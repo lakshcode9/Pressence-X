@@ -1516,14 +1516,17 @@ h1, h2, h3, h4, h5, h6 {
     }
 
     .hero-3d-model {
-        position: fixed;
-        top: 15%; /* Better positioning - higher up */
-        right: 5%;
-        width: 280px; /* Much larger for better visibility */
-        height: 350px; /* Much larger for better visibility */
+        position: fixed !important;
+        top: 10% !important; /* Higher up and stuck to viewport */
+        right: 2% !important;
+        width: 400px !important; /* Much larger for better visibility */
+        height: 500px !important; /* Much larger for better visibility */
         z-index: 1000;
         pointer-events: none;
         transform: none;
+        /* Ensure it stays fixed */
+        position: fixed;
+        will-change: transform;
     }
 
     .testimonial-item {
@@ -1606,14 +1609,17 @@ h1, h2, h3, h4, h5, h6 {
     }
 
     .hero-3d-model {
-        position: fixed;
-        top: 12%; /* Better positioning for small mobile */
-        right: 3%;
-        width: 200px; /* Larger for better visibility */
-        height: 250px; /* Larger for better visibility */
+        position: fixed !important;
+        top: 8% !important; /* Higher up and stuck to viewport */
+        right: 1% !important;
+        width: 350px !important; /* Much larger for better visibility */
+        height: 450px !important; /* Much larger for better visibility */
         z-index: 1000;
         pointer-events: none;
         transform: none;
+        /* Ensure it stays fixed */
+        position: fixed;
+        will-change: transform;
     }
 
     .nav-container {
@@ -1787,10 +1793,17 @@ h1, h2, h3, h4, h5, h6 {
     }
     
     .hero-3d-model {
-        width: 160px; /* Larger for better visibility */
-        height: 200px; /* Larger for better visibility */
-        top: 10%; /* Better positioning */
-        right: 2%;
+        position: fixed !important;
+        width: 300px !important; /* Much larger for better visibility */
+        height: 400px !important; /* Much larger for better visibility */
+        top: 6% !important; /* Higher up and stuck to viewport */
+        right: 1% !important;
+        z-index: 1000;
+        pointer-events: none;
+        transform: none;
+        /* Ensure it stays fixed */
+        position: fixed;
+        will-change: transform;
     }
     
     .testimonial-image {
@@ -1823,10 +1836,17 @@ h1, h2, h3, h4, h5, h6 {
     }
     
     .hero-3d-model {
-        width: 180px; /* Larger for better visibility */
-        height: 225px; /* Larger for better visibility */
-        top: 12%; /* Better positioning */
-        right: 3%;
+        position: fixed !important;
+        width: 320px !important; /* Much larger for better visibility */
+        height: 400px !important; /* Much larger for better visibility */
+        top: 8% !important; /* Higher up and stuck to viewport */
+        right: 2% !important;
+        z-index: 1000;
+        pointer-events: none;
+        transform: none;
+        /* Ensure it stays fixed */
+        position: fixed;
+        will-change: transform;
     }
     
     .chapter {
