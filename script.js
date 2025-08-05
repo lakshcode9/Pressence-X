@@ -363,8 +363,13 @@ function initializeGSAPAnimations() {
         );
     });
 
-    // Animate pricing numbers
+    // Animate pricing numbers (only for text prices, not ticket images)
     gsap.utils.toArray('.price').forEach(price => {
+        // Skip if this is a ticket image (only animate text prices)
+        if (price.tagName === 'IMG') {
+            return;
+        }
+        
         const text = price.textContent;
         const number = text.match(/\d+/);
         if (number) {

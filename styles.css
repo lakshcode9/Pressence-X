@@ -1172,6 +1172,19 @@ h1, h2, h3, h4, h5, h6 {
     background-clip: text;
 }
 
+.price-ticket {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto 0.5rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.service-card:hover .price-ticket {
+    transform: scale(1.05);
+}
+
 .period {
     color: #cccccc;
     font-size: 0.9rem;
