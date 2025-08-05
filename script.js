@@ -55,32 +55,48 @@ function initBlack3DModel() {
     blackModelRenderer.toneMappingExposure = 1.2;
     blackModelContainer.appendChild(blackModelRenderer.domElement);
 
-    // Lighting setup for Black ticket
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+    // Majestic lighting setup for Black ticket
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
     blackModelScene.add(ambientLight);
 
-    const keyLight = new THREE.DirectionalLight(0xffffff, 3.0);
-    keyLight.position.set(25, 25, 20);
+    // Golden key light for majesty
+    const keyLight = new THREE.DirectionalLight(0xffd700, 4.0);
+    keyLight.position.set(30, 30, 25);
     if (!isMobile) {
         keyLight.castShadow = true;
-        keyLight.shadow.mapSize.width = 1024;
-        keyLight.shadow.mapSize.height = 1024;
+        keyLight.shadow.mapSize.width = 2048;
+        keyLight.shadow.mapSize.height = 2048;
         keyLight.shadow.camera.near = 0.5;
         keyLight.shadow.camera.far = 100;
-        keyLight.shadow.camera.left = -10;
-        keyLight.shadow.camera.right = 10;
-        keyLight.shadow.camera.top = 10;
-        keyLight.shadow.camera.bottom = -10;
+        keyLight.shadow.camera.left = -15;
+        keyLight.shadow.camera.right = 15;
+        keyLight.shadow.camera.top = 15;
+        keyLight.shadow.camera.bottom = -15;
     }
     blackModelScene.add(keyLight);
 
-    const fillLight = new THREE.DirectionalLight(0xffffff, 1.5);
-    fillLight.position.set(-20, 15, 15);
+    // Silver fill light for contrast
+    const fillLight = new THREE.DirectionalLight(0xc0c0c0, 2.5);
+    fillLight.position.set(-25, 20, 20);
     blackModelScene.add(fillLight);
 
-    const rimLight = new THREE.DirectionalLight(0xffffff, 2.0);
-    rimLight.position.set(0, -20, 20);
+    // Platinum rim light for edge definition
+    const rimLight = new THREE.DirectionalLight(0xe5e4e2, 3.5);
+    rimLight.position.set(0, -25, 25);
     blackModelScene.add(rimLight);
+
+    // Accent lights for brilliance
+    const accentLight1 = new THREE.PointLight(0xffd700, 2.0);
+    accentLight1.position.set(20, 20, 20);
+    blackModelScene.add(accentLight1);
+
+    const accentLight2 = new THREE.PointLight(0xffb347, 1.5);
+    accentLight2.position.set(-20, 15, 15);
+    blackModelScene.add(accentLight2);
+
+    const accentLight3 = new THREE.PointLight(0xffffff, 1.8);
+    accentLight3.position.set(15, -15, 15);
+    blackModelScene.add(accentLight3);
 
     // Load the 3D model
     const loader = new THREE.GLTFLoader();
@@ -88,7 +104,7 @@ function initBlack3DModel() {
         'inal.glb',
         function (gltf) {
             blackModel = gltf.scene;
-            blackModel.scale.set(2.5, 2.5, 2.5);
+            blackModel.scale.set(3.0, 3.0, 3.0);
             blackModel.position.set(0, 0, 0);
             
             if (gltf.animations && gltf.animations.length > 0) {
@@ -133,6 +149,139 @@ function animateBlackModel() {
     }
     
     blackModelRenderer.render(blackModelScene, blackModelCamera);
+}
+
+// Initialize Modal Black 3D model
+function initModalBlack3DModel() {
+    const modalBlackModelContainer = document.getElementById('modal-black-credit-card-model');
+    if (!modalBlackModelContainer) {
+        console.log('No Modal Black 3D model container found');
+        return;
+    }
+
+    // Check if Three.js is loaded
+    if (typeof THREE === 'undefined') {
+        console.error('Three.js not loaded');
+        return;
+    }
+
+    // Scene setup for Modal Black ticket
+    const modalBlackModelScene = new THREE.Scene();
+    modalBlackModelScene.background = null; // Completely transparent
+
+    // Camera setup
+    const modalBlackModelCamera = new THREE.PerspectiveCamera(75, modalBlackModelContainer.clientWidth / modalBlackModelContainer.clientHeight, 0.1, 1000);
+    modalBlackModelCamera.position.set(0, 0, 8);
+
+    // Renderer setup
+    const isMobile = window.innerWidth <= 768;
+    const modalBlackModelRenderer = new THREE.WebGLRenderer({ 
+        antialias: !isMobile,
+        alpha: true,
+        preserveDrawingBuffer: false,
+        powerPreference: "high-performance"
+    });
+    modalBlackModelRenderer.setSize(modalBlackModelContainer.clientWidth, modalBlackModelContainer.clientHeight);
+    modalBlackModelRenderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2));
+    modalBlackModelRenderer.setClearColor(0x000000, 0);
+    modalBlackModelRenderer.shadowMap.enabled = !isMobile;
+    modalBlackModelRenderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    modalBlackModelRenderer.outputEncoding = THREE.sRGBEncoding;
+    modalBlackModelRenderer.toneMapping = THREE.ACESFilmicToneMapping;
+    modalBlackModelRenderer.toneMappingExposure = 1.2;
+    modalBlackModelContainer.appendChild(modalBlackModelRenderer.domElement);
+
+    // Majestic lighting setup for Modal Black ticket
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+    modalBlackModelScene.add(ambientLight);
+
+    // Golden key light for majesty
+    const keyLight = new THREE.DirectionalLight(0xffd700, 4.0);
+    keyLight.position.set(30, 30, 25);
+    if (!isMobile) {
+        keyLight.castShadow = true;
+        keyLight.shadow.mapSize.width = 2048;
+        keyLight.shadow.mapSize.height = 2048;
+        keyLight.shadow.camera.near = 0.5;
+        keyLight.shadow.camera.far = 100;
+        keyLight.shadow.camera.left = -15;
+        keyLight.shadow.camera.right = 15;
+        keyLight.shadow.camera.top = 15;
+        keyLight.shadow.camera.bottom = -15;
+    }
+    modalBlackModelScene.add(keyLight);
+
+    // Silver fill light for contrast
+    const fillLight = new THREE.DirectionalLight(0xc0c0c0, 2.5);
+    fillLight.position.set(-25, 20, 20);
+    modalBlackModelScene.add(fillLight);
+
+    // Platinum rim light for edge definition
+    const rimLight = new THREE.DirectionalLight(0xe5e4e2, 3.5);
+    rimLight.position.set(0, -25, 25);
+    modalBlackModelScene.add(rimLight);
+
+    // Accent lights for brilliance
+    const accentLight1 = new THREE.PointLight(0xffd700, 2.0);
+    accentLight1.position.set(20, 20, 20);
+    modalBlackModelScene.add(accentLight1);
+
+    const accentLight2 = new THREE.PointLight(0xffb347, 1.5);
+    accentLight2.position.set(-20, 15, 15);
+    modalBlackModelScene.add(accentLight2);
+
+    const accentLight3 = new THREE.PointLight(0xffffff, 1.8);
+    accentLight3.position.set(15, -15, 15);
+    modalBlackModelScene.add(accentLight3);
+
+    // Load the 3D model
+    const loader = new THREE.GLTFLoader();
+    loader.load(
+        'inal.glb',
+        function (gltf) {
+                         const modalBlackModel = gltf.scene;
+             modalBlackModel.scale.set(3.0, 3.0, 3.0);
+             modalBlackModel.position.set(0, 0, 0);
+            
+            let modalBlackModelMixer = null;
+            if (gltf.animations && gltf.animations.length > 0) {
+                modalBlackModelMixer = new THREE.AnimationMixer(modalBlackModel);
+                const action = modalBlackModelMixer.clipAction(gltf.animations[0]);
+                action.play();
+            }
+            
+            modalBlackModelScene.add(modalBlackModel);
+            
+            // Hide loading spinner
+            const loadingElement = modalBlackModelContainer.querySelector('.modal-black-model-loading');
+            if (loadingElement) {
+                loadingElement.style.display = 'none';
+            }
+            
+            // Start animation loop
+            const modalClock = new THREE.Clock();
+            function animateModalBlackModel() {
+                requestAnimationFrame(animateModalBlackModel);
+                
+                if (modalBlackModelMixer) {
+                    modalBlackModelMixer.update(modalClock.getDelta());
+                }
+                
+                if (modalBlackModel) {
+                    modalBlackModel.rotation.y += 0.005;
+                }
+                
+                modalBlackModelRenderer.render(modalBlackModelScene, modalBlackModelCamera);
+            }
+            animateModalBlackModel();
+        },
+        function (xhr) {
+            console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+        },
+        function (error) {
+            console.error('An error occurred loading the Modal Black ticket model:', error);
+        }
+    );
 }
 
 /* 3D Model commented out - function init3DModel() {
@@ -934,37 +1083,48 @@ function openServiceModal(tier) {
                 <span class="close" onclick="closeModal()">&times;</span>
             </div>
             
-            <!-- Column 1: Testimonial Collage -->
+            <!-- Column 1: Testimonial Collage or 3D Model for Black -->
             <div class="modal-testimonials">
-                <h3 style="color: #ffffff; margin-bottom: 1.5rem; font-size: 1.3rem; text-align: center;">Success Stories</h3>
-                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
-                    <div style="position: relative; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.3);">
-                        <img src="Testimonials_Client Proof/Grit Brokerage/Grit-Brokerage.png" alt="Grit Brokerage Success" style="width: 100%; height: 140px; object-fit: cover; filter: brightness(0.8);">
-                        <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); padding: 0.5rem; color: white; font-size: 0.8rem; text-align: center;">Grit Brokerage</div>
-                    </div>
-                    <div style="position: relative; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.3);">
-                        <img src="Testimonials_Client Proof/Frantisek/FRANTISEK-r0bsbqmk9i1fuugh1v2oq4dev8tpyb86t8rlzkehq0.png" alt="Frantisek Success" style="width: 100%; height: 140px; object-fit: cover; filter: brightness(0.8);">
-                        <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); padding: 0.5rem; color: white; font-size: 0.8rem; text-align: center;">Frantisek</div>
-                    </div>
-                    <div style="position: relative; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.3);">
-                        <img src="Testimonials_Client Proof/Luis/new-Luis-Faiardo-r0bsbrkdueoslr0duydyi4mp4vtdh2pni7vfemdz20.png" alt="Luis Success" style="width: 100%; height: 140px; object-fit: cover; filter: brightness(0.8);">
-                        <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); padding: 0.5rem; color: white; font-size: 0.8rem; text-align: center;">Luis Faiardo</div>
-                    </div>
-                    <div style="position: relative; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.3);">
-                        <img src="Testimonials_Client Proof/Markus/Untitled-design-16-r0bsbk1obqei0vbb2v4xy6j0dsufrhvst6njkep4fs.png" alt="Markus Success" style="width: 100%; height: 140px; object-fit: cover; filter: brightness(0.8);">
-                        <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); padding: 0.5rem; color: white; font-size: 0.8rem; text-align: center;">Markus</div>
-                    </div>
-                    <div style="position: relative; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.3);">
-                        <img src="Testimonials_Client Proof/Grit Brokerage/Screenshot-2025-01-06-140520.png" alt="Grit Brokerage Press" style="width: 100%; height: 140px; object-fit: cover; filter: brightness(0.8);">
-                        <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); padding: 0.5rem; color: white; font-size: 0.8rem; text-align: center;">Press Coverage</div>
-                    </div>
-                    <div style="position: relative; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.3); background: linear-gradient(135deg, #ffd700, #ffb347); display: flex; align-items: center; justify-content: center;">
-                        <div style="color: #000; font-weight: bold; font-size: 1.2rem; text-align: center;">
-                            <div style="font-size: 2rem; margin-bottom: 0.5rem;">+50</div>
-                            <div>Success Stories</div>
+                ${tier === 'black' ? `
+                    <div class="modal-black-3d-model" style="width: 100%; height: 350px; border-radius: 12px; overflow: hidden; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); position: relative;">
+                        <div id="modal-black-credit-card-model" style="width: 100%; height: 100%; position: relative; background: transparent; border: none; overflow: visible;">
+                            <div class="modal-black-model-loading" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: #ffffff; z-index: 1;">
+                                <div class="modal-black-loading-spinner" style="width: 30px; height: 30px; border: 2px solid rgba(255, 255, 255, 0.3); border-top: 2px solid #ffffff; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 0.5rem;"></div>
+                                <p style="font-size: 0.8rem; color: #cccccc;">Loading 3D Model...</p>
+                            </div>
                         </div>
                     </div>
-                </div>
+                ` : `
+                    <h3 style="color: #ffffff; margin-bottom: 1.5rem; font-size: 1.3rem; text-align: center;">Success Stories</h3>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+                        <div style="position: relative; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.3);">
+                            <img src="Testimonials_Client Proof/Grit Brokerage/Grit-Brokerage.png" alt="Grit Brokerage Success" style="width: 100%; height: 140px; object-fit: cover; filter: brightness(0.8);">
+                            <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); padding: 0.5rem; color: white; font-size: 0.8rem; text-align: center;">Grit Brokerage</div>
+                        </div>
+                        <div style="position: relative; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.3);">
+                            <img src="Testimonials_Client Proof/Frantisek/FRANTISEK-r0bsbqmk9i1fuugh1v2oq4dev8tpyb86t8rlzkehq0.png" alt="Frantisek Success" style="width: 100%; height: 140px; object-fit: cover; filter: brightness(0.8);">
+                            <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); padding: 0.5rem; color: white; font-size: 0.8rem; text-align: center;">Frantisek</div>
+                        </div>
+                        <div style="position: relative; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.3);">
+                            <img src="Testimonials_Client Proof/Luis/new-Luis-Faiardo-r0bsbrkdueoslr0duydyi4mp4vtdh2pni7vfemdz20.png" alt="Luis Success" style="width: 100%; height: 140px; object-fit: cover; filter: brightness(0.8);">
+                            <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); padding: 0.5rem; color: white; font-size: 0.8rem; text-align: center;">Luis Faiardo</div>
+                        </div>
+                        <div style="position: relative; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.3);">
+                            <img src="Testimonials_Client Proof/Markus/Untitled-design-16-r0bsbk1obqei0vbb2v4xy6j0dsufrhvst6njkep4fs.png" alt="Markus Success" style="width: 100%; height: 140px; object-fit: cover; filter: brightness(0.8);">
+                            <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); padding: 0.5rem; color: white; font-size: 0.8rem; text-align: center;">Markus</div>
+                        </div>
+                        <div style="position: relative; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.3);">
+                            <img src="Testimonials_Client Proof/Grit Brokerage/Screenshot-2025-01-06-140520.png" alt="Grit Brokerage Press" style="width: 100%; height: 140px; object-fit: cover; filter: brightness(0.8);">
+                            <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); padding: 0.5rem; color: white; font-size: 0.8rem; text-align: center;">Press Coverage</div>
+                        </div>
+                        <div style="position: relative; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.3); background: linear-gradient(135deg, #ffd700, #ffb347); display: flex; align-items: center; justify-content: center;">
+                            <div style="color: #000; font-weight: bold; font-size: 1.2rem; text-align: center;">
+                                <div style="font-size: 2rem; margin-bottom: 0.5rem;">+50</div>
+                                <div>Success Stories</div>
+                            </div>
+                        </div>
+                    </div>
+                `}
             </div>
             
             <!-- Column 2: Package Details -->
@@ -994,7 +1154,7 @@ function openServiceModal(tier) {
             
             <!-- Column 3: Ticket and CTA -->
             <div class="modal-cta">
-                <img src="pricing images/${tier}.png" alt="${data.title} Package" class="modal-ticket">
+                ${tier === 'black' ? '' : `<img src="pricing images/${tier}.png" alt="${data.title} Package" class="modal-ticket">`}
                 
                 <div class="modal-cta-section">
                     <h3 class="modal-cta-title">Ready to Get Started?</h3>
@@ -1010,6 +1170,13 @@ function openServiceModal(tier) {
     `;
     
     modal.style.display = 'block';
+    
+    // Initialize 3D model for Black ticket modal
+    if (tier === 'black') {
+        setTimeout(() => {
+            initModalBlack3DModel();
+        }, 100);
+    }
     
     // Animate modal opening
     gsap.fromTo('.modal-content',
