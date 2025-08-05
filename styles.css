@@ -458,24 +458,19 @@ h1, h2, h3, h4, h5, h6 {
     align-items: center;
 }
 
-/* 3D Model commented out - .hero-3d-model {
-    position: fixed;
-    top: 10%;
-    right: 5%;
-    width: 550px;
-    height: 700px;
-    z-index: 1000;
-    pointer-events: none;
-    transform: none;
-    transition: none;
-    will-change: transform;
-    left: auto;
-    bottom: auto;
-    margin: 0;
-    padding: 0;
+.black-3d-model {
+    position: relative;
+    width: 100%;
+    height: 250px;
+    margin: 1rem 0;
+    border-radius: 12px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-#hero-credit-card-model {
+#black-credit-card-model {
     width: 100%;
     height: 100%;
     position: relative;
@@ -484,7 +479,7 @@ h1, h2, h3, h4, h5, h6 {
     overflow: visible;
 }
 
-.model-loading {
+.black-model-loading {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -494,25 +489,25 @@ h1, h2, h3, h4, h5, h6 {
     z-index: 1;
 }
 
-.loading-spinner {
-    width: 40px;
-    height: 40px;
-    border: 3px solid rgba(255, 255, 255, 0.3);
-    border-top: 3px solid #ffffff;
+.black-loading-spinner {
+    width: 30px;
+    height: 30px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top: 2px solid #ffffff;
     border-radius: 50%;
     animation: spin 1s linear infinite;
-    margin: 0 auto 1rem;
+    margin: 0 auto 0.5rem;
+}
+
+.black-model-loading p {
+    font-size: 0.8rem;
+    color: #cccccc;
 }
 
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
-
-.model-loading p {
-    font-size: 0.9rem;
-    color: #cccccc;
-} */
 
 .hero-quotes {
     display: grid;

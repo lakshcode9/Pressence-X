@@ -12,6 +12,128 @@ function scrollToSection(sectionId) {
 let scene, camera, renderer, model, mixer, clock;
 let isModelLoaded = false;
 let modelContainer = null;
+let blackModelScene, blackModelCamera, blackModelRenderer, blackModel, blackModelMixer;
+let isBlackModelLoaded = false;
+
+// Initialize Black ticket 3D model
+function initBlack3DModel() {
+    const blackModelContainer = document.getElementById('black-credit-card-model');
+    if (!blackModelContainer) {
+        console.log('No Black 3D model container found');
+        return;
+    }
+
+    // Check if Three.js is loaded
+    if (typeof THREE === 'undefined') {
+        console.error('Three.js not loaded');
+        return;
+    }
+
+    // Scene setup for Black ticket
+    blackModelScene = new THREE.Scene();
+    blackModelScene.background = null; // Completely transparent
+
+    // Camera setup
+    blackModelCamera = new THREE.PerspectiveCamera(75, blackModelContainer.clientWidth / blackModelContainer.clientHeight, 0.1, 1000);
+    blackModelCamera.position.set(0, 0, 8);
+
+    // Renderer setup
+    const isMobile = window.innerWidth <= 768;
+    blackModelRenderer = new THREE.WebGLRenderer({ 
+        antialias: !isMobile,
+        alpha: true,
+        preserveDrawingBuffer: false,
+        powerPreference: "high-performance"
+    });
+    blackModelRenderer.setSize(blackModelContainer.clientWidth, blackModelContainer.clientHeight);
+    blackModelRenderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2));
+    blackModelRenderer.setClearColor(0x000000, 0);
+    blackModelRenderer.shadowMap.enabled = !isMobile;
+    blackModelRenderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    blackModelRenderer.outputEncoding = THREE.sRGBEncoding;
+    blackModelRenderer.toneMapping = THREE.ACESFilmicToneMapping;
+    blackModelRenderer.toneMappingExposure = 1.2;
+    blackModelContainer.appendChild(blackModelRenderer.domElement);
+
+    // Lighting setup for Black ticket
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+    blackModelScene.add(ambientLight);
+
+    const keyLight = new THREE.DirectionalLight(0xffffff, 3.0);
+    keyLight.position.set(25, 25, 20);
+    if (!isMobile) {
+        keyLight.castShadow = true;
+        keyLight.shadow.mapSize.width = 1024;
+        keyLight.shadow.mapSize.height = 1024;
+        keyLight.shadow.camera.near = 0.5;
+        keyLight.shadow.camera.far = 100;
+        keyLight.shadow.camera.left = -10;
+        keyLight.shadow.camera.right = 10;
+        keyLight.shadow.camera.top = 10;
+        keyLight.shadow.camera.bottom = -10;
+    }
+    blackModelScene.add(keyLight);
+
+    const fillLight = new THREE.DirectionalLight(0xffffff, 1.5);
+    fillLight.position.set(-20, 15, 15);
+    blackModelScene.add(fillLight);
+
+    const rimLight = new THREE.DirectionalLight(0xffffff, 2.0);
+    rimLight.position.set(0, -20, 20);
+    blackModelScene.add(rimLight);
+
+    // Load the 3D model
+    const loader = new THREE.GLTFLoader();
+    loader.load(
+        'inal.glb',
+        function (gltf) {
+            blackModel = gltf.scene;
+            blackModel.scale.set(2.5, 2.5, 2.5);
+            blackModel.position.set(0, 0, 0);
+            
+            if (gltf.animations && gltf.animations.length > 0) {
+                blackModelMixer = new THREE.AnimationMixer(blackModel);
+                const action = blackModelMixer.clipAction(gltf.animations[0]);
+                action.play();
+            }
+            
+            blackModelScene.add(blackModel);
+            isBlackModelLoaded = true;
+            
+            // Hide loading spinner
+            const loadingElement = blackModelContainer.querySelector('.black-model-loading');
+            if (loadingElement) {
+                loadingElement.style.display = 'none';
+            }
+            
+            // Start animation loop
+            clock = new THREE.Clock();
+            animateBlackModel();
+        },
+        function (xhr) {
+            console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+        },
+        function (error) {
+            console.error('An error occurred loading the Black ticket model:', error);
+        }
+    );
+}
+
+function animateBlackModel() {
+    if (!isBlackModelLoaded) return;
+    
+    requestAnimationFrame(animateBlackModel);
+    
+    if (blackModelMixer) {
+        blackModelMixer.update(clock.getDelta());
+    }
+    
+    if (blackModel) {
+        blackModel.rotation.y += 0.005;
+    }
+    
+    blackModelRenderer.render(blackModelScene, blackModelCamera);
+}
 
 /* 3D Model commented out - function init3DModel() {
     // Try hero container first, then showcase container
@@ -1320,6 +1442,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize logo slider
     initLogoSlider();
+    
+    // Initialize Black ticket 3D model
+    initBlack3DModel();
 });
 
 // Opening animation function
