@@ -1126,3 +1126,64 @@ document.addEventListener('keydown', function(event) {
         closeModal();
     }
 }); 
+
+// Mobile Testimonial Ticker Functions
+let currentTickerIndex = 0;
+const tickerItems = document.querySelectorAll('.ticker-item');
+const tickerTrack = document.querySelector('.ticker-track');
+const tickerDots = document.querySelector('.ticker-dots');
+
+// Initialize ticker dots
+function initTickerDots() {
+    if (!tickerDots) return;
+    
+    tickerDots.innerHTML = '';
+    tickerItems.forEach((_, index) => {
+        const dot = document.createElement('div');
+        dot.className = `ticker-dot ${index === 0 ? 'active' : ''}`;
+        dot.onclick = () => goToTicker(index);
+        tickerDots.appendChild(dot);
+    });
+}
+
+// Go to specific ticker item
+function goToTicker(index) {
+    if (index < 0 || index >= tickerItems.length) return;
+    
+    currentTickerIndex = index;
+    const translateX = -index * 100;
+    tickerTrack.style.transform = `translateX(${translateX}%)`;
+    
+    // Update dots
+    document.querySelectorAll('.ticker-dot').forEach((dot, i) => {
+        dot.classList.toggle('active', i === index);
+    });
+}
+
+// Next ticker item
+function nextTicker() {
+    const nextIndex = (currentTickerIndex + 1) % tickerItems.length;
+    goToTicker(nextIndex);
+}
+
+// Previous ticker item
+function prevTicker() {
+    const prevIndex = (currentTickerIndex - 1 + tickerItems.length) % tickerItems.length;
+    goToTicker(prevIndex);
+}
+
+// Auto-advance ticker (optional)
+function startTickerAutoAdvance() {
+    setInterval(() => {
+        if (document.visibilityState === 'visible') {
+            nextTicker();
+        }
+    }, 5000); // Change every 5 seconds
+}
+
+// Initialize ticker when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    initTickerDots();
+    // Uncomment the line below if you want auto-advancing ticker
+    // startTickerAutoAdvance();
+}); 
