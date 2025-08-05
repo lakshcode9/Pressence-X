@@ -1461,6 +1461,10 @@ h1, h2, h3, h4, h5, h6 {
 
     .hero-headline {
         font-size: 2.5rem;
+        margin-top: 80px; /* Ensure headline is visible below navbar */
+        z-index: 999;
+        position: relative;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); /* Better visibility */
     }
 
     .chapter-title {
@@ -1513,10 +1517,10 @@ h1, h2, h3, h4, h5, h6 {
 
     .hero-3d-model {
         position: fixed;
-        top: 12%; /* Adjusted for better mobile positioning */
-        right: 2%;
-        width: 220px; /* Increased from 180px for better mobile visibility */
-        height: 270px; /* Increased from 220px for better mobile visibility */
+        top: 15%; /* Better positioning - higher up */
+        right: 5%;
+        width: 280px; /* Much larger for better visibility */
+        height: 350px; /* Much larger for better visibility */
         z-index: 1000;
         pointer-events: none;
         transform: none;
@@ -1529,9 +1533,16 @@ h1, h2, h3, h4, h5, h6 {
     }
 
     .testimonial-image {
-        width: 240px;
-        height: 135px;
+        width: 280px; /* Larger image */
+        height: 157px; /* Maintain 16:9 aspect ratio */
         margin: 0 auto;
+        flex-shrink: 0;
+    }
+
+    .testimonial-content {
+        flex: 1;
+        max-width: 100%; /* Prevent text from being too wide */
+        padding: 1rem;
     }
 
     .nav-container {
@@ -1540,6 +1551,7 @@ h1, h2, h3, h4, h5, h6 {
 
     .hero-content {
         padding: 3rem 1rem;
+        margin-top: 60px; /* Ensure content is below navbar */
     }
 
     .service-card {
@@ -1569,10 +1581,6 @@ h1, h2, h3, h4, h5, h6 {
         margin-bottom: 2rem;
     }
     
-    .testimonial-content {
-        padding: 1rem;
-    }
-    
     .contact-method {
         padding: 1.5rem;
     }
@@ -1582,6 +1590,8 @@ h1, h2, h3, h4, h5, h6 {
     .hero-headline {
         font-size: 2rem;
         line-height: 1.1;
+        margin-top: 70px; /* Ensure headline is visible */
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
     }
 
     .chapter-title {
@@ -1597,10 +1607,10 @@ h1, h2, h3, h4, h5, h6 {
 
     .hero-3d-model {
         position: fixed;
-        top: 8%; /* Adjusted for better small mobile positioning */
-        right: 1%;
-        width: 150px; /* Increased from 120px for better small mobile visibility */
-        height: 180px; /* Increased from 150px for better small mobile visibility */
+        top: 12%; /* Better positioning for small mobile */
+        right: 3%;
+        width: 200px; /* Larger for better visibility */
+        height: 250px; /* Larger for better visibility */
         z-index: 1000;
         pointer-events: none;
         transform: none;
@@ -1617,6 +1627,7 @@ h1, h2, h3, h4, h5, h6 {
     .hero-content {
         padding: 2rem 1rem;
         text-align: center;
+        margin-top: 50px; /* Ensure content is below navbar */
     }
 
     .hero-subheadline {
@@ -1642,8 +1653,13 @@ h1, h2, h3, h4, h5, h6 {
     }
 
     .testimonial-image {
-        width: 200px;
-        height: 112px;
+        width: 240px; /* Larger image */
+        height: 135px; /* Maintain 16:9 aspect ratio */
+    }
+
+    .testimonial-content {
+        max-width: 100%;
+        padding: 0.5rem;
     }
 
     .logo-grid {
@@ -1741,6 +1757,8 @@ h1, h2, h3, h4, h5, h6 {
 @media (max-width: 360px) {
     .hero-headline {
         font-size: 1.8rem;
+        margin-top: 60px; /* Ensure headline is visible */
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
     }
     
     .chapter-title {
@@ -1753,6 +1771,7 @@ h1, h2, h3, h4, h5, h6 {
     
     .hero-content {
         padding: 1.5rem 0.5rem;
+        margin-top: 40px; /* Ensure content is below navbar */
     }
     
     .service-card {
@@ -1768,15 +1787,20 @@ h1, h2, h3, h4, h5, h6 {
     }
     
     .hero-3d-model {
-        width: 130px; /* Increased from 100px for better extra small mobile visibility */
-        height: 160px; /* Increased from 125px for better extra small mobile visibility */
-        top: 6%; /* Adjusted for better extra small mobile positioning */
-        right: 0.5%;
+        width: 160px; /* Larger for better visibility */
+        height: 200px; /* Larger for better visibility */
+        top: 10%; /* Better positioning */
+        right: 2%;
     }
     
     .testimonial-image {
-        width: 160px;
-        height: 90px;
+        width: 200px; /* Larger image */
+        height: 112px; /* Maintain 16:9 aspect ratio */
+    }
+
+    .testimonial-content {
+        max-width: 100%;
+        padding: 0.5rem;
     }
     
     .logo-grid .logo-item img {
@@ -1789,16 +1813,20 @@ h1, h2, h3, h4, h5, h6 {
 @media (max-width: 768px) and (orientation: landscape) {
     .hero-content {
         padding: 2rem 1rem;
+        margin-top: 50px; /* Ensure content is below navbar */
     }
     
     .hero-headline {
         font-size: 2rem;
+        margin-top: 60px; /* Ensure headline is visible */
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
     }
     
     .hero-3d-model {
-        width: 140px;
-        height: 175px;
-        top: 10%; /* Adjusted for better landscape mobile positioning */
+        width: 180px; /* Larger for better visibility */
+        height: 225px; /* Larger for better visibility */
+        top: 12%; /* Better positioning */
+        right: 3%;
     }
     
     .chapter {
