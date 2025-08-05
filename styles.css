@@ -996,6 +996,46 @@ h1, h2, h3, h4, h5, h6 {
     z-index: 2;
 }
 
+/* Hover effect: blur other cards when one is hovered */
+.services-grid:hover .service-card:not(:hover) {
+    filter: blur(3px);
+    opacity: 0.6;
+    transform: scale(0.95);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Enhanced hover effect for the active card */
+.services-grid:hover .service-card:hover {
+    transform: translateY(-15px) scale(1.05);
+    z-index: 10;
+    filter: blur(0);
+    opacity: 1;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 0 2px rgba(255, 255, 255, 0.3);
+}
+
+/* Add click indicator */
+.service-card::after {
+    content: "Click to learn more";
+    position: absolute;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: #ffffff;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.service-card:hover::after {
+    opacity: 1;
+}
+
 .service-card {
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(20px);
@@ -1382,17 +1422,153 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .modal-content {
-    background: rgba(0, 0, 0, 0.95);
-    margin: 5% auto;
-    padding: 2rem;
-    border-radius: 12px;
-    width: 90%;
-    max-width: 600px;
-    max-height: 90vh;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.95) 0%, rgba(20, 20, 20, 0.98) 100%);
+    margin: 3% auto;
+    padding: 3rem;
+    border-radius: 20px;
+    width: 95%;
+    max-width: 1400px;
+    min-height: 70vh;
+    max-height: 85vh;
     overflow-y: auto;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.1);
     position: relative;
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(30px);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8);
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 2rem;
+    align-items: start;
+}
+
+/* Left side - Package details */
+.modal-left {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* Right side - Visual elements and CTA */
+.modal-right {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+/* Package ticket display */
+.modal-ticket {
+    max-width: 300px;
+    height: auto;
+    border-radius: 15px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease;
+}
+
+.modal-ticket:hover {
+    transform: scale(1.05);
+}
+
+/* Enhanced modal header */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #ffffff, #cccccc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 0;
+}
+
+/* Package features with icons */
+.modal-features {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.modal-feature {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.modal-feature:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(10px);
+}
+
+.modal-feature-icon {
+    width: 24px;
+    height: 24px;
+    background: linear-gradient(135deg, #ffd700, #ffb347);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: #000;
+    font-weight: bold;
+}
+
+/* Enhanced CTA section */
+.modal-cta-section {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+    padding: 2rem;
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    text-align: center;
+}
+
+.modal-cta-title {
+    font-size: 1.5rem;
+    color: #ffffff;
+    margin-bottom: 1rem;
+}
+
+.modal-cta-description {
+    color: #cccccc;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .modal-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding: 2rem;
+        margin: 5% auto;
+    }
+    
+    .modal-title {
+        font-size: 2rem;
+    }
+    
+    .modal-ticket {
+        max-width: 250px;
+    }
+    
+    /* Hide testimonial collage on mobile */
+    .modal-testimonials {
+        display: none;
+    }
 }
 
 .close {

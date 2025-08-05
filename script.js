@@ -721,20 +721,19 @@ function openServiceModal(tier) {
     const serviceData = {
         silver: {
             title: 'Silver Package',
-            outlets: ['Yahoo Finance', 'MarketWatch', 'Business Insider'],
+            outlets: ['Medium', 'Time Bulletin', 'US Times Now', 'Globe Stats', 'Insta Bulletin'],
             features: [
-                'Press release distribution to 500+ outlets',
-                'Media list curation and targeting',
-                'Basic media monitoring and reporting',
-                '30-day campaign duration',
-                'Email support',
-                'Monthly performance report'
+                'One-time fee for guaranteed publication',
+                'Professional article writing and editing',
+                'Direct submission to target publications',
+                'Publication within 7-14 days',
+                'Lifetime access to published article'
             ],
-            price: '250 NZD/month',
-            timeline: '30 days',
+            price: '300 NZD',
+            timeline: 'One-time fee',
             testimonials: [
                 {
-                    quote: "The Silver package got us featured in Yahoo Finance within 2 weeks. Great ROI!",
+                    quote: "Got published in Medium within a week. The one-time fee was totally worth it!",
                     author: "Sarah Chen",
                     company: "Luxury Properties Dubai"
                 }
@@ -742,21 +741,19 @@ function openServiceModal(tier) {
         },
         gold: {
             title: 'Gold Package',
-            outlets: ['Khaleej Times', 'Entrepreneur', 'Gulf Business'],
+            outlets: ['Digital Journal', 'Time Business News', 'Fox Interviewer', 'Voyage NY', 'London Reporter', 'Big Time Daily', 'Tricity Daily', 'Vents Magazine', 'Seekers Time', 'San Francisco Post', 'One World Herald', 'Verna Magazine', 'Tech Bullion'],
             features: [
-                'Everything in Silver',
-                'Direct journalist outreach',
-                'Interview coordination',
-                '60-day campaign duration',
-                'Priority support',
-                'Bi-weekly performance reports',
-                'Media training session'
+                'One-time fee for guaranteed publication',
+                'Professional article writing and editing',
+                'Direct submission to target publications',
+                'Publication within 7-14 days',
+                'Lifetime access to published article'
             ],
-            price: '340 NZD/month',
-            timeline: '60 days',
+            price: '410 NZD',
+            timeline: 'One-time fee',
             testimonials: [
                 {
-                    quote: "Gold package delivered Khaleej Times coverage. Our credibility skyrocketed!",
+                    quote: "Published in Digital Journal and Time Business News. The Gold package delivered exactly what we needed!",
                     author: "Ahmed Hassan",
                     company: "Elite Real Estate"
                 }
@@ -764,21 +761,19 @@ function openServiceModal(tier) {
         },
         platinum: {
             title: 'Platinum Package',
-            outlets: ['Bloomberg', 'Forbes Middle East', 'Arabian Business'],
+            outlets: ['Real Estate Today', 'CEO Weekly', 'NY Weekly', 'The Wall Street Times', 'US Insider', 'Latin Post', 'LA Progressive', 'Net News Ledger', 'NY Wire', 'Miami Wire', 'US Reporter', 'The American Reporter', 'London Daily Post', 'Kivo Daily', 'Los Angeles Tribune', 'America Daily Post', 'Atlanta Wire', 'LA Wire', 'The Chicago Journal', 'California Herald', 'California Gazette', 'Auto World News', 'Food World News', 'Sports World News', 'BO Herald', 'Future Sharks', 'Active Rain', 'Block Telegraph', 'IBT Singapore', 'IBT India', 'Daily Scanner', 'Influencer Daily', 'Cali Post', 'Famous Times', 'Space Coast Daily', 'NY Tech Media', 'The UBJ', 'Explosion', 'Business Deccan', 'Lawyer Herald', 'Miditech Today', 'The Frisky', 'Disrupt Magazine'],
             features: [
-                'Everything in Gold',
-                'Exclusive story angles',
-                'Media training included',
-                '90-day campaign duration',
-                'Dedicated PR manager',
-                'Weekly performance reports',
-                'Crisis management support'
+                'One-time fee for guaranteed publication',
+                'Professional article writing and editing',
+                'Direct submission to target publications',
+                'Publication within 7-14 days',
+                'Lifetime access to published article'
             ],
-            price: '645 NZD/month',
-            timeline: '90 days',
+            price: '700 NZD',
+            timeline: 'One-time fee',
             testimonials: [
                 {
-                    quote: "Bloomberg feature changed everything. We're now the authority in luxury real estate.",
+                    quote: "Published in Real Estate Today and CEO Weekly. The Platinum package exceeded our expectations!",
                     author: "Maria Rodriguez",
                     company: "Prestige Properties"
                 }
@@ -812,32 +807,82 @@ function openServiceModal(tier) {
     
     modalContent.innerHTML = `
         <div class="service-modal">
-            <h2>${data.title}</h2>
-            <div class="service-details">
-                <h3>Target Outlets</h3>
-                <ul>
-                    ${data.outlets.map(outlet => `<li>${outlet}</li>`).join('')}
-                </ul>
-                
-                <h3>Features</h3>
-                <ul>
-                    ${data.features.map(feature => `<li>${feature}</li>`).join('')}
-                </ul>
-                
-                <div class="price-display">
-                    <div class="pricing">
-                        <p><strong>${data.price}</strong></p>
-                        <p>Timeline: ${data.timeline}</p>
+            <div class="modal-header">
+                <h2 class="modal-title">${data.title}</h2>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            
+            <!-- Column 1: Testimonial Collage -->
+            <div class="modal-testimonials">
+                <h3 style="color: #ffffff; margin-bottom: 1.5rem; font-size: 1.3rem; text-align: center;">Success Stories</h3>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+                    <div style="position: relative; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.3);">
+                        <img src="Testimonials_Client Proof/Grit Brokerage/Grit-Brokerage.png" alt="Grit Brokerage Success" style="width: 100%; height: 140px; object-fit: cover; filter: brightness(0.8);">
+                        <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); padding: 0.5rem; color: white; font-size: 0.8rem; text-align: center;">Grit Brokerage</div>
+                    </div>
+                    <div style="position: relative; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.3);">
+                        <img src="Testimonials_Client Proof/Frantisek/FRANTISEK-r0bsbqmk9i1fuugh1v2oq4dev8tpyb86t8rlzkehq0.png" alt="Frantisek Success" style="width: 100%; height: 140px; object-fit: cover; filter: brightness(0.8);">
+                        <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); padding: 0.5rem; color: white; font-size: 0.8rem; text-align: center;">Frantisek</div>
+                    </div>
+                    <div style="position: relative; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.3);">
+                        <img src="Testimonials_Client Proof/Luis/new-Luis-Faiardo-r0bsbrkdueoslr0duydyi4mp4vtdh2pni7vfemdz20.png" alt="Luis Success" style="width: 100%; height: 140px; object-fit: cover; filter: brightness(0.8);">
+                        <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); padding: 0.5rem; color: white; font-size: 0.8rem; text-align: center;">Luis Faiardo</div>
+                    </div>
+                    <div style="position: relative; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.3);">
+                        <img src="Testimonials_Client Proof/Markus/Untitled-design-16-r0bsbk1obqei0vbb2v4xy6j0dsufrhvst6njkep4fs.png" alt="Markus Success" style="width: 100%; height: 140px; object-fit: cover; filter: brightness(0.8);">
+                        <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); padding: 0.5rem; color: white; font-size: 0.8rem; text-align: center;">Markus</div>
+                    </div>
+                    <div style="position: relative; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.3);">
+                        <img src="Testimonials_Client Proof/Grit Brokerage/Screenshot-2025-01-06-140520.png" alt="Grit Brokerage Press" style="width: 100%; height: 140px; object-fit: cover; filter: brightness(0.8);">
+                        <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8)); padding: 0.5rem; color: white; font-size: 0.8rem; text-align: center;">Press Coverage</div>
+                    </div>
+                    <div style="position: relative; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 20px rgba(0,0,0,0.3); background: linear-gradient(135deg, #ffd700, #ffb347); display: flex; align-items: center; justify-content: center;">
+                        <div style="color: #000; font-weight: bold; font-size: 1.2rem; text-align: center;">
+                            <div style="font-size: 2rem; margin-bottom: 0.5rem;">+50</div>
+                            <div>Success Stories</div>
+                        </div>
                     </div>
                 </div>
+            </div>
+            
+            <!-- Column 2: Package Details -->
+            <div class="modal-details">
+                <div class="modal-features">
+                    <h3 style="color: #ffffff; margin-bottom: 1rem; font-size: 1.3rem;">What's Included</h3>
+                    ${data.features.map((feature, index) => `
+                        <div class="modal-feature">
+                            <div class="modal-feature-icon">${index + 1}</div>
+                            <span style="color: #ffffff;">${feature}</span>
+                        </div>
+                    `).join('')}
+                </div>
                 
-                <div class="testimonial">
-                    <blockquote>"${data.testimonials[0].quote}"</blockquote>
-                    <cite>— ${data.testimonials[0].author}, ${data.testimonials[0].company}</cite>
+                <div class="service-details">
+                    <h3 style="color: #ffffff; margin-bottom: 1rem;">Target Publications</h3>
+                    <ul style="color: #cccccc; line-height: 1.8;">
+                        ${data.outlets.map(outlet => `<li>${outlet}</li>`).join('')}
+                    </ul>
+                    
+                    <div class="testimonial" style="margin-top: 2rem; padding: 1.5rem; background: rgba(255, 255, 255, 0.05); border-radius: 12px; border-left: 4px solid #ffd700;">
+                        <blockquote style="color: #ffffff; font-style: italic; margin-bottom: 0.5rem;">"${data.testimonials[0].quote}"</blockquote>
+                        <cite style="color: #cccccc; font-size: 0.9rem;">— ${data.testimonials[0].author}, ${data.testimonials[0].company}</cite>
+                    </div>
                 </div>
             </div>
+            
+            <!-- Column 3: Ticket and CTA -->
             <div class="modal-cta">
-                <button class="btn-primary" onclick="contactForPackage('${tier}')">Get Started</button>
+                <img src="pricing images/${tier}.png" alt="${data.title} Package" class="modal-ticket">
+                
+                <div class="modal-cta-section">
+                    <h3 class="modal-cta-title">Ready to Get Started?</h3>
+                    <p class="modal-cta-description">Join the elite group of real estate professionals who've already achieved media success with our ${data.title} package.</p>
+                    <div style="margin-bottom: 1rem;">
+                        <strong style="color: #ffd700; font-size: 1.2rem;">${data.price}</strong>
+                        <p style="color: #cccccc; margin-top: 0.5rem;">Timeline: ${data.timeline}</p>
+                    </div>
+                    <button class="btn-primary" onclick="contactForPackage('${tier}')" style="width: 100%; padding: 1rem 2rem; font-size: 1.1rem;">Get Started Now</button>
+                </div>
             </div>
         </div>
     `;
