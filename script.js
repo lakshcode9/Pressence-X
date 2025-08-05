@@ -249,11 +249,11 @@ function animate() {
     requestAnimationFrame(animate);
 
     if (isModelLoaded && model) {
-        // Constant rotation - slow and majestic
-        model.rotation.y += 0.005; // Much slower rotation for majestic feel
+        // Only rotation - no floating, no movement
+        model.rotation.y += 0.004; // Very slow, constant rotation
         
-        // Very gentle floating animation
-        model.position.y = Math.sin(Date.now() * 0.0002) * 0.01; // Reduced amplitude and speed
+        // Remove all position changes - keep model perfectly stationary
+        // model.position.y = 0; // Keep at fixed position
     }
 
     if (mixer) {
@@ -290,37 +290,40 @@ function onWindowResize() {
         renderer.shadowMap.enabled = true;
     }
     
+    // Ensure model stays fixed in position during resize
+    gsap.set('#hero-credit-card-model', {
+        top: '20%',
+        right: '5%',
+        x: 0,
+        y: 0
+    });
+    
     console.log('Window resized, model container dimensions:', modelContainer.clientWidth, 'x', modelContainer.clientHeight);
 }
 
-// Stationary 3D model - glued to viewport with majestic rotation
+// Stationary 3D model - completely fixed with only rotation
 function setupModelTravel() {
-    // Set the model to be stationary in the top-right corner
+    // Set the model to be completely stationary in the top-right corner
     gsap.set('#hero-credit-card-model', {
         top: '20%',
         right: '5%',
         scale: 1.2, // Scaled up for prominence
         rotationY: 0,
         position: 'fixed', // Ensure it's fixed in viewport
-        zIndex: 1000 // Ensure it's above other content
+        zIndex: 1000, // Ensure it's above other content
+        x: 0, // Ensure no horizontal movement
+        y: 0  // Ensure no vertical movement
     });
 
-    // Simple continuous rotation - slow and majestic
+    // Only rotation animation - no movement, no floating
     gsap.to('#hero-credit-card-model', {
         rotationY: 360,
         ease: "none",
-        duration: 12, // Much slower rotation for majestic feel
+        duration: 15, // Very slow rotation for calm, constant motion
         repeat: -1
     });
 
-    // Gentle floating animation - very subtle
-    gsap.to('#hero-credit-card-model', {
-        y: -10, // Reduced floating range
-        ease: "power2.inOut",
-        yoyo: true,
-        repeat: -1,
-        duration: 4 // Slower float for majestic feel
-    });
+    // Remove all floating/movement animations - keep only rotation
 }
 
 // GSAP Animations

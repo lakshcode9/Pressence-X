@@ -48,7 +48,12 @@ body {
         -khtml-user-drag: none;
         -moz-user-drag: none;
         -o-user-drag: none;
-        user-drag: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        pointer-events: none;
     }
     
     /* Improve scrolling performance */
@@ -229,11 +234,13 @@ h1, h2, h3, h4, h5, h6 {
     position: fixed;
     top: 20%;
     right: 5%;
-    width: 450px;
-    height: 600px;
+    width: 550px; /* Increased from 450px for better PC visibility */
+    height: 700px; /* Increased from 600px for better PC visibility */
     z-index: 1000;
-    pointer-events: none;
-    transform: none;
+    pointer-events: none; /* Prevent any mouse interactions */
+    transform: none; /* Ensure no transform changes from CSS */
+    transition: none; /* Remove any transitions */
+    will-change: transform; /* Optimize for rotation only */
 }
 
 #hero-credit-card-model {
@@ -1407,8 +1414,8 @@ h1, h2, h3, h4, h5, h6 {
 /* Responsive Design */
 @media (max-width: 1024px) {
     .hero-3d-model {
-        width: 350px;
-        height: 450px;
+        width: 450px; /* Increased from 350px for better tablet visibility */
+        height: 550px; /* Increased from 450px for better tablet visibility */
     }
 
     .hero-headline {
@@ -1507,8 +1514,8 @@ h1, h2, h3, h4, h5, h6 {
         position: fixed;
         top: 15%;
         right: 2%;
-        width: 180px;
-        height: 220px;
+        width: 220px; /* Increased from 180px for better mobile visibility */
+        height: 270px; /* Increased from 220px for better mobile visibility */
         z-index: 1000;
         pointer-events: none;
         transform: none;
@@ -1591,8 +1598,8 @@ h1, h2, h3, h4, h5, h6 {
         position: fixed;
         top: 10%;
         right: 1%;
-        width: 120px;
-        height: 150px;
+        width: 150px; /* Increased from 120px for better small mobile visibility */
+        height: 180px; /* Increased from 150px for better small mobile visibility */
         z-index: 1000;
         pointer-events: none;
         transform: none;
@@ -1760,8 +1767,8 @@ h1, h2, h3, h4, h5, h6 {
     }
     
     .hero-3d-model {
-        width: 100px;
-        height: 125px;
+        width: 130px; /* Increased from 100px for better extra small mobile visibility */
+        height: 160px; /* Increased from 125px for better extra small mobile visibility */
         top: 8%;
         right: 0.5%;
     }
