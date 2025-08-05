@@ -2,6 +2,8 @@
 function scrollToSection(sectionId) {
     const section = document.getElementById(sectionId);
     if (section) {
+        // Ensure body scrolling is restored before scrolling to section
+        document.body.style.overflow = '';
         section.scrollIntoView({ behavior: 'smooth' });
     }
 }
@@ -431,6 +433,9 @@ function initializeHoverEffects() {
 
 // Navigation functionality
 document.addEventListener('DOMContentLoaded', function() {
+    // Ensure body scrolling is restored on page load
+    document.body.style.overflow = '';
+    
     // Mobile navigation toggle
     const navToggle = document.querySelector('.nav-toggle');
     const navLinks = document.querySelector('.nav-links');
@@ -544,6 +549,19 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+    
+    // Ensure body scrolling is restored on window resize
+    window.addEventListener('resize', function() {
+        // Only restore scrolling if no modal is open and mobile menu is closed
+        const modals = document.querySelectorAll('.modal');
+        const navLinks = document.querySelector('.nav-links');
+        const isModalOpen = Array.from(modals).some(modal => modal.style.display === 'block');
+        const isMobileMenuOpen = navLinks && navLinks.classList.contains('active');
+        
+        if (!isModalOpen && !isMobileMenuOpen) {
+            document.body.style.overflow = '';
+        }
+    });
 
     // Form submission
     const leadForm = document.getElementById('leadForm');
@@ -653,6 +671,9 @@ function handleFormSubmission() {
 
 // Service modal functionality
 function openServiceModal(tier) {
+    // Ensure body scrolling is restored before opening modal
+    document.body.style.overflow = '';
+    
     const modal = document.getElementById('serviceModal');
     const modalContent = document.getElementById('modalContent');
     
@@ -801,6 +822,9 @@ function openServiceModal(tier) {
 
 // Tool modal functions
 function openArticleSimulator() {
+    // Ensure body scrolling is restored before opening modal
+    document.body.style.overflow = '';
+    
     const modal = document.getElementById('toolModal');
     const modalContent = document.getElementById('toolModalContent');
     
@@ -827,6 +851,9 @@ function openArticleSimulator() {
 }
 
 function openFameCalculator() {
+    // Ensure body scrolling is restored before opening modal
+    document.body.style.overflow = '';
+    
     const modal = document.getElementById('toolModal');
     const modalContent = document.getElementById('toolModalContent');
     
@@ -857,6 +884,9 @@ function openFameCalculator() {
 }
 
 function openHeadlineGenerator() {
+    // Ensure body scrolling is restored before opening modal
+    document.body.style.overflow = '';
+    
     const modal = document.getElementById('toolModal');
     const modalContent = document.getElementById('toolModalContent');
     
@@ -1011,6 +1041,9 @@ function closeModal() {
     modals.forEach(modal => {
         modal.style.display = 'none';
     });
+    
+    // Ensure body scrolling is restored when modal is closed
+    document.body.style.overflow = '';
 }
 
 function contactForPackage(tier) {

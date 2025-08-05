@@ -1200,6 +1200,8 @@ h1, h2, h3, h4, h5, h6 {
     border-radius: 12px;
     width: 90%;
     max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
     border: 1px solid rgba(255, 255, 255, 0.1);
     position: relative;
     backdrop-filter: blur(20px);
@@ -1622,18 +1624,15 @@ h1, h2, h3, h4, h5, h6 {
 
 
     .hero-3d-model {
-        position: fixed !important;
-        top: 10% !important; /* Higher up and stuck to viewport */
+        position: absolute !important;
+        top: -80px !important; /* Position just above the headline */
         right: 2% !important;
         width: 400px !important; /* Much larger for better visibility */
         height: 500px !important; /* Much larger for better visibility */
         z-index: 1000 !important;
         pointer-events: none !important;
         transform: none !important;
-        /* Ensure it stays fixed and not affected by parent containers */
-        position: fixed !important;
-        will-change: transform;
-        /* Force it to be relative to viewport, not any parent */
+        /* Ensure it stays positioned relative to hero section */
         left: auto !important;
         bottom: auto !important;
         margin: 0 !important;
@@ -1734,18 +1733,15 @@ h1, h2, h3, h4, h5, h6 {
     }
 
     .hero-3d-model {
-        position: fixed !important;
-        top: 8% !important; /* Higher up and stuck to viewport */
+        position: absolute !important;
+        top: -60px !important; /* Position just above the headline */
         right: 1% !important;
         width: 350px !important; /* Much larger for better visibility */
         height: 450px !important; /* Much larger for better visibility */
         z-index: 1000 !important;
         pointer-events: none !important;
         transform: none !important;
-        /* Ensure it stays fixed and not affected by parent containers */
-        position: fixed !important;
-        will-change: transform;
-        /* Force it to be relative to viewport, not any parent */
+        /* Ensure it stays positioned relative to hero section */
         left: auto !important;
         bottom: auto !important;
         margin: 0 !important;
@@ -1930,18 +1926,15 @@ h1, h2, h3, h4, h5, h6 {
     }
     
     .hero-3d-model {
-        position: fixed !important;
+        position: absolute !important;
         width: 300px !important; /* Much larger for better visibility */
         height: 400px !important; /* Much larger for better visibility */
-        top: 6% !important; /* Higher up and stuck to viewport */
-        right: 1% !important;
+        top: -50px !important; /* Position just above the headline */
+        right: 2% !important;
         z-index: 1000 !important;
         pointer-events: none !important;
         transform: none !important;
-        /* Ensure it stays fixed and not affected by parent containers */
-        position: fixed !important;
-        will-change: transform;
-        /* Force it to be relative to viewport, not any parent */
+        /* Ensure it stays positioned relative to hero section */
         left: auto !important;
         bottom: auto !important;
         margin: 0 !important;
@@ -1985,18 +1978,15 @@ h1, h2, h3, h4, h5, h6 {
     }
     
     .hero-3d-model {
-        position: fixed !important;
+        position: absolute !important;
         width: 320px !important; /* Much larger for better visibility */
         height: 400px !important; /* Much larger for better visibility */
-        top: 8% !important; /* Higher up and stuck to viewport */
+        top: -40px !important; /* Position just above the headline */
         right: 2% !important;
         z-index: 1000 !important;
         pointer-events: none !important;
         transform: none !important;
-        /* Ensure it stays fixed and not affected by parent containers */
-        position: fixed !important;
-        will-change: transform;
-        /* Force it to be relative to viewport, not any parent */
+        /* Ensure it stays positioned relative to hero section */
         left: auto !important;
         bottom: auto !important;
         margin: 0 !important;
@@ -2154,10 +2144,10 @@ h1, h2, h3, h4, h5, h6 {
     
     /* Optimize 3D model for very small screens */
     .hero-3d-model {
-        position: fixed !important;
+        position: absolute !important;
         width: 300px !important; /* Much larger for better visibility */
         height: 400px !important; /* Much larger for better visibility */
-        top: 6% !important; /* Higher up and stuck to viewport */
+        top: -40px !important; /* Position just above the headline */
         right: 1% !important;
         opacity: 0.8;
         z-index: 1000 !important;
