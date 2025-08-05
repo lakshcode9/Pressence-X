@@ -232,7 +232,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .hero-3d-model {
     position: fixed;
-    top: 20%;
+    top: 10%; /* Reduced from 20% to position model higher in viewport */
     right: 5%;
     width: 550px; /* Increased from 450px for better PC visibility */
     height: 700px; /* Increased from 600px for better PC visibility */
@@ -1414,6 +1414,7 @@ h1, h2, h3, h4, h5, h6 {
 /* Responsive Design */
 @media (max-width: 1024px) {
     .hero-3d-model {
+        top: 8%; /* Adjusted for better tablet positioning */
         width: 450px; /* Increased from 350px for better tablet visibility */
         height: 550px; /* Increased from 450px for better tablet visibility */
     }
@@ -1512,7 +1513,7 @@ h1, h2, h3, h4, h5, h6 {
 
     .hero-3d-model {
         position: fixed;
-        top: 15%;
+        top: 12%; /* Adjusted for better mobile positioning */
         right: 2%;
         width: 220px; /* Increased from 180px for better mobile visibility */
         height: 270px; /* Increased from 220px for better mobile visibility */
@@ -1596,7 +1597,7 @@ h1, h2, h3, h4, h5, h6 {
 
     .hero-3d-model {
         position: fixed;
-        top: 10%;
+        top: 8%; /* Adjusted for better small mobile positioning */
         right: 1%;
         width: 150px; /* Increased from 120px for better small mobile visibility */
         height: 180px; /* Increased from 150px for better small mobile visibility */
@@ -1769,7 +1770,7 @@ h1, h2, h3, h4, h5, h6 {
     .hero-3d-model {
         width: 130px; /* Increased from 100px for better extra small mobile visibility */
         height: 160px; /* Increased from 125px for better extra small mobile visibility */
-        top: 8%;
+        top: 6%; /* Adjusted for better extra small mobile positioning */
         right: 0.5%;
     }
     
@@ -1797,7 +1798,7 @@ h1, h2, h3, h4, h5, h6 {
     .hero-3d-model {
         width: 140px;
         height: 175px;
-        top: 12%;
+        top: 10%; /* Adjusted for better landscape mobile positioning */
     }
     
     .chapter {
