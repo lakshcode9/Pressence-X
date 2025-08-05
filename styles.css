@@ -1931,6 +1931,7 @@ h1, h2, h3, h4, h5, h6 {
     
     /* Optimize 3D model container for mobile */
     .hero-3d-model {
+        position: fixed !important;
         touch-action: none;
         -webkit-touch-callout: none;
         -webkit-user-select: none;
@@ -1938,6 +1939,13 @@ h1, h2, h3, h4, h5, h6 {
         -moz-user-select: none;
         -ms-user-select: none;
         user-select: none;
+        z-index: 1000 !important;
+        pointer-events: none !important;
+        transform: none !important;
+        left: auto !important;
+        bottom: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
     }
     
     /* Better mobile navigation */
@@ -1976,7 +1984,15 @@ h1, h2, h3, h4, h5, h6 {
     
     /* Optimize 3D model for very small screens */
     .hero-3d-model {
+        position: fixed !important;
         opacity: 0.8;
+        z-index: 1000 !important;
+        pointer-events: none !important;
+        transform: none !important;
+        left: auto !important;
+        bottom: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
     }
     
     /* Better text sizing for very small screens */
