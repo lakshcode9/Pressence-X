@@ -1940,7 +1940,11 @@ h1, h2, h3, h4, h5, h6 {
         margin-top: 80px; /* Ensure headline is visible below navbar */
         z-index: 999;
         position: relative;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); /* Better visibility */
+        background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
     }
 
     .chapter-title {
@@ -2118,7 +2122,11 @@ h1, h2, h3, h4, h5, h6 {
         font-size: 2rem;
         line-height: 1.1;
         margin-top: 70px; /* Ensure headline is visible */
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
     }
     
     /* Force line break after first "you" on mobile */
@@ -2313,7 +2321,11 @@ h1, h2, h3, h4, h5, h6 {
     .hero-headline {
         font-size: 1.8rem;
         margin-top: 60px; /* Ensure headline is visible */
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
     }
     
     .chapter-title {
@@ -2396,7 +2408,11 @@ h1, h2, h3, h4, h5, h6 {
     .hero-headline {
         font-size: 2rem;
         margin-top: 60px; /* Ensure headline is visible */
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
     }
     
     /* 3D Model commented out - .hero-3d-model {
