@@ -6,6 +6,478 @@ function scrollToSection(sectionId) {
     }
 }
 
+// Three.js 3D Model Integration
+let scene, camera, renderer, model, mixer, clock;
+let isModelLoaded = false;
+let modelContainer = null;
+
+function init3DModel() {
+    // Try hero container first, then showcase container
+    modelContainer = document.getElementById('hero-credit-card-model') || document.getElementById('credit-card-model');
+    if (!modelContainer) {
+        console.log('No 3D model container found');
+        return;
+    }
+
+    // Check if Three.js is loaded
+    if (typeof THREE === 'undefined') {
+        console.error('Three.js not loaded');
+        createFallbackModel();
+        return;
+    }
+
+    // Scene setup
+    scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x000000);
+
+    // Camera setup
+    camera = new THREE.PerspectiveCamera(75, modelContainer.clientWidth / modelContainer.clientHeight, 0.1, 1000);
+    camera.position.set(0, 0, 5);
+
+    // Renderer setup
+    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(modelContainer.clientWidth, modelContainer.clientHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    modelContainer.appendChild(renderer.domElement);
+
+    // Lighting
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+    scene.add(ambientLight);
+
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    directionalLight.position.set(5, 5, 5);
+    directionalLight.castShadow = true;
+    directionalLight.shadow.mapSize.width = 2048;
+    directionalLight.shadow.mapSize.height = 2048;
+    scene.add(directionalLight);
+
+    const pointLight = new THREE.PointLight(0xffffff, 0.5);
+    pointLight.position.set(-5, 5, 5);
+    scene.add(pointLight);
+
+    // Clock for animations
+    clock = new THREE.Clock();
+
+    // Check if GLTFLoader is available
+    if (typeof THREE.GLTFLoader === 'undefined') {
+        console.log('GLTFLoader not available, creating fallback model');
+        createFallbackModel();
+        return;
+    }
+
+    // Load the 3D model
+    const loader = new THREE.GLTFLoader();
+    console.log('Loading 3D model...');
+    
+    // Add timeout for model loading
+    const loadTimeout = setTimeout(() => {
+        console.log('Model loading timeout, creating fallback');
+        createFallbackModel();
+    }, 5000); // 5 second timeout
+    
+    loader.load(
+        'inal.glb',
+        function (gltf) {
+            clearTimeout(loadTimeout);
+            console.log('3D model loaded successfully');
+            model = gltf.scene;
+            model.scale.set(2, 2, 2);
+            model.position.set(0, 0, 0);
+            
+            // Enable shadows
+            model.traverse(function (child) {
+                if (child.isMesh) {
+                    child.castShadow = true;
+                    child.receiveShadow = true;
+                }
+            });
+
+            scene.add(model);
+            isModelLoaded = true;
+
+            // Remove loading indicator
+            const loadingIndicator = modelContainer.querySelector('.model-loading');
+            if (loadingIndicator) {
+                loadingIndicator.style.display = 'none';
+            }
+
+            // Setup animations if they exist
+            if (gltf.animations && gltf.animations.length) {
+                mixer = new THREE.AnimationMixer(model);
+                const action = mixer.clipAction(gltf.animations[0]);
+                action.play();
+            }
+
+            // Start render loop
+            animate();
+        },
+        function (xhr) {
+            console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+        },
+        function (error) {
+            clearTimeout(loadTimeout);
+            console.error('An error occurred loading the model:', error);
+            // Create a fallback cube if model fails to load
+            createFallbackModel();
+        }
+    );
+
+    // Handle window resize
+    window.addEventListener('resize', onWindowResize);
+}
+
+function createFallbackModel() {
+    console.log('Creating fallback credit card model');
+    
+    // Create a credit card shape
+    const cardGeometry = new THREE.BoxGeometry(3, 2, 0.1);
+    const cardMaterial = new THREE.MeshPhongMaterial({ 
+        color: 0x1a1a1a,
+        transparent: true,
+        opacity: 0.9
+    });
+    
+    // Main card
+    model = new THREE.Mesh(cardGeometry, cardMaterial);
+    
+    // Add card details
+    const chipGeometry = new THREE.BoxGeometry(0.5, 0.4, 0.05);
+    const chipMaterial = new THREE.MeshPhongMaterial({ color: 0xffd700 });
+    const chip = new THREE.Mesh(chipGeometry, chipMaterial);
+    chip.position.set(-1, 0.3, 0.06);
+    model.add(chip);
+    
+    // Add some text/logo elements
+    const logoGeometry = new THREE.PlaneGeometry(1, 0.3);
+    const logoMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff });
+    const logo = new THREE.Mesh(logoGeometry, logoMaterial);
+    logo.position.set(0.5, 0.5, 0.06);
+    model.add(logo);
+    
+    // Add some lines for card details
+    for (let i = 0; i < 4; i++) {
+        const lineGeometry = new THREE.PlaneGeometry(1.5, 0.05);
+        const lineMaterial = new THREE.MeshPhongMaterial({ color: 0xcccccc });
+        const line = new THREE.Mesh(lineGeometry, lineMaterial);
+        line.position.set(0, -0.3 - (i * 0.15), 0.06);
+        model.add(line);
+    }
+    
+    scene.add(model);
+    isModelLoaded = true;
+    
+    // Remove loading indicator
+    const loadingIndicator = modelContainer.querySelector('.model-loading');
+    if (loadingIndicator) {
+        loadingIndicator.style.display = 'none';
+    }
+    
+    animate();
+}
+
+function animate() {
+    requestAnimationFrame(animate);
+
+    if (isModelLoaded && model) {
+        // Rotate the model slowly
+        model.rotation.y += 0.005;
+        
+        // Add subtle floating animation
+        model.position.y = Math.sin(Date.now() * 0.001) * 0.1;
+    }
+
+    if (mixer) {
+        mixer.update(clock.getDelta());
+    }
+
+    if (renderer && scene && camera) {
+        renderer.render(scene, camera);
+    }
+}
+
+function onWindowResize() {
+    if (!modelContainer) return;
+    
+    camera.aspect = modelContainer.clientWidth / modelContainer.clientHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(modelContainer.clientWidth, modelContainer.clientHeight);
+}
+
+// Model travel animation through sections
+function setupModelTravel() {
+    // Hero section - model stays in top-right
+    gsap.set('#hero-credit-card-model', {
+        top: '50%',
+        right: '5%',
+        scale: 1
+    });
+
+    // About section - model moves to center-right
+    gsap.to('#hero-credit-card-model', {
+        top: '30%',
+        right: '10%',
+        scale: 0.9,
+        ease: "none",
+        scrollTrigger: {
+            trigger: '.about',
+            start: "top center",
+            end: "bottom center",
+            scrub: true
+        }
+    });
+
+    // Results section - model moves to bottom-right
+    gsap.to('#hero-credit-card-model', {
+        top: '70%',
+        right: '15%',
+        scale: 0.8,
+        ease: "none",
+        scrollTrigger: {
+            trigger: '.results',
+            start: "top center",
+            end: "bottom center",
+            scrub: true
+        }
+    });
+
+    // Testimonials section - model moves to center-left
+    gsap.to('#hero-credit-card-model', {
+        top: '50%',
+        right: '80%',
+        scale: 0.9,
+        ease: "none",
+        scrollTrigger: {
+            trigger: '.testimonials',
+            start: "top center",
+            end: "bottom center",
+            scrub: true
+        }
+    });
+
+    // Services section - model moves to top-left
+    gsap.to('#hero-credit-card-model', {
+        top: '20%',
+        right: '85%',
+        scale: 1.1,
+        ease: "none",
+        scrollTrigger: {
+            trigger: '.services',
+            start: "top center",
+            end: "bottom center",
+            scrub: true
+        }
+    });
+
+    // Contact section - model moves to bottom-left
+    gsap.to('#hero-credit-card-model', {
+        top: '80%',
+        right: '80%',
+        scale: 0.8,
+        ease: "none",
+        scrollTrigger: {
+            trigger: '.contact',
+            start: "top center",
+            end: "bottom center",
+            scrub: true
+        }
+    });
+
+    // Add rotation and floating effects
+    gsap.to('#hero-credit-card-model', {
+        rotation: 360,
+        ease: "none",
+        scrollTrigger: {
+            trigger: 'body',
+            start: "top top",
+            end: "bottom bottom",
+            scrub: true
+        }
+    });
+
+    // Add floating animation
+    gsap.to('#hero-credit-card-model', {
+        y: -20,
+        ease: "power2.inOut",
+        yoyo: true,
+        repeat: -1,
+        duration: 2
+    });
+}
+
+// GSAP Animations
+function initializeGSAPAnimations() {
+    // Register ScrollTrigger plugin
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Animate service cards on scroll
+    gsap.utils.toArray('.service-card').forEach((card, index) => {
+        gsap.fromTo(card, 
+            {
+                opacity: 0,
+                y: 50,
+                scale: 0.9
+            },
+            {
+                opacity: 1,
+                y: 0,
+                scale: 1,
+                duration: 0.8,
+                ease: "power2.out",
+                delay: index * 0.2,
+                scrollTrigger: {
+                    trigger: card,
+                    start: "top 80%",
+                    end: "bottom 20%",
+                    toggleActions: "play none none reverse"
+                }
+            }
+        );
+    });
+
+    // Animate pricing numbers
+    gsap.utils.toArray('.price').forEach(price => {
+        const text = price.textContent;
+        const number = text.match(/\d+/);
+        if (number) {
+            const targetNumber = parseInt(number[0]);
+            gsap.fromTo(price,
+                { textContent: "0" },
+                {
+                    textContent: targetNumber,
+                    duration: 2,
+                    ease: "power2.out",
+                    scrollTrigger: {
+                        trigger: price,
+                        start: "top 80%",
+                        toggleActions: "play none none reverse"
+                    },
+                    onUpdate: function() {
+                        price.textContent = Math.floor(this.targets()[0].textContent) + " NZD";
+                    }
+                }
+            );
+        }
+    });
+
+    // Animate 3D model section
+    gsap.fromTo('.showcase-text',
+        {
+            opacity: 0,
+            x: -50
+        },
+        {
+            opacity: 1,
+            x: 0,
+            duration: 1,
+            ease: "power2.out",
+            scrollTrigger: {
+                trigger: '.showcase-3d',
+                start: "top 80%",
+                toggleActions: "play none none reverse"
+            }
+        }
+    );
+
+    gsap.fromTo('.model-container',
+        {
+            opacity: 0,
+            scale: 0.8
+        },
+        {
+            opacity: 1,
+            scale: 1,
+            duration: 1.2,
+            ease: "power2.out",
+            scrollTrigger: {
+                trigger: '.showcase-3d',
+                start: "top 80%",
+                toggleActions: "play none none reverse"
+            }
+        }
+    );
+
+    // Parallax effect for 3D model
+    gsap.to('#credit-card-model', {
+        yPercent: -20,
+        ease: "none",
+        scrollTrigger: {
+            trigger: '.showcase-3d',
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true
+        }
+    });
+
+    // Animate testimonials
+    gsap.utils.toArray('.testimonial-item').forEach((item, index) => {
+        gsap.fromTo(item,
+            {
+                opacity: 0,
+                y: 30
+            },
+            {
+                opacity: 1,
+                y: 0,
+                duration: 0.6,
+                delay: index * 0.1,
+                ease: "power2.out",
+                scrollTrigger: {
+                    trigger: item,
+                    start: "top 85%",
+                    toggleActions: "play none none reverse"
+                }
+            }
+        );
+    });
+
+    // Animate logo grid
+    gsap.utils.toArray('.logo-grid .logo-item').forEach((logo, index) => {
+        gsap.fromTo(logo,
+            {
+                opacity: 0,
+                scale: 0.5
+            },
+            {
+                opacity: 1,
+                scale: 1,
+                duration: 0.5,
+                delay: index * 0.1,
+                ease: "back.out(1.7)",
+                scrollTrigger: {
+                    trigger: logo,
+                    start: "top 90%",
+                    toggleActions: "play none none reverse"
+                }
+            }
+        );
+    });
+}
+
+// Enhanced hover effects for service cards
+function initializeHoverEffects() {
+    const serviceCards = document.querySelectorAll('.service-card');
+    
+    serviceCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            gsap.to(this, {
+                scale: 1.05,
+                duration: 0.3,
+                ease: "power2.out"
+            });
+        });
+
+        card.addEventListener('mouseleave', function() {
+            gsap.to(this, {
+                scale: 1,
+                duration: 0.3,
+                ease: "power2.out"
+            });
+        });
+    });
+}
+
 // Navigation functionality
 document.addEventListener('DOMContentLoaded', function() {
     // Mobile navigation toggle
@@ -62,6 +534,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialize animations
     initializeAnimations();
+    
+    // Initialize GSAP animations
+    initializeGSAPAnimations();
+    
+    // Initialize hover effects
+    initializeHoverEffects();
+    
+    // Initialize 3D model
+    init3DModel();
+    
+    // Setup model travel animations
+    setupModelTravel();
 });
 
 // Form submission handler
@@ -113,13 +597,13 @@ function openServiceModal(tier) {
                 'Email support',
                 'Monthly performance report'
             ],
-            price: '$2,500/month',
+            price: '250 NZD/month',
             timeline: '30 days',
             testimonials: [
                 {
-                    text: "Got our first press mention within 2 weeks. Great value for money.",
-                    author: "Layla Al Rashid",
-                    company: "Dubai Properties"
+                    quote: "The Silver package got us featured in Yahoo Finance within 2 weeks. Great ROI!",
+                    author: "Sarah Chen",
+                    company: "Luxury Properties Dubai"
                 }
             ]
         },
@@ -129,17 +613,17 @@ function openServiceModal(tier) {
             features: [
                 'Everything in Silver',
                 'Direct journalist outreach',
-                'Interview coordination and preparation',
+                'Interview coordination',
                 '60-day campaign duration',
                 'Priority support',
                 'Bi-weekly performance reports',
-                'Social media amplification'
+                'Media training session'
             ],
-            price: '$5,000/month',
+            price: '340 NZD/month',
             timeline: '60 days',
             testimonials: [
                 {
-                    text: "The Entrepreneur feature brought us 3 new luxury clients immediately.",
+                    quote: "Gold package delivered Khaleej Times coverage. Our credibility skyrocketed!",
                     author: "Ahmed Hassan",
                     company: "Elite Real Estate"
                 }
@@ -147,24 +631,23 @@ function openServiceModal(tier) {
         },
         platinum: {
             title: 'Platinum Package',
-            outlets: ['Bloomberg', 'Forbes Middle East', 'Financial Times'],
+            outlets: ['Bloomberg', 'Forbes Middle East', 'Arabian Business'],
             features: [
                 'Everything in Gold',
-                'Exclusive story angles and positioning',
-                'Media training and interview coaching',
+                'Exclusive story angles',
+                'Media training included',
                 '90-day campaign duration',
-                'Dedicated account manager',
-                'Weekly strategy calls',
-                'Crisis management support',
-                'Exclusive media events access'
+                'Dedicated PR manager',
+                'Weekly performance reports',
+                'Crisis management support'
             ],
-            price: '$10,000/month',
+            price: '645 NZD/month',
             timeline: '90 days',
             testimonials: [
                 {
-                    text: "Bloomberg feature changed everything. Our credibility is now unquestionable.",
+                    quote: "Bloomberg feature changed everything. We're now the authority in luxury real estate.",
                     author: "Maria Rodriguez",
-                    company: "Luxury Estates Dubai"
+                    company: "Prestige Properties"
                 }
             ]
         },
@@ -173,67 +656,79 @@ function openServiceModal(tier) {
             outlets: ['Invite-Only Ultra-Premium'],
             features: [
                 'Everything in Platinum',
-                'Custom media strategy development',
-                'Exclusive events and networking access',
+                'Custom media strategy',
+                'Exclusive events access',
                 'Dedicated PR manager',
-                'Unlimited campaign duration',
-                '24/7 priority support',
-                'Personal media introductions',
-                'Custom content creation',
-                'Brand positioning strategy'
+                'Crisis management support',
+                'Personal media coaching',
+                'VIP networking events'
             ],
-            price: 'Contact for pricing',
+            price: 'Contact Us for pricing',
             timeline: 'Custom',
             testimonials: [
                 {
-                    text: "The Black package is worth every penny. We're now the go-to experts in luxury real estate.",
+                    quote: "The Black package is worth every penny. We're now featured in every major publication.",
                     author: "Omar Khalil",
-                    company: "Prestige Properties"
+                    company: "Luxury Estates Dubai"
                 }
             ]
         }
     };
-    
-    const service = serviceData[tier];
+
+    const data = serviceData[tier];
     
     modalContent.innerHTML = `
         <div class="service-modal">
-            <h2>${service.title}</h2>
+            <h2>${data.title}</h2>
             <div class="service-details">
-                <div class="outlets">
-                    <h3>Press Outlets</h3>
-                    <ul>
-                        ${service.outlets.map(outlet => `<li>${outlet}</li>`).join('')}
-                    </ul>
+                <h3>Target Outlets</h3>
+                <ul>
+                    ${data.outlets.map(outlet => `<li>${outlet}</li>`).join('')}
+                </ul>
+                
+                <h3>Features</h3>
+                <ul>
+                    ${data.features.map(feature => `<li>${feature}</li>`).join('')}
+                </ul>
+                
+                <div class="price-display">
+                    <div class="pricing">
+                        <p><strong>${data.price}</strong></p>
+                        <p>Timeline: ${data.timeline}</p>
+                    </div>
                 </div>
-                <div class="features">
-                    <h3>What's Included</h3>
-                    <ul>
-                        ${service.features.map(feature => `<li>${feature}</li>`).join('')}
-                    </ul>
-                </div>
-                <div class="pricing">
-                    <h3>Investment</h3>
-                    <div class="price-display">${service.price}</div>
-                    <p>Timeline: ${service.timeline}</p>
-                </div>
+                
                 <div class="testimonial">
-                    <h3>Client Success</h3>
-                    <blockquote>"${service.testimonials[0].text}"</blockquote>
-                    <cite>— ${service.testimonials[0].author}, ${service.testimonials[0].company}</cite>
+                    <blockquote>"${data.testimonials[0].quote}"</blockquote>
+                    <cite>— ${data.testimonials[0].author}, ${data.testimonials[0].company}</cite>
                 </div>
             </div>
             <div class="modal-cta">
                 <button class="btn-primary" onclick="contactForPackage('${tier}')">Get Started</button>
-                <button class="btn-secondary" onclick="closeModal()">Learn More</button>
             </div>
         </div>
     `;
     
     modal.style.display = 'block';
+    
+    // Animate modal opening
+    gsap.fromTo('.modal-content',
+        {
+            opacity: 0,
+            scale: 0.8,
+            y: 50
+        },
+        {
+            opacity: 1,
+            scale: 1,
+            y: 0,
+            duration: 0.5,
+            ease: "power2.out"
+        }
+    );
 }
 
-// Tool modal functionality
+// Tool modal functions
 function openArticleSimulator() {
     const modal = document.getElementById('toolModal');
     const modalContent = document.getElementById('toolModalContent');
@@ -242,39 +737,18 @@ function openArticleSimulator() {
         <div class="tool-modal">
             <h2>Article Simulator</h2>
             <p>See how your story would look in top publications</p>
-            
-            <div class="simulator-form">
+            <form class="simulator-form">
                 <div class="form-group">
                     <label>Your Name</label>
                     <input type="text" id="simName" placeholder="Enter your name">
                 </div>
                 <div class="form-group">
-                    <label>Company</label>
-                    <input type="text" id="simCompany" placeholder="Enter your company">
+                    <label>Your Story</label>
+                    <textarea id="simStory" placeholder="Describe your story or achievement"></textarea>
                 </div>
-                <div class="form-group">
-                    <label>Story Angle</label>
-                    <select id="simAngle">
-                        <option value="">Select your story angle</option>
-                        <option value="market-expert">Market Expert</option>
-                        <option value="luxury-specialist">Luxury Specialist</option>
-                        <option value="innovation-leader">Innovation Leader</option>
-                        <option value="success-story">Success Story</option>
-                    </select>
-                </div>
-                <button class="btn-primary" onclick="generateArticle()">Generate Article</button>
-            </div>
-            
-            <div id="articlePreview" class="article-preview" style="display: none;">
-                <div class="publication-header">
-                    <h3>FORBES</h3>
-                    <p>Business • Real Estate</p>
-                </div>
-                <div class="article-content">
-                    <h1 id="articleHeadline">How [Name] is Redefining Luxury Real Estate in Dubai</h1>
-                    <p id="articleBody">[Article content will be generated here]</p>
-                </div>
-            </div>
+                <button type="button" class="btn-primary" onclick="generateArticle()">Generate Preview</button>
+            </form>
+            <div id="articlePreview" class="article-preview" style="display: none;"></div>
         </div>
     `;
     
@@ -289,38 +763,22 @@ function openFameCalculator() {
         <div class="tool-modal">
             <h2>Fame Score Calculator</h2>
             <p>Calculate your current media presence score</p>
-            
-            <div class="calculator-form">
-                <div class="form-group">
-                    <label>Current Press Mentions</label>
-                    <input type="number" id="pressMentions" placeholder="0" min="0">
-                </div>
+            <form class="calculator-form">
                 <div class="form-group">
                     <label>Social Media Followers</label>
-                    <input type="number" id="socialFollowers" placeholder="0" min="0">
+                    <input type="number" id="followers" placeholder="Enter your total followers">
+                </div>
+                <div class="form-group">
+                    <label>Press Mentions</label>
+                    <input type="number" id="mentions" placeholder="Number of press mentions">
                 </div>
                 <div class="form-group">
                     <label>Years in Business</label>
-                    <input type="number" id="yearsBusiness" placeholder="0" min="0">
+                    <input type="number" id="years" placeholder="Years in business">
                 </div>
-                <div class="form-group">
-                    <label>Luxury Properties Sold</label>
-                    <input type="number" id="propertiesSold" placeholder="0" min="0">
-                </div>
-                <button class="btn-primary" onclick="calculateFameScore()">Calculate Score</button>
-            </div>
-            
-            <div id="fameResult" class="fame-result" style="display: none;">
-                <div class="score-display">
-                    <h3>Your Fame Score</h3>
-                    <div class="score-number" id="fameScoreNumber">0</div>
-                    <div class="score-description" id="fameScoreDesc">Beginner</div>
-                </div>
-                <div class="score-breakdown">
-                    <h4>Score Breakdown</h4>
-                    <div id="scoreBreakdown"></div>
-                </div>
-            </div>
+                <button type="button" class="btn-primary" onclick="calculateFameScore()">Calculate Score</button>
+            </form>
+            <div id="fameResult" class="fame-result" style="display: none;"></div>
         </div>
     `;
     
@@ -335,228 +793,216 @@ function openHeadlineGenerator() {
         <div class="tool-modal">
             <h2>Headline Generator</h2>
             <p>Generate compelling headlines for your story</p>
-            
-            <div class="headline-form">
+            <form class="generator-form">
                 <div class="form-group">
-                    <label>Your Name</label>
-                    <input type="text" id="headlineName" placeholder="Enter your name">
+                    <label>Your Story Topic</label>
+                    <input type="text" id="topic" placeholder="e.g., Luxury real estate success">
                 </div>
                 <div class="form-group">
                     <label>Key Achievement</label>
-                    <input type="text" id="headlineAchievement" placeholder="e.g., Sold $50M in luxury properties">
+                    <input type="text" id="achievement" placeholder="e.g., Sold 10 luxury properties">
                 </div>
-                <div class="form-group">
-                    <label>Publication Type</label>
-                    <select id="headlinePublication">
-                        <option value="forbes">Forbes</option>
-                        <option value="bloomberg">Bloomberg</option>
-                        <option value="entrepreneur">Entrepreneur</option>
-                        <option value="khaleej">Khaleej Times</option>
-                    </select>
-                </div>
-                <button class="btn-primary" onclick="generateHeadlines()">Generate Headlines</button>
-            </div>
-            
-            <div id="headlineResults" class="headline-results" style="display: none;">
-                <h3>Generated Headlines</h3>
-                <div id="headlinesList"></div>
-            </div>
+                <button type="button" class="btn-primary" onclick="generateHeadlines()">Generate Headlines</button>
+            </form>
+            <div id="headlineResults" class="headline-results" style="display: none;"></div>
         </div>
     `;
     
     modal.style.display = 'block';
 }
 
-// Tool functions
 function generateArticle() {
     const name = document.getElementById('simName').value;
-    const company = document.getElementById('simCompany').value;
-    const angle = document.getElementById('simAngle').value;
+    const story = document.getElementById('simStory').value;
     
-    if (!name || !company || !angle) {
+    if (!name || !story) {
         showNotification('Please fill in all fields', 'error');
         return;
     }
     
-    const headlines = {
-        'market-expert': `How ${name} is Shaping Dubai's Luxury Real Estate Market`,
-        'luxury-specialist': `${name}: The Visionary Behind Dubai's Most Exclusive Properties`,
-        'innovation-leader': `${name} is Revolutionizing Luxury Real Estate in the Middle East`,
-        'success-story': `From Zero to Hero: ${name}'s Journey to Real Estate Success`
-    };
+    const preview = document.getElementById('articlePreview');
+    preview.innerHTML = `
+        <div class="publication-header">
+            <h3>Forbes Middle East</h3>
+            <p>Business & Innovation</p>
+        </div>
+        <div class="article-content">
+            <h1>${name}: The Real Estate Visionary Redefining Luxury in Dubai</h1>
+            <p>In the competitive world of luxury real estate, ${name} has emerged as a true innovator. ${story}</p>
+            <p>With a proven track record of success and a deep understanding of the high-end market, ${name} continues to set new standards in the industry.</p>
+        </div>
+    `;
     
-    const articles = {
-        'market-expert': `In the competitive world of Dubai's luxury real estate, ${name} has emerged as a leading authority on high-end property markets. As the founder of ${company}, ${name} has successfully navigated the complex landscape of ultra-luxury properties, establishing themselves as a trusted advisor to discerning clients worldwide.`,
-        'luxury-specialist': `${name} has redefined what it means to be a luxury real estate specialist in Dubai. Through ${company}, they have curated some of the most exclusive property portfolios in the region, serving an elite clientele that demands nothing but the best.`,
-        'innovation-leader': `The real estate industry is undergoing a transformation, and ${name} is at the forefront of this change. At ${company}, they have introduced innovative approaches to luxury property sales that are setting new standards in the market.`,
-        'success-story': `The story of ${name} is one of determination, vision, and unparalleled success in Dubai's luxury real estate sector. From humble beginnings to leading ${company}, their journey inspires aspiring real estate professionals across the region.`
-    };
+    preview.style.display = 'block';
     
-    document.getElementById('articleHeadline').textContent = headlines[angle];
-    document.getElementById('articleBody').textContent = articles[angle];
-    document.getElementById('articlePreview').style.display = 'block';
+    // Animate the preview
+    gsap.fromTo(preview,
+        {
+            opacity: 0,
+            y: 20
+        },
+        {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+            ease: "power2.out"
+        }
+    );
 }
 
 function calculateFameScore() {
-    const pressMentions = parseInt(document.getElementById('pressMentions').value) || 0;
-    const socialFollowers = parseInt(document.getElementById('socialFollowers').value) || 0;
-    const yearsBusiness = parseInt(document.getElementById('yearsBusiness').value) || 0;
-    const propertiesSold = parseInt(document.getElementById('propertiesSold').value) || 0;
+    const followers = parseInt(document.getElementById('followers').value) || 0;
+    const mentions = parseInt(document.getElementById('mentions').value) || 0;
+    const years = parseInt(document.getElementById('years').value) || 0;
     
     let score = 0;
-    let breakdown = [];
+    score += Math.min(followers / 1000, 50); // Max 50 points for followers
+    score += mentions * 10; // 10 points per mention
+    score += years * 5; // 5 points per year
     
-    // Press mentions (max 30 points)
-    const pressScore = Math.min(pressMentions * 3, 30);
-    score += pressScore;
-    breakdown.push(`Press Mentions: ${pressScore}/30 points`);
+    const result = document.getElementById('fameResult');
+    result.innerHTML = `
+        <div class="score-display">
+            <span class="score-number">${Math.round(score)}</span>
+            <div class="score-description">Your Fame Score</div>
+        </div>
+        <div class="score-breakdown">
+            <h4>Breakdown:</h4>
+            <div>Social Media: ${Math.min(followers / 1000, 50).toFixed(1)} points</div>
+            <div>Press Mentions: ${mentions * 10} points</div>
+            <div>Experience: ${years * 5} points</div>
+        </div>
+    `;
     
-    // Social followers (max 25 points)
-    const socialScore = Math.min(Math.floor(socialFollowers / 1000), 25);
-    score += socialScore;
-    breakdown.push(`Social Media: ${socialScore}/25 points`);
+    result.style.display = 'block';
     
-    // Years in business (max 20 points)
-    const yearsScore = Math.min(yearsBusiness * 2, 20);
-    score += yearsScore;
-    breakdown.push(`Experience: ${yearsScore}/20 points`);
-    
-    // Properties sold (max 25 points)
-    const propertiesScore = Math.min(propertiesSold, 25);
-    score += propertiesScore;
-    breakdown.push(`Properties Sold: ${propertiesScore}/25 points`);
-    
-    let description = '';
-    if (score < 30) description = 'Beginner - Time to build your presence';
-    else if (score < 60) description = 'Emerging - Good foundation, ready to grow';
-    else if (score < 80) description = 'Established - Strong presence, potential for more';
-    else description = 'Influencer - Excellent media presence';
-    
-    document.getElementById('fameScoreNumber').textContent = score;
-    document.getElementById('fameScoreDesc').textContent = description;
-    document.getElementById('scoreBreakdown').innerHTML = breakdown.map(item => `<div>${item}</div>`).join('');
-    document.getElementById('fameResult').style.display = 'block';
+    // Animate the score
+    gsap.fromTo('.score-number',
+        { textContent: 0 },
+        {
+            textContent: Math.round(score),
+            duration: 2,
+            ease: "power2.out",
+            onUpdate: function() {
+                document.querySelector('.score-number').textContent = Math.round(this.targets()[0].textContent);
+            }
+        }
+    );
 }
 
 function generateHeadlines() {
-    const name = document.getElementById('headlineName').value;
-    const achievement = document.getElementById('headlineAchievement').value;
-    const publication = document.getElementById('headlinePublication').value;
+    const topic = document.getElementById('topic').value;
+    const achievement = document.getElementById('achievement').value;
     
-    if (!name || !achievement) {
-        showNotification('Please fill in your name and achievement', 'error');
+    if (!topic || !achievement) {
+        showNotification('Please fill in all fields', 'error');
         return;
     }
     
-    const headlines = {
-        'forbes': [
-            `How ${name} is Redefining Luxury Real Estate in Dubai`,
-            `${name}: The Visionary Behind Dubai's Most Exclusive Properties`,
-            `Meet ${name}, the Real Estate Expert Billionaires Trust`,
-            `${name}'s Strategy for Dominating Dubai's Luxury Market`
-        ],
-        'bloomberg': [
-            `Dubai's Luxury Real Estate Boom: ${name} Leads the Charge`,
-            `${name} on Why Dubai Remains the Ultimate Investment Destination`,
-            `The ${name} Effect: Transforming Dubai's Property Landscape`,
-            `${name}: The Numbers Behind Dubai's Luxury Real Estate Success`
-        ],
-        'entrepreneur': [
-            `Building an Empire: ${name}'s Journey to Real Estate Success`,
-            `${name} Shares the Secrets of Luxury Real Estate Success`,
-            `How ${name} Built a Multi-Million Dollar Real Estate Business`,
-            `${name}: The Entrepreneur Redefining Luxury Property Sales`
-        ],
-        'khaleej': [
-            `Dubai's Top Real Estate Professional: ${name} Shares Market Insights`,
-            `${name}: The Expert Behind Dubai's Most Prestigious Sales`,
-            `Luxury Real Estate in Dubai: ${name} Reveals What's Next`,
-            `${name} on Dubai's Real Estate Market: Trends and Opportunities`
-        ]
-    };
+    const headlines = [
+        `"${topic} Expert ${achievement} in Record Time"`,
+        `"How This ${topic} Professional ${achievement} Against All Odds"`,
+        `"The ${topic} Revolution: ${achievement} and Beyond"`,
+        `"From Zero to Hero: ${topic} Success Story"`,
+        `"Breaking Records: ${topic} Professional ${achievement}"`
+    ];
     
-    const headlinesList = document.getElementById('headlinesList');
-    headlinesList.innerHTML = headlines[publication].map(headline => 
-        `<div class="headline-item">${headline}</div>`
-    ).join('');
+    const results = document.getElementById('headlineResults');
+    results.innerHTML = `
+        <h3>Generated Headlines</h3>
+        ${headlines.map(headline => `
+            <div class="headline-item">
+                <p>${headline}</p>
+            </div>
+        `).join('')}
+    `;
     
-    document.getElementById('headlineResults').style.display = 'block';
+    results.style.display = 'block';
+    
+    // Animate headlines
+    gsap.fromTo('.headline-item',
+        {
+            opacity: 0,
+            x: -20
+        },
+        {
+            opacity: 1,
+            x: 0,
+            duration: 0.5,
+            stagger: 0.1,
+            ease: "power2.out"
+        }
+    );
 }
 
-// Modal close functionality
 function closeModal() {
-    document.getElementById('serviceModal').style.display = 'none';
-    document.getElementById('toolModal').style.display = 'none';
+    const modals = document.querySelectorAll('.modal');
+    modals.forEach(modal => {
+        modal.style.display = 'none';
+    });
 }
 
 function contactForPackage(tier) {
     closeModal();
     scrollToSection('contact');
-    document.getElementById('package').value = tier;
+    
+    // Pre-select the package in the form
+    const packageSelect = document.getElementById('package');
+    if (packageSelect) {
+        packageSelect.value = tier;
+    }
+    
+    showNotification(`Interested in ${tier} package? Let's discuss your needs!`, 'info');
 }
 
-// Close modals when clicking outside
-window.addEventListener('click', function(event) {
-    const serviceModal = document.getElementById('serviceModal');
-    const toolModal = document.getElementById('toolModal');
-    
-    if (event.target === serviceModal) {
-        serviceModal.style.display = 'none';
-    }
-    if (event.target === toolModal) {
-        toolModal.style.display = 'none';
-    }
-});
-
-// Close modals with close button
-document.addEventListener('click', function(event) {
-    if (event.target.classList.contains('close')) {
-        closeModal();
-    }
-});
-
-// Notification system
 function showNotification(message, type = 'info') {
+    // Create notification element
     const notification = document.createElement('div');
     notification.className = `notification ${type}`;
     notification.textContent = message;
-    
     notification.style.cssText = `
         position: fixed;
         top: 20px;
         right: 20px;
-        padding: 1rem 2rem;
         background: ${type === 'success' ? '#4CAF50' : type === 'error' ? '#f44336' : '#2196F3'};
         color: white;
-        border-radius: 4px;
-        z-index: 3000;
+        padding: 1rem 2rem;
+        border-radius: 8px;
+        z-index: 10000;
         transform: translateX(100%);
         transition: transform 0.3s ease;
     `;
     
     document.body.appendChild(notification);
     
-    setTimeout(() => {
-        notification.style.transform = 'translateX(0)';
-    }, 100);
+    // Animate in
+    gsap.to(notification, {
+        x: 0,
+        duration: 0.3,
+        ease: "power2.out"
+    });
     
+    // Remove after 3 seconds
     setTimeout(() => {
-        notification.style.transform = 'translateX(100%)';
-        setTimeout(() => {
-            document.body.removeChild(notification);
-        }, 300);
+        gsap.to(notification, {
+            x: '100%',
+            duration: 0.3,
+            ease: "power2.out",
+            onComplete: () => {
+                document.body.removeChild(notification);
+            }
+        });
     }, 3000);
 }
 
-// Animation initialization
 function initializeAnimations() {
-    // Intersection Observer for scroll animations
+    // Animate elements on scroll
     const observerOptions = {
         threshold: 0.1,
         rootMargin: '0px 0px -50px 0px'
     };
-    
-    const observer = new IntersectionObserver(function(entries) {
+
+    const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.style.opacity = '1';
@@ -564,10 +1010,10 @@ function initializeAnimations() {
             }
         });
     }, observerOptions);
-    
+
     // Observe elements for animation
-    const animatedElements = document.querySelectorAll('.service-card, .tool-card, .testimonial-card, .press-screenshot');
-    animatedElements.forEach(el => {
+    const animateElements = document.querySelectorAll('.service-card, .testimonial-item, .logo-item');
+    animateElements.forEach(el => {
         el.style.opacity = '0';
         el.style.transform = 'translateY(30px)';
         el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
@@ -575,23 +1021,13 @@ function initializeAnimations() {
     });
 }
 
-// Parallax effect for hero section
-window.addEventListener('scroll', function() {
-    const scrolled = window.pageYOffset;
-    const hero = document.querySelector('.hero');
-    if (hero) {
-        const rate = scrolled * -0.5;
-        hero.style.transform = `translateY(${rate}px)`;
-    }
-});
-
-// Smooth reveal animations for stats
 function animateStats() {
     const stats = document.querySelectorAll('.stat-number');
     stats.forEach(stat => {
         const target = parseInt(stat.textContent);
         let current = 0;
         const increment = target / 50;
+        
         const timer = setInterval(() => {
             current += increment;
             if (current >= target) {
@@ -603,17 +1039,19 @@ function animateStats() {
     });
 }
 
-// Trigger stats animation when about section is visible
-const aboutSection = document.querySelector('.about');
-if (aboutSection) {
-    const aboutObserver = new IntersectionObserver(function(entries) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                animateStats();
-                aboutObserver.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.5 });
-    
-    aboutObserver.observe(aboutSection);
-} 
+// Close modal when clicking outside
+window.addEventListener('click', function(event) {
+    const modals = document.querySelectorAll('.modal');
+    modals.forEach(modal => {
+        if (event.target === modal) {
+            closeModal();
+        }
+    });
+});
+
+// Close modal with escape key
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        closeModal();
+    }
+}); 
