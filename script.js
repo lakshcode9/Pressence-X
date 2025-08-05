@@ -403,27 +403,7 @@ function initializeGSAPAnimations() {
         );
     });
 
-    // Animate logo grid
-    gsap.utils.toArray('.logo-grid .logo-item').forEach((logo, index) => {
-        gsap.fromTo(logo,
-            {
-                opacity: 0,
-                scale: 0.5
-            },
-            {
-                opacity: 1,
-                scale: 1,
-                duration: 0.5,
-                delay: index * 0.1,
-                ease: "back.out(1.7)",
-                scrollTrigger: {
-                    trigger: logo,
-                    start: "top 90%",
-                    toggleActions: "play none none reverse"
-                }
-            }
-        );
-    });
+
 }
 
 // Enhanced hover effects for service cards

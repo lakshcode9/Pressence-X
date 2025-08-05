@@ -86,6 +86,9 @@ h1, h2, h3, h4, h5, h6 {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 2rem;
+    /* Ensure 3D model can be positioned fixed relative to viewport */
+    transform: none;
+    overflow: visible;
 }
 
 /* Navigation */
@@ -191,6 +194,9 @@ h1, h2, h3, h4, h5, h6 {
     align-items: center;
     background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
     position: relative;
+    /* Ensure 3D model can be positioned fixed relative to viewport */
+    transform: none;
+    overflow: visible;
 }
 
 .grain-overlay {
@@ -230,6 +236,13 @@ h1, h2, h3, h4, h5, h6 {
     color: #cccccc;
 }
 
+.hero-cta {
+    margin-top: 2rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
 .hero-3d-model {
     position: fixed;
     top: 10%; /* Reduced from 20% to position model higher in viewport */
@@ -241,6 +254,11 @@ h1, h2, h3, h4, h5, h6 {
     transform: none; /* Ensure no transform changes from CSS */
     transition: none; /* Remove any transitions */
     will-change: transform; /* Optimize for rotation only */
+    /* Ensure it's positioned relative to viewport, not any parent */
+    left: auto;
+    bottom: auto;
+    margin: 0;
+    padding: 0;
 }
 
 #hero-credit-card-model {
@@ -556,52 +574,7 @@ h1, h2, h3, h4, h5, h6 {
     background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
 }
 
-.logo-showcase {
-    margin-bottom: 4rem;
-}
 
-.logo-showcase h3 {
-    text-align: center;
-    font-size: 2rem;
-    margin-bottom: 2rem;
-    color: #ffffff;
-}
-
-.logo-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 2rem;
-    margin-bottom: 3rem;
-}
-
-.logo-grid .logo-item {
-    background: rgba(255, 255, 255, 0.05);
-    padding: 2rem;
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 120px;
-}
-
-.logo-grid .logo-item img {
-    max-width: 100%;
-    max-height: 80px;
-    object-fit: contain;
-    filter: brightness(0) invert(1); /* White filter */
-    transition: all 0.3s ease;
-}
-
-.logo-grid .logo-item:hover {
-    background: rgba(255, 255, 255, 0.1);
-    transform: translateY(-5px);
-}
-
-.logo-grid .logo-item:hover img {
-    filter: brightness(1) invert(0); /* Original color on hover */
-}
 
 .testimonials-showcase h3 {
     text-align: center;
@@ -1428,9 +1401,7 @@ h1, h2, h3, h4, h5, h6 {
         gap: 1.5rem;
     }
 
-    .logo-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
+
     
     /* Enhanced tablet optimizations */
     .container {
@@ -1511,9 +1482,7 @@ h1, h2, h3, h4, h5, h6 {
         grid-template-columns: 1fr;
     }
 
-    .logo-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
+
 
     .hero-3d-model {
         position: fixed !important;
@@ -1521,12 +1490,17 @@ h1, h2, h3, h4, h5, h6 {
         right: 2% !important;
         width: 400px !important; /* Much larger for better visibility */
         height: 500px !important; /* Much larger for better visibility */
-        z-index: 1000;
-        pointer-events: none;
-        transform: none;
-        /* Ensure it stays fixed */
-        position: fixed;
+        z-index: 1000 !important;
+        pointer-events: none !important;
+        transform: none !important;
+        /* Ensure it stays fixed and not affected by parent containers */
+        position: fixed !important;
         will-change: transform;
+        /* Force it to be relative to viewport, not any parent */
+        left: auto !important;
+        bottom: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
     }
 
     .testimonial-item {
@@ -1555,6 +1529,11 @@ h1, h2, h3, h4, h5, h6 {
     .hero-content {
         padding: 3rem 1rem;
         margin-top: 60px; /* Ensure content is below navbar */
+    }
+    
+    .hero-cta {
+        flex-direction: column;
+        gap: 0.75rem;
     }
 
     .service-card {
@@ -1614,12 +1593,17 @@ h1, h2, h3, h4, h5, h6 {
         right: 1% !important;
         width: 350px !important; /* Much larger for better visibility */
         height: 450px !important; /* Much larger for better visibility */
-        z-index: 1000;
-        pointer-events: none;
-        transform: none;
-        /* Ensure it stays fixed */
-        position: fixed;
+        z-index: 1000 !important;
+        pointer-events: none !important;
+        transform: none !important;
+        /* Ensure it stays fixed and not affected by parent containers */
+        position: fixed !important;
         will-change: transform;
+        /* Force it to be relative to viewport, not any parent */
+        left: auto !important;
+        bottom: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
     }
 
     .nav-container {
@@ -1634,6 +1618,11 @@ h1, h2, h3, h4, h5, h6 {
         padding: 2rem 1rem;
         text-align: center;
         margin-top: 50px; /* Ensure content is below navbar */
+    }
+    
+    .hero-cta {
+        flex-direction: column;
+        gap: 0.75rem;
     }
 
     .hero-subheadline {
@@ -1668,15 +1657,7 @@ h1, h2, h3, h4, h5, h6 {
         padding: 0.5rem;
     }
 
-    .logo-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1rem;
-    }
 
-    .logo-grid .logo-item img {
-        max-width: 80px;
-        max-height: 40px;
-    }
 
     .stats {
         grid-template-columns: 1fr;
@@ -1798,12 +1779,17 @@ h1, h2, h3, h4, h5, h6 {
         height: 400px !important; /* Much larger for better visibility */
         top: 6% !important; /* Higher up and stuck to viewport */
         right: 1% !important;
-        z-index: 1000;
-        pointer-events: none;
-        transform: none;
-        /* Ensure it stays fixed */
-        position: fixed;
+        z-index: 1000 !important;
+        pointer-events: none !important;
+        transform: none !important;
+        /* Ensure it stays fixed and not affected by parent containers */
+        position: fixed !important;
         will-change: transform;
+        /* Force it to be relative to viewport, not any parent */
+        left: auto !important;
+        bottom: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
     }
     
     .testimonial-image {
@@ -1816,10 +1802,7 @@ h1, h2, h3, h4, h5, h6 {
         padding: 0.5rem;
     }
     
-    .logo-grid .logo-item img {
-        max-width: 60px;
-        max-height: 30px;
-    }
+    
 }
 
 /* Landscape mobile optimization */
@@ -1841,12 +1824,17 @@ h1, h2, h3, h4, h5, h6 {
         height: 400px !important; /* Much larger for better visibility */
         top: 8% !important; /* Higher up and stuck to viewport */
         right: 2% !important;
-        z-index: 1000;
-        pointer-events: none;
-        transform: none;
-        /* Ensure it stays fixed */
-        position: fixed;
+        z-index: 1000 !important;
+        pointer-events: none !important;
+        transform: none !important;
+        /* Ensure it stays fixed and not affected by parent containers */
+        position: fixed !important;
         will-change: transform;
+        /* Force it to be relative to viewport, not any parent */
+        left: auto !important;
+        bottom: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
     }
     
     .chapter {
