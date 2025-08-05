@@ -431,53 +431,70 @@ h1, h2, h3, h4, h5, h6 {
     line-height: 1.8;
 }
 
-.press-logos {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 1rem;
+/* Logo Slider Section */
+.logo-slider-section {
+    margin: 3rem 0;
+}
+
+.logo-slider-section h3 {
+    text-align: center;
     margin-bottom: 2rem;
-}
-
-.logo-item {
-    background: rgba(255, 255, 255, 0.05);
-    padding: 1rem;
-    border-radius: 8px;
-    text-align: center;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: all 0.3s ease;
+    color: #ffffff;
+    font-size: 1.5rem;
     font-weight: 600;
-    color: #ffffff;
 }
 
-.logo-item:hover {
-    background: rgba(255, 255, 255, 0.1);
-    transform: translateY(-2px);
+.logo-slider-container {
+    position: relative;
+    overflow: hidden;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    padding: 2rem 0;
 }
 
-.stats {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2rem;
+.logo-slider-track {
+    display: flex;
+    animation: logo-slide 20s linear infinite;
+    width: fit-content;
 }
 
-.stat-item {
-    text-align: center;
+.logo-slider-item {
+    flex: 0 0 auto;
+    margin: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 120px;
+    height: 60px;
+    transition: all 0.3s ease;
 }
 
-.stat-number {
-    display: block;
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: #ffffff;
-    font-family: 'DM Serif Display', serif;
-    margin-bottom: 0.5rem;
+.logo-slider-item img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+    opacity: 0.7;
+    transition: all 0.3s ease;
 }
 
-.stat-label {
-    color: #cccccc;
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+.logo-slider-item:hover img {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+@keyframes logo-slide {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-75%);
+    }
+}
+
+/* Pause animation on hover */
+.logo-slider-container:hover .logo-slider-track {
+    animation-play-state: paused;
 }
 
 .chapter-cta {
@@ -485,89 +502,32 @@ h1, h2, h3, h4, h5, h6 {
     margin-top: 3rem;
 }
 
-/* Results Section */
-.results {
-    background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+/* Mission and Story Sections */
+.mission, .story {
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+    padding: 4rem 0;
 }
 
-.results-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    margin-bottom: 4rem;
-}
-
-.press-screenshot {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 12px;
-    padding: 2rem;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: all 0.3s ease;
-    cursor: pointer;
-}
-
-.press-screenshot:hover {
-    background: rgba(255, 255, 255, 0.08);
-    transform: translateY(-5px);
-}
-
-.screenshot-placeholder {
+.mission .about-text, .story .about-text {
+    max-width: 800px;
+    margin: 0 auto;
     text-align: center;
 }
 
-.screenshot-placeholder h4 {
-    font-size: 1.3rem;
-    margin-bottom: 1rem;
-    color: #ffffff;
-}
-
-.screenshot-placeholder p {
-    color: #cccccc;
-    font-style: italic;
-}
-
-.testimonials-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-    gap: 2rem;
-}
-
-.testimonial-card {
-    background: rgba(255, 255, 255, 0.05);
-    padding: 2rem;
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: all 0.3s ease;
-}
-
-.testimonial-card:hover {
-    background: rgba(255, 255, 255, 0.08);
-    transform: translateY(-5px);
-}
-
-.testimonial-content p {
-    font-size: 1.1rem;
+.mission .about-text h3, .story .about-text h3 {
+    font-size: 2.2rem;
     margin-bottom: 1.5rem;
     color: #ffffff;
-    font-style: italic;
-    line-height: 1.6;
 }
 
-.testimonial-meta {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-.client-name {
-    font-weight: 600;
-    color: #ffffff;
-}
-
-.client-company {
+.mission .about-text p, .story .about-text p {
+    font-size: 1.1rem;
+    line-height: 1.8;
     color: #cccccc;
-    font-size: 0.9rem;
+    margin-bottom: 0;
 }
+
+
 
 /* Testimonials Section */
 .testimonials {
@@ -1704,12 +1664,47 @@ h1, h2, h3, h4, h5, h6 {
     }
 
     /* Responsive Layout Switcher */
-    .desktop-only {
+        .desktop-only {
         display: none !important;
     }
-
+    
     .mobile-only {
         display: block !important;
+    }
+    
+    /* Logo slider mobile adjustments */
+    .logo-slider-section {
+        margin: 2rem 0;
+    }
+    
+    .logo-slider-section h3 {
+        font-size: 1.3rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .logo-slider-container {
+        padding: 1.5rem 0;
+        width: 100vw;
+        margin-left: calc(-50vw + 50%);
+    }
+    
+    .logo-slider-item {
+        margin: 0 1.5rem;
+        min-width: 100px;
+        height: 50px;
+    }
+    
+    /* Mission and Story mobile adjustments */
+    .mission, .story {
+        padding: 3rem 0;
+    }
+    
+    .mission .about-text h3, .story .about-text h3 {
+        font-size: 1.8rem;
+    }
+    
+    .mission .about-text p, .story .about-text p {
+        font-size: 1rem;
     }
 }
 
@@ -1802,6 +1797,13 @@ h1, h2, h3, h4, h5, h6 {
     .ticker-image {
         width: 180px;
         height: 101.25px; /* 16:9 aspect ratio */
+    }
+    
+    /* Logo slider small mobile adjustments */
+    .logo-slider-item {
+        margin: 0 1rem;
+        min-width: 80px;
+        height: 40px;
     }
 
     .testimonial-content {
@@ -1959,6 +1961,13 @@ h1, h2, h3, h4, h5, h6 {
     .ticker-image {
         width: 160px;
         height: 90px; /* 16:9 aspect ratio */
+    }
+    
+    /* Logo slider extra small mobile adjustments */
+    .logo-slider-item {
+        margin: 0 0.75rem;
+        min-width: 70px;
+        height: 35px;
     }
     
     

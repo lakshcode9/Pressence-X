@@ -1219,4 +1219,41 @@ document.addEventListener('DOMContentLoaded', function() {
     initTickerDots();
     // Uncomment the line below if you want auto-advancing ticker
     // startTickerAutoAdvance();
+    
+    // Initialize logo slider
+    initLogoSlider();
 }); 
+
+// Logo Slider Functions
+function initLogoSlider() {
+    const logoSliderTrack = document.querySelector('.logo-slider-track');
+    if (!logoSliderTrack) return;
+    
+    // Ensure smooth infinite scrolling
+    const logoItems = document.querySelectorAll('.logo-slider-item');
+    if (logoItems.length === 0) return;
+    
+    // Add event listeners for pause on hover
+    const logoSliderContainer = document.querySelector('.logo-slider-container');
+    if (logoSliderContainer) {
+        logoSliderContainer.addEventListener('mouseenter', () => {
+            logoSliderTrack.style.animationPlayState = 'paused';
+        });
+        
+        logoSliderContainer.addEventListener('mouseleave', () => {
+            logoSliderTrack.style.animationPlayState = 'running';
+        });
+    }
+    
+    // Optimize animation for mobile
+    const isMobile = window.innerWidth <= 768;
+    if (isMobile) {
+        logoSliderTrack.style.animationDuration = '15s'; // Faster on mobile
+    }
+    
+    // Handle window resize
+    window.addEventListener('resize', () => {
+        const newIsMobile = window.innerWidth <= 768;
+        logoSliderTrack.style.animationDuration = newIsMobile ? '15s' : '20s';
+    });
+}
