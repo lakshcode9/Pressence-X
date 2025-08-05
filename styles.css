@@ -77,7 +77,7 @@
     width: 100%;
     height: 100%;
     object-fit: contain;
-    filter: brightness(0) invert(1) drop-shadow(0 0 20px rgba(255, 215, 0, 0.5));
+    border-radius: 8px;
     animation: logoShine 3s ease-in-out;
 }
 
@@ -126,13 +126,16 @@
 
 @keyframes logoShine {
     0% {
-        filter: brightness(0) invert(1) drop-shadow(0 0 5px rgba(255, 215, 0, 0.3));
+        transform: scale(1);
+        box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
     }
     50% {
-        filter: brightness(0) invert(1) drop-shadow(0 0 30px rgba(255, 215, 0, 0.8));
+        transform: scale(1.05);
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
     }
     100% {
-        filter: brightness(0) invert(1) drop-shadow(0 0 15px rgba(255, 215, 0, 0.5));
+        transform: scale(1);
+        box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
     }
 }
 
@@ -317,12 +320,13 @@ h1, h2, h3, h4, h5, h6 {
 .nav-logo img {
     height: 50px;
     width: auto;
-    filter: brightness(0) invert(1); /* Makes the logo white */
+    border-radius: 4px;
     transition: all 0.3s ease;
 }
 
 .nav-logo img:hover {
-    filter: brightness(0) invert(0.8); /* Slightly dimmed on hover */
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .nav-links {
