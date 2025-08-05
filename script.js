@@ -34,79 +34,115 @@ function init3DModel() {
     camera = new THREE.PerspectiveCamera(75, modelContainer.clientWidth / modelContainer.clientHeight, 0.1, 1000);
     camera.position.set(0, 0, 8);
 
-    // Renderer setup - completely transparent
+    // Renderer setup - completely transparent with mobile optimizations
+    const isMobile = window.innerWidth <= 768;
     renderer = new THREE.WebGLRenderer({ 
-        antialias: true, 
+        antialias: !isMobile, // Disable antialiasing on mobile for performance
         alpha: true,
-        preserveDrawingBuffer: false
+        preserveDrawingBuffer: false,
+        powerPreference: "high-performance"
     });
     renderer.setSize(modelContainer.clientWidth, modelContainer.clientHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2)); // Lower pixel ratio on mobile
     renderer.setClearColor(0x000000, 0); // Completely transparent
-    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.enabled = !isMobile; // Disable shadows on mobile for performance
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.outputEncoding = THREE.sRGBEncoding;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.2;
     modelContainer.appendChild(renderer.domElement);
 
-    // Professional lighting setup like OnlyCard
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
+    // Brilliant lighting setup for maximum visual impact and majestic appearance
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.4); // Increased ambient for majesty
     scene.add(ambientLight);
 
-    // Main key light - strong directional
-    const keyLight = new THREE.DirectionalLight(0xffffff, 1.5);
-    keyLight.position.set(15, 15, 10);
-    keyLight.castShadow = true;
-    keyLight.shadow.mapSize.width = 4096;
-    keyLight.shadow.mapSize.height = 4096;
-    keyLight.shadow.camera.near = 0.5;
-    keyLight.shadow.camera.far = 100;
-    keyLight.shadow.camera.left = -10;
-    keyLight.shadow.camera.right = 10;
-    keyLight.shadow.camera.top = 10;
-    keyLight.shadow.camera.bottom = -10;
+    // Main key light - bright and dramatic
+    const keyLight = new THREE.DirectionalLight(0xffffff, 3.0); // Increased intensity for majesty
+    keyLight.position.set(25, 25, 20); // Adjusted position for better coverage
+    if (!isMobile) {
+        keyLight.castShadow = true;
+        keyLight.shadow.mapSize.width = 2048; // Reduced shadow map size for mobile
+        keyLight.shadow.mapSize.height = 2048;
+        keyLight.shadow.camera.near = 0.5;
+        keyLight.shadow.camera.far = 100;
+        keyLight.shadow.camera.left = -15;
+        keyLight.shadow.camera.right = 15;
+        keyLight.shadow.camera.top = 15;
+        keyLight.shadow.camera.bottom = -15;
+    }
     scene.add(keyLight);
 
-    // Fill light - soft and wide
-    const fillLight = new THREE.DirectionalLight(0xffffff, 0.6);
-    fillLight.position.set(-10, 5, 5);
+    // Fill light - bright and wide
+    const fillLight = new THREE.DirectionalLight(0xffffff, 1.5); // Increased intensity
+    fillLight.position.set(-20, 15, 15); // Adjusted position
     scene.add(fillLight);
 
-    // Rim light - for edge definition
-    const rimLight = new THREE.DirectionalLight(0xffffff, 0.8);
-    rimLight.position.set(0, -10, 10);
+    // Rim light - strong edge definition for majesty
+    const rimLight = new THREE.DirectionalLight(0xffffff, 2.0); // Increased intensity
+    rimLight.position.set(0, -20, 20); // Adjusted position
     scene.add(rimLight);
 
-    // Accent light - for highlights
-    const accentLight = new THREE.PointLight(0xffffff, 0.4);
-    accentLight.position.set(5, 5, 5);
-    scene.add(accentLight);
+    // Accent lights - multiple point lights for brilliance and majesty
+    const accentLight1 = new THREE.PointLight(0xffffff, 1.2); // Increased intensity
+    accentLight1.position.set(15, 15, 15);
+    scene.add(accentLight1);
+
+    const accentLight2 = new THREE.PointLight(0xffffff, 1.0); // Increased intensity
+    accentLight2.position.set(-15, 10, 10);
+    scene.add(accentLight2);
+
+    const accentLight3 = new THREE.PointLight(0xffffff, 0.8); // Increased intensity
+    accentLight3.position.set(10, -10, 10);
+    scene.add(accentLight3);
+
+    // Colored accent lights for extra brilliance and majesty
+    const blueAccent = new THREE.PointLight(0x4a90e2, 0.6); // Increased intensity
+    blueAccent.position.set(20, 10, 10);
+    scene.add(blueAccent);
+
+    const purpleAccent = new THREE.PointLight(0x9b59b6, 0.5); // Increased intensity
+    purpleAccent.position.set(-10, 20, 10);
+    scene.add(purpleAccent);
+
+    // Additional majestic lighting
+    const goldAccent = new THREE.PointLight(0xffd700, 0.4); // Gold accent for majesty
+    goldAccent.position.set(0, 15, 15);
+    scene.add(goldAccent);
+
+    const warmAccent = new THREE.PointLight(0xff6b35, 0.3); // Warm accent for majesty
+    warmAccent.position.set(15, -5, 5);
+    scene.add(warmAccent);
 
     // Clock for animations
     clock = new THREE.Clock();
 
-    // Check if GLTFLoader is available
-    if (typeof THREE.GLTFLoader === 'undefined') {
-        console.log('GLTFLoader not available, creating fallback model');
-        createFallbackModel();
-        return;
+    // Load the GLTF model
+    const loader = new THREE.GLTFLoader();
+    const modelPath = 'inal.glb';
+    
+    // Show loading indicator
+    const loadingIndicator = modelContainer.querySelector('.model-loading');
+    if (loadingIndicator) {
+        loadingIndicator.style.display = 'flex';
     }
 
-    // Load the 3D model
-    const loader = new THREE.GLTFLoader();
-    console.log('Loading 3D model...');
-    
-    // Add timeout for model loading
+    // Set a timeout for model loading
     const loadTimeout = setTimeout(() => {
         console.log('Model loading timeout, creating fallback');
         createFallbackModel();
-    }, 5000); // 5 second timeout
-    
+        if (loadingIndicator) {
+            loadingIndicator.style.display = 'none';
+        }
+    }, 10000); // 10 second timeout
+
     loader.load(
-        'inal.glb',
+        modelPath,
         function (gltf) {
             clearTimeout(loadTimeout);
-            console.log('3D model loaded successfully');
+            console.log('GLTF model loaded successfully');
+            
             model = gltf.scene;
-
+            
             // Log all children of the loaded GLTF scene for inspection
             console.log('GLTF scene children before cleanup:', model.children);
             console.log('Total objects in scene:', model.children.length);
@@ -116,7 +152,7 @@ function init3DModel() {
             model.children.forEach(child => {
                 console.log('Child object:', child.name, child.type, child);
                 // Remove cameras, lights, and other non-mesh objects that might be part of the GLB
-                if (child.type === 'Camera' || child.type === 'Light' || 
+                if (child.type === 'Camera' || child.type === 'Light' ||
                     (child.type === 'Object3D' && !child.isMesh && !child.isGroup)) {
                     childrenToRemove.push(child);
                 }
@@ -131,49 +167,55 @@ function init3DModel() {
             console.log('GLTF scene children after cleanup:', model.children);
             console.log('Remaining objects in scene:', model.children.length);
 
-            model.scale.set(2.5, 2.5, 2.5);
-            model.position.set(0, 0, 0);
-            
             // Enable shadows and log all meshes
             model.traverse(function (child) {
                 if (child.isMesh) {
-                    child.castShadow = true;
-                    child.receiveShadow = true;
+                    child.castShadow = !isMobile; // Disable shadows on mobile
+                    child.receiveShadow = !isMobile;
                     console.log('Mesh found:', child.name, child.geometry.type, child.material.type);
+                    
+                    // Optimize materials for mobile
+                    if (isMobile && child.material) {
+                        child.material.needsUpdate = true;
+                    }
                 }
             });
 
+            // Scale and position the model
+            model.scale.set(2, 2, 2);
+            model.position.set(0, 0, 0);
             scene.add(model);
-            isModelLoaded = true;
 
-            // Remove loading indicator
-            const loadingIndicator = modelContainer.querySelector('.model-loading');
-            if (loadingIndicator) {
-                loadingIndicator.style.display = 'none';
-            }
-
-            // Setup animations if they exist
-            if (gltf.animations && gltf.animations.length) {
+            // Set up animation mixer if animations exist
+            if (gltf.animations && gltf.animations.length > 0) {
                 mixer = new THREE.AnimationMixer(model);
                 const action = mixer.clipAction(gltf.animations[0]);
                 action.play();
             }
 
-            // Start render loop
-            animate();
+            // Hide loading indicator
+            if (loadingIndicator) {
+                loadingIndicator.style.display = 'none';
+            }
+
+            isModelLoaded = true;
+            console.log('3D model setup complete');
         },
         function (xhr) {
             console.log((xhr.loaded / xhr.total * 100) + '% loaded');
         },
         function (error) {
             clearTimeout(loadTimeout);
-            console.error('An error occurred loading the model:', error);
+            console.error('Error loading GLTF model:', error);
             createFallbackModel();
+            if (loadingIndicator) {
+                loadingIndicator.style.display = 'none';
+            }
         }
     );
 
-    // Handle window resize
-    window.addEventListener('resize', onWindowResize);
+    // Start animation loop
+    animate();
 }
 
 function createFallbackModel() {
@@ -207,11 +249,11 @@ function animate() {
     requestAnimationFrame(animate);
 
     if (isModelLoaded && model) {
-        // Constant rotation - always turning
-        model.rotation.y += 0.008;
+        // Constant rotation - slow and majestic
+        model.rotation.y += 0.005; // Much slower rotation for majestic feel
         
-        // Gentle floating animation
-        model.position.y = Math.sin(Date.now() * 0.0003) * 0.015;
+        // Very gentle floating animation
+        model.position.y = Math.sin(Date.now() * 0.0002) * 0.01; // Reduced amplitude and speed
     }
 
     if (mixer) {
@@ -224,117 +266,60 @@ function animate() {
 }
 
 function onWindowResize() {
-    if (!modelContainer) return;
+    if (!modelContainer || !camera || !renderer) return;
     
+    const isMobile = window.innerWidth <= 768;
+    
+    // Update camera aspect ratio
     camera.aspect = modelContainer.clientWidth / modelContainer.clientHeight;
     camera.updateProjectionMatrix();
+    
+    // Update renderer size
     renderer.setSize(modelContainer.clientWidth, modelContainer.clientHeight);
+    
+    // Adjust pixel ratio for mobile
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2));
+    
+    // Re-optimize for mobile if needed
+    if (isMobile) {
+        // Disable antialiasing on mobile for better performance
+        renderer.setAntialias(false);
+        renderer.shadowMap.enabled = false;
+    } else {
+        renderer.setAntialias(true);
+        renderer.shadowMap.enabled = true;
+    }
+    
+    console.log('Window resized, model container dimensions:', modelContainer.clientWidth, 'x', modelContainer.clientHeight);
 }
 
-// Model travel animation through sections - OnlyCard style
+// Stationary 3D model - glued to viewport with majestic rotation
 function setupModelTravel() {
-    // Hero section - model starts in center-right
+    // Set the model to be stationary in the top-right corner
     gsap.set('#hero-credit-card-model', {
-        top: '50%',
-        right: '10%',
-        scale: 1,
-        rotationY: 0
-    });
-
-    // About section - model moves to top-right with rotation
-    gsap.to('#hero-credit-card-model', {
-        top: '25%',
-        right: '8%',
-        scale: 0.95,
-        rotationY: 25,
-        ease: "power1.out",
-        scrollTrigger: {
-            trigger: '.about',
-            start: "top center",
-            end: "bottom center",
-            scrub: 1
-        }
-    });
-
-    // Results section - model moves to bottom-right
-    gsap.to('#hero-credit-card-model', {
-        top: '75%',
-        right: '12%',
-        scale: 0.9,
-        rotationY: -20,
-        ease: "power1.out",
-        scrollTrigger: {
-            trigger: '.results',
-            start: "top center",
-            end: "bottom center",
-            scrub: 1
-        }
-    });
-
-    // Testimonials section - model moves to center-left
-    gsap.to('#hero-credit-card-model', {
-        top: '50%',
-        right: '85%',
-        scale: 0.95,
-        rotationY: 30,
-        ease: "power1.out",
-        scrollTrigger: {
-            trigger: '.testimonials',
-            start: "top center",
-            end: "bottom center",
-            scrub: 1
-        }
-    });
-
-    // Services section - model moves to top-left
-    gsap.to('#hero-credit-card-model', {
         top: '20%',
-        right: '90%',
-        scale: 1.1,
-        rotationY: -25,
-        ease: "power1.out",
-        scrollTrigger: {
-            trigger: '.services',
-            start: "top center",
-            end: "bottom center",
-            scrub: 1
-        }
+        right: '5%',
+        scale: 1.2, // Scaled up for prominence
+        rotationY: 0,
+        position: 'fixed', // Ensure it's fixed in viewport
+        zIndex: 1000 // Ensure it's above other content
     });
 
-    // Contact section - model moves to bottom-left
+    // Simple continuous rotation - slow and majestic
     gsap.to('#hero-credit-card-model', {
-        top: '80%',
-        right: '85%',
-        scale: 0.85,
-        rotationY: 35,
-        ease: "power1.out",
-        scrollTrigger: {
-            trigger: '.contact',
-            start: "top center",
-            end: "bottom center",
-            scrub: 1
-        }
-    });
-
-    // Continuous rotation based on scroll progress
-    gsap.to('#hero-credit-card-model', {
-        rotationY: 720, // Double rotation for more movement
+        rotationY: 360,
         ease: "none",
-        scrollTrigger: {
-            trigger: 'body',
-            start: "top top",
-            end: "bottom bottom",
-            scrub: 1
-        }
+        duration: 12, // Much slower rotation for majestic feel
+        repeat: -1
     });
 
-    // Responsive floating animation
+    // Gentle floating animation - very subtle
     gsap.to('#hero-credit-card-model', {
-        y: -20,
+        y: -10, // Reduced floating range
         ease: "power2.inOut",
         yoyo: true,
         repeat: -1,
-        duration: 2.5
+        duration: 4 // Slower float for majestic feel
     });
 }
 
@@ -471,6 +456,32 @@ document.addEventListener('DOMContentLoaded', function() {
         navToggle.addEventListener('click', function() {
             navLinks.classList.toggle('active');
             navToggle.classList.toggle('active');
+            
+            // Prevent body scroll when mobile menu is open
+            if (navLinks.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
+        });
+        
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!navToggle.contains(e.target) && !navLinks.contains(e.target)) {
+                navLinks.classList.remove('active');
+                navToggle.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+        
+        // Close mobile menu when clicking on a link
+        const mobileNavLinks = navLinks.querySelectorAll('.nav-link');
+        mobileNavLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                navLinks.classList.remove('active');
+                navToggle.classList.remove('active');
+                document.body.style.overflow = '';
+            });
         });
     }
 
@@ -506,6 +517,51 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    // Enhanced mobile touch interactions
+    if ('ontouchstart' in window) {
+        // Add touch feedback to buttons
+        const buttons = document.querySelectorAll('.btn-primary, .btn-secondary, .btn-card, .btn-tool');
+        buttons.forEach(button => {
+            button.addEventListener('touchstart', function() {
+                this.style.transform = 'scale(0.95)';
+            });
+            
+            button.addEventListener('touchend', function() {
+                this.style.transform = '';
+            });
+        });
+        
+        // Add touch feedback to cards
+        const cards = document.querySelectorAll('.service-card, .testimonial-item, .contact-method');
+        cards.forEach(card => {
+            card.addEventListener('touchstart', function() {
+                this.style.transform = 'scale(0.98)';
+            });
+            
+            card.addEventListener('touchend', function() {
+                this.style.transform = '';
+            });
+        });
+    }
+
+    // Enhanced modal handling for mobile
+    const modals = document.querySelectorAll('.modal');
+    modals.forEach(modal => {
+        // Close modal on backdrop click
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+        
+        // Close modal on escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && modal.style.display === 'block') {
+                closeModal();
+            }
+        });
+    });
+
     // Form submission
     const leadForm = document.getElementById('leadForm');
     if (leadForm) {
@@ -529,7 +585,56 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Setup model travel animations
     setupModelTravel();
+    
+    // Mobile-specific optimizations
+    optimizeForMobile();
 });
+
+// Mobile optimization function
+function optimizeForMobile() {
+    const isMobile = window.innerWidth <= 768;
+    
+    if (isMobile) {
+        // Optimize 3D model for mobile
+        if (modelContainer) {
+            // Reduce model complexity on mobile
+            if (renderer) {
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+            }
+        }
+        
+        // Optimize animations for mobile
+        if (typeof gsap !== 'undefined') {
+            gsap.globalTimeline.timeScale(0.8); // Slightly slower animations on mobile
+        }
+        
+        // Add mobile-specific event listeners
+        document.addEventListener('touchstart', function() {}, {passive: true});
+        document.addEventListener('touchmove', function() {}, {passive: true});
+    }
+    
+    // Handle orientation change
+    window.addEventListener('orientationchange', function() {
+        setTimeout(() => {
+            if (renderer && modelContainer) {
+                onWindowResize();
+            }
+            optimizeForMobile();
+        }, 100);
+    });
+    
+    // Handle resize for responsive design
+    let resizeTimer;
+    window.addEventListener('resize', function() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            if (renderer && modelContainer) {
+                onWindowResize();
+            }
+            optimizeForMobile();
+        }, 250);
+    });
+}
 
 // Form submission handler
 function handleFormSubmission() {

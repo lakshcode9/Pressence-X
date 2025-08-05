@@ -7,6 +7,10 @@
 
 html {
     scroll-behavior: smooth;
+    /* Mobile performance optimizations */
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -15,6 +19,54 @@ body {
     color: #ffffff;
     background-color: #000000;
     overflow-x: hidden;
+    /* Mobile performance optimizations */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+/* Mobile-specific optimizations */
+@media (max-width: 768px) {
+    body {
+        /* Prevent horizontal scroll on mobile */
+        overflow-x: hidden;
+        /* Optimize for mobile scrolling */
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    /* Improve touch targets */
+    button, a, input, textarea, select {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    /* Optimize images for mobile */
+    img {
+        max-width: 100%;
+        height: auto;
+        -webkit-user-drag: none;
+        -khtml-user-drag: none;
+        -moz-user-drag: none;
+        -o-user-drag: none;
+        user-drag: none;
+    }
+    
+    /* Improve scrolling performance */
+    * {
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    /* Optimize animations for mobile */
+    .service-card,
+    .testimonial-item,
+    .contact-method {
+        will-change: transform;
+    }
+    
+    /* Reduce motion for better performance */
+    .hero-3d-model {
+        will-change: transform;
+    }
 }
 
 /* Typography */
@@ -175,13 +227,13 @@ h1, h2, h3, h4, h5, h6 {
 
 .hero-3d-model {
     position: fixed;
-    top: 50%;
+    top: 20%;
     right: 5%;
-    transform: translateY(-50%);
     width: 450px;
     height: 600px;
-    z-index: 100;
+    z-index: 1000;
     pointer-events: none;
+    transform: none;
 }
 
 #hero-credit-card-model {
@@ -1285,6 +1337,40 @@ h1, h2, h3, h4, h5, h6 {
     transform: rotate(45deg) translate(-5px, -6px);
 }
 
+/* Enhanced Mobile Navigation */
+@media (max-width: 768px) {
+    .nav-links.active {
+        animation: slideDown 0.3s ease-out;
+    }
+    
+    .nav-links.active .nav-link {
+        padding: 1rem 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+    }
+    
+    .nav-links.active .nav-link:hover {
+        background: rgba(255, 255, 255, 0.1);
+        padding-left: 1rem;
+    }
+    
+    .nav-links.active .nav-link:last-child {
+        border-bottom: none;
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 /* Animations */
 @keyframes fadeInUp {
     from {
@@ -1319,6 +1405,43 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Responsive Design */
+@media (max-width: 1024px) {
+    .hero-3d-model {
+        width: 350px;
+        height: 450px;
+    }
+
+    .hero-headline {
+        font-size: 3.5rem;
+    }
+
+    .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+
+    .logo-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    /* Enhanced tablet optimizations */
+    .container {
+        padding: 0 1.5rem;
+    }
+    
+    .chapter {
+        padding: 3rem 0;
+    }
+    
+    .service-card {
+        padding: 2rem;
+    }
+    
+    .testimonial-item {
+        padding: 1.5rem;
+    }
+}
+
 @media (max-width: 768px) {
     .nav-links {
         display: none;
@@ -1352,7 +1475,7 @@ h1, h2, h3, h4, h5, h6 {
     }
 
     .stats {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
         gap: 1rem;
     }
 
@@ -1382,13 +1505,13 @@ h1, h2, h3, h4, h5, h6 {
 
     .hero-3d-model {
         position: fixed;
-        top: 50%;
-        right: 5%;
-        transform: translateY(-50%);
-        width: 200px;
-        height: 250px;
-        z-index: 100;
+        top: 15%;
+        right: 2%;
+        width: 180px;
+        height: 220px;
+        z-index: 1000;
         pointer-events: none;
+        transform: none;
     }
 
     .testimonial-item {
@@ -1402,11 +1525,55 @@ h1, h2, h3, h4, h5, h6 {
         height: 135px;
         margin: 0 auto;
     }
+
+    .nav-container {
+        padding: 1rem 1.5rem;
+    }
+
+    .hero-content {
+        padding: 3rem 1rem;
+    }
+
+    .service-card {
+        margin-bottom: 1.5rem;
+    }
+    
+    /* Enhanced mobile optimizations */
+    .btn-primary, .btn-secondary, .btn-card, .btn-tool {
+        min-height: 44px; /* Better touch target */
+        padding: 0.8rem 1.5rem;
+    }
+    
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+        min-height: 44px; /* Better touch target */
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+    
+    .modal-content {
+        width: 90%;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+    
+    .service-card {
+        margin-bottom: 2rem;
+    }
+    
+    .testimonial-content {
+        padding: 1rem;
+    }
+    
+    .contact-method {
+        padding: 1.5rem;
+    }
 }
 
 @media (max-width: 480px) {
     .hero-headline {
         font-size: 2rem;
+        line-height: 1.1;
     }
 
     .chapter-title {
@@ -1417,5 +1584,409 @@ h1, h2, h3, h4, h5, h6 {
         width: 95%;
         margin: 10% auto;
         padding: 1rem;
+        max-height: 85vh;
+    }
+
+    .hero-3d-model {
+        position: fixed;
+        top: 10%;
+        right: 1%;
+        width: 120px;
+        height: 150px;
+        z-index: 1000;
+        pointer-events: none;
+        transform: none;
+    }
+
+    .nav-container {
+        padding: 0.5rem 1rem;
+    }
+
+    .nav-logo h2 {
+        font-size: 1.2rem;
+    }
+
+    .hero-content {
+        padding: 2rem 1rem;
+        text-align: center;
+    }
+
+    .hero-subheadline {
+        font-size: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .container {
+        padding: 0 0.5rem;
+    }
+
+    .chapter {
+        padding: 2rem 0;
+    }
+
+    .service-card {
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .testimonial-item {
+        padding: 1rem;
+    }
+
+    .testimonial-image {
+        width: 200px;
+        height: 112px;
+    }
+
+    .logo-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    .logo-grid .logo-item img {
+        max-width: 80px;
+        max-height: 40px;
+    }
+
+    .stats {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .stat-item {
+        text-align: center;
+        padding: 1rem;
+    }
+
+    .contact-methods {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .contact-method {
+        padding: 1rem;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+        padding: 0.8rem;
+        font-size: 0.9rem;
+        min-height: 44px;
+    }
+
+    .btn-primary,
+    .btn-secondary,
+    .btn-card,
+    .btn-tool {
+        padding: 0.8rem 1.5rem;
+        font-size: 0.9rem;
+        min-height: 44px;
+    }
+    
+    /* Enhanced small mobile optimizations */
+    .hero-headline {
+        margin-bottom: 1rem;
+    }
+    
+    .hero-subheadline {
+        margin-bottom: 1.5rem;
+    }
+    
+    .service-card {
+        border-radius: 12px;
+    }
+    
+    .testimonial-item {
+        border-radius: 12px;
+    }
+    
+    .contact-method {
+        border-radius: 12px;
+    }
+    
+    .modal-content {
+        border-radius: 12px;
+    }
+    
+    /* Better spacing for small screens */
+    .chapter {
+        padding: 1.5rem 0;
+    }
+    
+    .container {
+        padding: 0 0.75rem;
+    }
+    
+    /* Improved touch targets */
+    .nav-toggle {
+        padding: 0.5rem;
+    }
+    
+    .nav-toggle span {
+        width: 28px;
+        height: 3px;
+    }
+}
+
+/* Extra small mobile devices */
+@media (max-width: 360px) {
+    .hero-headline {
+        font-size: 1.8rem;
+    }
+    
+    .chapter-title {
+        font-size: 1.3rem;
+    }
+    
+    .container {
+        padding: 0 0.5rem;
+    }
+    
+    .hero-content {
+        padding: 1.5rem 0.5rem;
+    }
+    
+    .service-card {
+        padding: 1rem;
+    }
+    
+    .testimonial-item {
+        padding: 0.75rem;
+    }
+    
+    .contact-method {
+        padding: 0.75rem;
+    }
+    
+    .hero-3d-model {
+        width: 100px;
+        height: 125px;
+        top: 8%;
+        right: 0.5%;
+    }
+    
+    .testimonial-image {
+        width: 160px;
+        height: 90px;
+    }
+    
+    .logo-grid .logo-item img {
+        max-width: 60px;
+        max-height: 30px;
+    }
+}
+
+/* Landscape mobile optimization */
+@media (max-width: 768px) and (orientation: landscape) {
+    .hero-content {
+        padding: 2rem 1rem;
+    }
+    
+    .hero-headline {
+        font-size: 2rem;
+    }
+    
+    .hero-3d-model {
+        width: 140px;
+        height: 175px;
+        top: 12%;
+    }
+    
+    .chapter {
+        padding: 2rem 0;
+    }
+    
+    .nav-container {
+        padding: 0.75rem 1rem;
+    }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .hero-3d-model {
+        transform: scale(0.9);
+    }
+    
+    .testimonial-image img {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+    }
+}
+
+/* Reduced motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    .hero-3d-model {
+        animation: none !important;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .navbar {
+        background: rgba(0, 0, 0, 0.98);
+    }
+    
+    .nav-links.active {
+        background: rgba(0, 0, 0, 0.98);
+    }
+}
+
+/* Enhanced accessibility for mobile */
+@media (max-width: 768px) {
+    /* Better focus states for mobile */
+    .nav-link:focus,
+    .btn-primary:focus,
+    .btn-secondary:focus,
+    .btn-card:focus,
+    .btn-tool:focus {
+        outline: 2px solid #ffffff;
+        outline-offset: 2px;
+    }
+    
+    /* Improved loading states */
+    .model-loading {
+        background: rgba(0, 0, 0, 0.8);
+        border-radius: 12px;
+        backdrop-filter: blur(10px);
+    }
+    
+    /* Better modal handling on mobile */
+    .modal {
+        padding: 1rem;
+    }
+    
+    .modal-content {
+        margin: 5% auto;
+        max-height: 90vh;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    /* Optimize form inputs for mobile */
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+        border-color: #ffffff;
+        box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
+    }
+    
+    /* Better touch feedback */
+    .service-card:active,
+    .testimonial-item:active,
+    .contact-method:active {
+        transform: scale(0.98);
+        transition: transform 0.1s ease;
+    }
+    
+    /* Optimize 3D model container for mobile */
+    .hero-3d-model {
+        touch-action: none;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+    
+    /* Better mobile navigation */
+    .nav-toggle {
+        touch-action: manipulation;
+    }
+    
+    .nav-toggle span {
+        transition: all 0.3s ease;
+    }
+    
+    /* Optimize scrolling performance */
+    .chapter {
+        contain: layout style paint;
+    }
+    
+    /* Better mobile typography */
+    .hero-headline {
+        word-wrap: break-word;
+        hyphens: auto;
+    }
+    
+    .hero-subheadline {
+        word-wrap: break-word;
+    }
+}
+
+/* Extra small mobile devices - additional optimizations */
+@media (max-width: 360px) {
+    /* Reduce animations for very small screens */
+    .service-card:hover,
+    .testimonial-item:hover,
+    .contact-method:hover {
+        transform: none;
+    }
+    
+    /* Optimize 3D model for very small screens */
+    .hero-3d-model {
+        opacity: 0.8;
+    }
+    
+    /* Better text sizing for very small screens */
+    .hero-headline {
+        font-size: 1.6rem;
+        line-height: 1.2;
+    }
+    
+    .chapter-title {
+        font-size: 1.2rem;
+    }
+    
+    /* Optimize spacing for very small screens */
+    .container {
+        padding: 0 0.25rem;
+    }
+    
+    .chapter {
+        padding: 1rem 0;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .service-card,
+    .testimonial-item,
+    .contact-method {
+        border: 2px solid #ffffff;
+    }
+    
+    .btn-primary,
+    .btn-secondary,
+    .btn-card,
+    .btn-tool {
+        border: 2px solid #ffffff;
+    }
+}
+
+/* Print styles for mobile */
+@media print {
+    .hero-3d-model,
+    .nav-toggle,
+    .scroll-indicator {
+        display: none !important;
+    }
+    
+    .navbar {
+        position: static;
+        background: #000000;
+    }
+    
+    .nav-links {
+        display: flex !important;
+        position: static;
+        background: none;
     }
 } 
