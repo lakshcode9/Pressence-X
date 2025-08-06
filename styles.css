@@ -1827,9 +1827,16 @@ h1, h2, h3, h4, h5, h6 {
         max-width: 250px;
     }
     
-    /* Hide testimonial collage on mobile */
+    /* Hide testimonial collage on mobile, but show 3D model for Black ticket */
     .modal-testimonials {
         display: none;
+    }
+    
+    /* Show 3D model specifically for Black ticket modal on mobile */
+    .modal-testimonials .modal-black-3d-model {
+        display: block !important;
+        height: 250px !important;
+        margin-bottom: 1rem;
     }
 }
 
