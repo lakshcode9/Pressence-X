@@ -46,7 +46,8 @@ function initBlack3DModel() {
     const containerWidth = blackModelContainer.clientWidth || 300; // Fallback width
     const containerHeight = blackModelContainer.clientHeight || 250; // Fallback height
     blackModelCamera = new THREE.PerspectiveCamera(75, containerWidth / containerHeight, 0.1, 1000);
-    blackModelCamera.position.set(0, 0, 8);
+    // Position camera to show the entire model while keeping it close enough to look impressive
+    blackModelCamera.position.set(0, 0, 10);
 
     // Renderer setup
     blackModelRenderer = new THREE.WebGLRenderer({ 
@@ -114,8 +115,8 @@ function initBlack3DModel() {
         'inal.glb',
         function (gltf) {
             blackModel = gltf.scene;
-            // Adjust scale for mobile
-            const modelScale = isMobile ? 2.5 : 3.0;
+            // Adjust scale for mobile and ensure full visibility with good visual impact
+            const modelScale = isMobile ? 2.3 : 2.8;
             blackModel.scale.set(modelScale, modelScale, modelScale);
             blackModel.position.set(0, 0, 0);
             
@@ -185,7 +186,8 @@ function initModalBlack3DModel() {
 
     // Camera setup
     const modalBlackModelCamera = new THREE.PerspectiveCamera(75, modalBlackModelContainer.clientWidth / modalBlackModelContainer.clientHeight, 0.1, 1000);
-    modalBlackModelCamera.position.set(0, 0, 8);
+    // Position camera to show the entire model while keeping it close enough to look impressive
+    modalBlackModelCamera.position.set(0, 0, 10);
 
     // Renderer setup
     const isMobile = window.innerWidth <= 768;
@@ -254,7 +256,9 @@ function initModalBlack3DModel() {
         'inal.glb',
         function (gltf) {
                          const modalBlackModel = gltf.scene;
-             modalBlackModel.scale.set(3.0, 3.0, 3.0);
+             // Adjust scale for mobile and ensure full visibility with good visual impact
+             const modalModelScale = isMobile ? 2.3 : 2.8;
+             modalBlackModel.scale.set(modalModelScale, modalModelScale, modalModelScale);
              modalBlackModel.position.set(0, 0, 0);
             
             let modalBlackModelMixer = null;
