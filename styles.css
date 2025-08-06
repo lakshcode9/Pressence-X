@@ -1131,6 +1131,61 @@ h1, h2, h3, h4, h5, h6 {
         radial-gradient(circle at center, rgba(30, 144, 255, 0.12) 0%, rgba(138, 43, 226, 0.08) 50%, transparent 70%);
 }
 
+/* Black Ticket Section */
+.black-ticket-section {
+    margin-top: 4rem;
+    padding: 3rem 0;
+    text-align: center;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.3) 0%, rgba(20, 20, 20, 0.4) 100%);
+    border-radius: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.black-ticket-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at center, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.black-ticket-section .chapter-header {
+    margin-bottom: 2rem;
+}
+
+.black-ticket-section .chapter-title {
+    color: #ffffff;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+.black-ticket-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+/* Permanent Black Mysterious Shine */
+.service-card.black {
+    box-shadow: 
+        0 0 35px rgba(255, 255, 255, 0.6),
+        0 0 70px rgba(255, 255, 255, 0.3),
+        0 0 105px rgba(255, 255, 255, 0.2),
+        0 0 50px rgba(128, 128, 128, 0.4),
+        0 0 100px rgba(128, 128, 128, 0.2),
+        0 8px 32px rgba(0, 0, 0, 0.5);
+    filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.5)) drop-shadow(0 0 30px rgba(128, 128, 128, 0.3)) drop-shadow(0 0 45px rgba(255, 255, 255, 0.2));
+    background: 
+        linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(20, 20, 20, 0.9) 100%),
+        radial-gradient(circle at center, rgba(255, 255, 255, 0.1) 0%, rgba(128, 128, 128, 0.05) 50%, transparent 70%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
 .service-card.silver:hover {
     box-shadow: 0 20px 40px rgba(192, 192, 192, 0.2), 0 0 0 1px rgba(192, 192, 192, 0.3);
 }
@@ -2756,5 +2811,33 @@ h1, h2, h3, h4, h5, h6 {
         display: flex !important;
         position: static;
         background: none;
+    }
+}
+
+/* Responsive Black Ticket Section */
+@media (max-width: 768px) {
+    .black-ticket-section {
+        margin-top: 3rem;
+        padding: 2rem 0;
+    }
+    
+    .black-ticket-container {
+        max-width: 100%;
+        padding: 0 1rem;
+    }
+    
+    .black-ticket-section .chapter-title {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .black-ticket-section {
+        margin-top: 2rem;
+        padding: 1.5rem 0;
+    }
+    
+    .black-ticket-section .chapter-title {
+        font-size: 1.5rem;
     }
 } 
