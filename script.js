@@ -892,225 +892,62 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize hover effects
     initializeHoverEffects();
     
-    // Apply mobile optimizations
-    optimizeForMobile();
-    
     // 3D Model commented out
     // Initialize 3D model
     // init3DModel();
     
     // Setup model travel animations
     // setupModelTravel();
+    
+    // 3D Model commented out - Mobile-specific optimizations
+    // optimizeForMobile();
 });
 
-// Mobile Performance Optimizations
-const isMobile = window.innerWidth <= 768;
-
-// Disable heavy animations on mobile
+/* 3D Model commented out - Mobile optimization function
 function optimizeForMobile() {
+    const isMobile = window.innerWidth <= 768;
+    
     if (isMobile) {
-        // Disable GSAP animations on mobile
+        // Optimize 3D model for mobile
+        if (modelContainer) {
+            // Reduce model complexity on mobile
+            if (renderer) {
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+            }
+        }
+        
+        // Optimize animations for mobile
         if (typeof gsap !== 'undefined') {
-            gsap.globalTimeline.kill();
+            gsap.globalTimeline.timeScale(0.8); // Slightly slower animations on mobile
         }
         
-        // Disable 3D models on mobile
-        const modelContainers = document.querySelectorAll('#hero-credit-card-model, #black-credit-card-model, #modal-black-credit-card-model');
-        modelContainers.forEach(container => {
-            if (container) {
-                container.style.display = 'none';
-            }
-        });
-        
-        // Disable complex hover effects
-        const serviceCards = document.querySelectorAll('.service-card');
-        serviceCards.forEach(card => {
-            card.removeEventListener('mouseenter', null);
-            card.removeEventListener('mouseleave', null);
-        });
-        
-        // Disable logo slider animation
-        const logoSliderTrack = document.querySelector('.logo-slider-track');
-        if (logoSliderTrack) {
-            logoSliderTrack.style.animation = 'none';
-        }
-        
-        // Simplify intro animation
-        const introOverlay = document.getElementById('intro-overlay');
-        if (introOverlay) {
-            setTimeout(() => {
-                introOverlay.classList.add('fade-out');
-                setTimeout(() => {
-                    introOverlay.remove();
-                    document.body.classList.remove('intro-active');
-                }, 500);
-            }, 1000);
-        }
-        
-        // Disable particle effects
-        const particles = document.querySelectorAll('.majestic-particles');
-        particles.forEach(particle => particle.remove());
-        
-        // Optimize scrolling
-        document.body.style.overflow = '';
-        
-        // Disable complex animations
-        const animatedElements = document.querySelectorAll('.service-card, .testimonial-item, .contact-method');
-        animatedElements.forEach(el => {
-            el.style.opacity = '1';
-            el.style.transform = 'none';
-            el.style.transition = 'none';
-        });
-    }
-}
-
-// Optimized GSAP animations for mobile
-function initializeGSAPAnimations() {
-    if (isMobile) {
-        // Skip GSAP animations on mobile for performance
-        return;
+        // Add mobile-specific event listeners
+        document.addEventListener('touchstart', function() {}, {passive: true});
+        document.addEventListener('touchmove', function() {}, {passive: true});
     }
     
-    // Register ScrollTrigger plugin
-    gsap.registerPlugin(ScrollTrigger);
-    
-    console.log('GSAP ScrollTrigger registered:', typeof ScrollTrigger !== 'undefined');
-
-    // Animate service cards on scroll (desktop only)
-    gsap.utils.toArray('.service-card').forEach((card, index) => {
-        gsap.fromTo(card, 
-            {
-                opacity: 0,
-                y: 50,
-                scale: 0.9
-            },
-            {
-                opacity: 1,
-                y: 0,
-                scale: 1,
-                duration: 0.8,
-                ease: "power2.out",
-                delay: index * 0.2,
-                scrollTrigger: {
-                    trigger: card,
-                    start: "top 80%",
-                    end: "bottom 20%",
-                    toggleActions: "play none none reverse"
-                }
+    // Handle orientation change
+    window.addEventListener('orientationchange', function() {
+        setTimeout(() => {
+            if (renderer && modelContainer) {
+                onWindowResize();
             }
-        );
+            optimizeForMobile();
+        }, 100);
     });
-
-    // Animate pricing numbers (only for text prices, not ticket images)
-    gsap.utils.toArray('.price').forEach(price => {
-        // Skip if this is a ticket image (only animate text prices)
-        if (price.tagName === 'IMG') {
-            return;
-        }
-        
-        const text = price.textContent;
-        const number = text.match(/\d+/);
-        if (number) {
-            const targetNumber = parseInt(number[0]);
-            console.log('Setting up price animation for:', price.textContent, 'Target:', targetNumber);
-            
-            // Store original text for non-numeric prices
-            const originalText = price.textContent;
-            
-            // Create a simple counter animation
-            const counter = { value: 0 };
-            
-            // Test animation without ScrollTrigger first
-            gsap.to(counter, {
-                value: targetNumber,
-                duration: 2,
-                ease: "power2.out",
-                delay: 1, // Start after 1 second for testing
-                onUpdate: function() {
-                    const currentValue = Math.floor(counter.value);
-                    price.textContent = currentValue + " NZD";
-                    console.log('Price animation update:', currentValue);
-                },
-                onComplete: function() {
-                    // Ensure final value is correct
-                    price.textContent = targetNumber + " NZD";
-                    console.log('Price animation complete:', targetNumber);
-                }
-            });
-            
-            // Also set up ScrollTrigger version
-            gsap.to(counter, {
-                value: targetNumber,
-                    duration: 2,
-                    ease: "power2.out",
-                    scrollTrigger: {
-                        trigger: price,
-                        start: "top 80%",
-                        toggleActions: "play none none reverse"
-                    },
-                    onUpdate: function() {
-                    const currentValue = Math.floor(counter.value);
-                    price.textContent = currentValue + " NZD";
-                },
-                onComplete: function() {
-                    price.textContent = targetNumber + " NZD";
-                }
-            });
-        } else {
-            console.log('No number found in price:', price.textContent);
-        }
-    });
-
-    // Animate testimonials
-    gsap.utils.toArray('.testimonial-item').forEach((item, index) => {
-        gsap.fromTo(item,
-            {
-                opacity: 0,
-                y: 30
-            },
-            {
-                opacity: 1,
-                y: 0,
-                duration: 0.6,
-                delay: index * 0.1,
-                ease: "power2.out",
-                scrollTrigger: {
-                    trigger: item,
-                    start: "top 85%",
-                    toggleActions: "play none none reverse"
-                }
+    
+    // Handle resize for responsive design
+    let resizeTimer;
+    window.addEventListener('resize', function() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            if (renderer && modelContainer) {
+                onWindowResize();
             }
-        );
+            optimizeForMobile();
+        }, 250);
     });
-}
-
-// Optimized hover effects for mobile
-function initializeHoverEffects() {
-    if (isMobile) {
-        // Skip hover effects on mobile for performance
-        return;
-    }
-    
-    const serviceCards = document.querySelectorAll('.service-card');
-    
-    serviceCards.forEach(card => {
-        card.addEventListener('mouseenter', function() {
-            gsap.to(this, {
-                scale: 1.05,
-                duration: 0.3,
-                ease: "power2.out"
-            });
-        });
-
-        card.addEventListener('mouseleave', function() {
-            gsap.to(this, {
-                scale: 1,
-                duration: 0.3,
-                ease: "power2.out"
-            });
-        });
-    });
-}
+} */
 
 // Form submission handler
 function handleFormSubmission() {
@@ -1754,9 +1591,6 @@ function startTickerAutoAdvance() {
 
 // Initialize ticker when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
-    // Apply mobile optimizations first
-    optimizeForMobile();
-    
     // Start intro animation
     startIntroAnimation();
     
@@ -1780,42 +1614,8 @@ document.addEventListener('DOMContentLoaded', function() {
     initBlack3DModel();
 });
 
-// Optimized intro animation for mobile
+// Opening animation function
 function startIntroAnimation() {
-    if (isMobile) {
-        // Simplified intro for mobile
-        const introOverlay = document.getElementById('intro-overlay');
-        const body = document.body;
-        
-        body.classList.add('intro-active');
-        
-        setTimeout(() => {
-            introOverlay.classList.add('fade-out');
-            
-            setTimeout(() => {
-                body.classList.remove('intro-active');
-                
-                // Simple reveal for mobile
-                const heroContent = document.querySelector('.hero-content');
-                const navbar = document.querySelector('.navbar');
-                const heroQuotes = document.querySelector('.hero-quotes');
-                
-                if (heroContent) heroContent.style.opacity = '1';
-                if (navbar) navbar.style.opacity = '1';
-                if (heroQuotes) heroQuotes.style.opacity = '1';
-                
-                setTimeout(() => {
-                    introOverlay.remove();
-                }, 500);
-                
-            }, 500);
-            
-        }, 1000);
-        
-        return;
-    }
-    
-    // Desktop intro animation (original code)
     const introOverlay = document.getElementById('intro-overlay');
     const body = document.body;
     
@@ -1944,16 +1744,10 @@ function createMajesticParticles() {
     }
 } 
 
-// Optimized logo slider for mobile
+// Logo Slider Functions
 function initLogoSlider() {
     const logoSliderTrack = document.querySelector('.logo-slider-track');
     if (!logoSliderTrack) return;
-    
-    if (isMobile) {
-        // Disable animation on mobile
-        logoSliderTrack.style.animation = 'none';
-        return;
-    }
     
     // Ensure smooth infinite scrolling
     const logoItems = document.querySelectorAll('.logo-slider-item');
@@ -1972,8 +1766,8 @@ function initLogoSlider() {
     }
     
     // Optimize animation for mobile
-    const isMobileDevice = window.innerWidth <= 768;
-    if (isMobileDevice) {
+    const isMobile = window.innerWidth <= 768;
+    if (isMobile) {
         logoSliderTrack.style.animationDuration = '15s'; // Faster on mobile
     }
     
