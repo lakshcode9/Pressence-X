@@ -1588,86 +1588,458 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .contact-info h3 {
-    font-size: 2rem;
-    margin-bottom: 1rem;
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
     color: #ffffff;
+    background: linear-gradient(135deg, #ffffff 0%, #ffd700 50%, #ffffff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+    animation: textGlow 3s ease-in-out infinite;
+    position: relative;
+}
+
+.contact-info h3::before {
+    content: '✨';
+    position: absolute;
+    left: -2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.5rem;
+    animation: sparkle 2s ease-in-out infinite;
+}
+
+.contact-info h3::after {
+    content: '🚀';
+    position: absolute;
+    right: -2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.5rem;
+    animation: sparkle 2s ease-in-out infinite 1s;
+}
+
+@keyframes textGlow {
+    0%, 100% { 
+        filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.3));
+    }
+    50% { 
+        filter: drop-shadow(0 0 40px rgba(255, 215, 0, 0.8));
+    }
+}
+
+@keyframes sparkle {
+    0%, 100% { 
+        opacity: 0.3;
+        transform: translateY(-50%) scale(0.8);
+    }
+    50% { 
+        opacity: 1;
+        transform: translateY(-50%) scale(1.2);
+    }
 }
 
 .contact-info p {
+    font-size: 1.1rem;
     margin-bottom: 2rem;
     color: #cccccc;
     line-height: 1.8;
+    position: relative;
+    padding: 1rem;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, transparent 100%);
+    border-radius: 8px;
+    border-left: 3px solid #ffd700;
+    animation: slideInFromLeft 1s ease-out;
+}
+
+@keyframes slideInFromLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Enhanced contact method text with WOW effects */
+.contact-method span {
+    color: #ffffff;
+    font-weight: 500;
+    line-height: 1.6;
+    position: relative;
+    z-index: 2;
+}
+
+/* Special styling for names with WOW factor */
+.contact-method strong {
+    color: #ffd700;
+    font-weight: 700;
+    font-size: 1.2rem;
+    text-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
+    transition: all 0.4s ease;
+    position: relative;
+    display: inline-block;
+}
+
+.contact-method strong::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -4px;
+    right: -4px;
+    bottom: -2px;
+    background: linear-gradient(45deg, #ffd700, #ffed4e, #ffd700);
+    border-radius: 4px;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.contact-method:hover strong::before {
+    opacity: 0.3;
+}
+
+.contact-method:hover strong {
+    color: #ffed4e;
+    text-shadow: 0 0 25px rgba(255, 215, 0, 1);
+    transform: scale(1.1) translateY(-2px);
+    animation: namePulse 0.6s ease-out;
+}
+
+@keyframes namePulse {
+    0% { transform: scale(1.1) translateY(-2px); }
+    50% { transform: scale(1.15) translateY(-3px); }
+    100% { transform: scale(1.1) translateY(-2px); }
+}
+
+/* WOW factor for contact method labels */
+.contact-method span:first-of-type {
+    font-weight: 600;
+    color: #ffd700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    display: block;
+    animation: labelGlow 2s ease-in-out infinite;
+}
+
+@keyframes labelGlow {
+    0%, 100% { 
+        text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+    }
+    50% { 
+        text-shadow: 0 0 15px rgba(255, 215, 0, 1);
+    }
+}
+
+/* Enhanced trust badge with WOW */
+.trust-badge {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
+    padding: 1.5rem;
+    border-radius: 12px;
+    text-align: center;
+    border: 2px solid rgba(255, 215, 0, 0.3);
+    color: #ffd700;
+    font-size: 1rem;
+    font-weight: 700;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    animation: trustBadgeGlow 3s ease-in-out infinite;
+}
+
+.trust-badge::before {
+    content: '⚡';
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.5rem;
+    opacity: 0.8;
+    animation: lightning 1.5s ease-in-out infinite;
+}
+
+.trust-badge::after {
+    content: '🔥';
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.5rem;
+    opacity: 0.8;
+    animation: lightning 1.5s ease-in-out infinite 0.5s;
+}
+
+@keyframes trustBadgeGlow {
+    0%, 100% { 
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+    }
+    50% { 
+        box-shadow: 0 0 40px rgba(255, 215, 0, 0.6);
+    }
+}
+
+@keyframes lightning {
+    0%, 100% { 
+        opacity: 0.3;
+        transform: translateY(-50%) scale(0.8);
+    }
+    50% { 
+        opacity: 1;
+        transform: translateY(-50%) scale(1.2);
+    }
+}
+
+.trust-badge span {
+    margin-left: 2rem;
+    margin-right: 2rem;
+    display: block;
+    animation: textShimmer 2s ease-in-out infinite;
+}
+
+@keyframes textShimmer {
+    0%, 100% { 
+        background-position: -200% center;
+    }
+    50% { 
+        background-position: 200% center;
+    }
 }
 
 .contact-methods {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.2rem;
     margin-bottom: 2rem;
 }
 
 .contact-method {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    padding: 1rem;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: all 0.3s ease;
+    gap: 1.2rem;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+}
+
+.contact-method::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.1), transparent);
+    transition: left 0.6s ease;
+}
+
+.contact-method:hover::before {
+    left: 100%;
 }
 
 .contact-method:hover {
-    background: rgba(255, 255, 255, 0.1);
-    transform: translateX(10px);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.08) 100%);
+    transform: translateX(8px) translateY(-2px);
+    border-color: rgba(255, 215, 0, 0.3);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
 }
 
 .method-icon {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
+    transition: all 0.3s ease;
 }
 
+.contact-method:hover .method-icon {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 12px rgba(255, 215, 0, 0.5));
+}
+
+/* Enhanced contact method text styling */
+.contact-method span {
+    color: #ffffff;
+    font-weight: 500;
+    line-height: 1.6;
+}
+
+/* Special styling for names */
+.contact-method strong {
+    color: #ffd700;
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    transition: all 0.3s ease;
+}
+
+.contact-method:hover strong {
+    color: #ffed4e;
+    text-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
+    transform: scale(1.05);
+}
+
+/* Trust badge enhancement */
 .trust-badge {
-    background: rgba(255, 255, 255, 0.05);
-    padding: 1rem;
-    border-radius: 8px;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+    padding: 1.2rem;
+    border-radius: 12px;
     text-align: center;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: #cccccc;
-    font-size: 0.9rem;
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    color: #ffd700;
+    font-size: 0.95rem;
+    font-weight: 600;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+}
+
+.trust-badge::before {
+    content: '⚡';
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2rem;
+    opacity: 0.7;
+}
+
+.trust-badge span {
+    margin-left: 1.5rem;
 }
 
 .contact-form {
-    background: rgba(255, 255, 255, 0.05);
-    padding: 2rem;
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+    padding: 2.5rem;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.contact-form::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.03) 50%, transparent 70%);
+    animation: shimmer 3s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes shimmer {
+    0%, 100% { transform: translateX(-100%); }
+    50% { transform: translateX(100%); }
 }
 
 .form-group {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.8rem;
+    position: relative;
 }
 
 .form-group input,
 .form-group select {
     width: 100%;
-    padding: 1rem;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 8px;
+    padding: 1.2rem 1rem;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.08) 100%);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
     color: #ffffff;
     font-size: 1rem;
+    font-weight: 500;
     transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
 }
 
 .form-group input:focus,
 .form-group select:focus {
     outline: none;
-    border-color: #ffffff;
-    background: rgba(255, 255, 255, 0.15);
+    border-color: #ffd700;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 255, 255, 0.15) 100%);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+    transform: translateY(-2px);
 }
 
 .form-group input::placeholder {
     color: #cccccc;
+    font-weight: 400;
+}
+
+/* Fix dropdown visibility */
+.form-group select option {
+    background-color: #2a2a2a;
+    color: #ffffff;
+    padding: 12px;
+    font-size: 1rem;
+}
+
+.form-group select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1.5em 1.5em;
+    padding-right: 3rem;
+}
+
+/* Enhanced submit button */
+.contact-form .btn-primary {
+    width: 100%;
+    padding: 1.2rem 2rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+    color: #000000;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.contact-form .btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: left 0.5s;
+}
+
+.contact-form .btn-primary:hover::before {
+    left: 100%;
+}
+
+.contact-form .btn-primary:hover {
+    background: linear-gradient(135deg, #ffed4e 0%, #ffd700 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.5);
+}
+
+/* Contact form title enhancement */
+.contact-form::after {
+    content: '📞';
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    font-size: 3rem;
+    opacity: 0.1;
+    transform: rotate(15deg);
 }
 
 /* Modal Styles */
