@@ -29,23 +29,33 @@ function initBlack3DModel() {
         return;
     }
 
+    // Ensure container has proper dimensions for mobile
+    const isMobile = window.innerWidth <= 768;
+    if (isMobile) {
+        // Force minimum dimensions for mobile
+        blackModelContainer.style.minHeight = '250px';
+        blackModelContainer.style.width = '100%';
+        console.log('Mobile detected, setting container dimensions');
+    }
+
     // Scene setup for Black ticket
     blackModelScene = new THREE.Scene();
     blackModelScene.background = null; // Completely transparent
 
-    // Camera setup
-    blackModelCamera = new THREE.PerspectiveCamera(75, blackModelContainer.clientWidth / blackModelContainer.clientHeight, 0.1, 1000);
+    // Camera setup with mobile optimization
+    const containerWidth = blackModelContainer.clientWidth || 300; // Fallback width
+    const containerHeight = blackModelContainer.clientHeight || 250; // Fallback height
+    blackModelCamera = new THREE.PerspectiveCamera(75, containerWidth / containerHeight, 0.1, 1000);
     blackModelCamera.position.set(0, 0, 8);
 
     // Renderer setup
-    const isMobile = window.innerWidth <= 768;
     blackModelRenderer = new THREE.WebGLRenderer({ 
         antialias: !isMobile,
         alpha: true,
         preserveDrawingBuffer: false,
         powerPreference: "high-performance"
     });
-    blackModelRenderer.setSize(blackModelContainer.clientWidth, blackModelContainer.clientHeight);
+    blackModelRenderer.setSize(containerWidth, containerHeight);
     blackModelRenderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2));
     blackModelRenderer.setClearColor(0x000000, 0);
     blackModelRenderer.shadowMap.enabled = !isMobile;
@@ -104,7 +114,9 @@ function initBlack3DModel() {
         'inal.glb',
         function (gltf) {
             blackModel = gltf.scene;
-            blackModel.scale.set(3.0, 3.0, 3.0);
+            // Adjust scale for mobile
+            const modelScale = isMobile ? 2.5 : 3.0;
+            blackModel.scale.set(modelScale, modelScale, modelScale);
             blackModel.position.set(0, 0, 0);
             
             if (gltf.animations && gltf.animations.length > 0) {
@@ -121,6 +133,8 @@ function initBlack3DModel() {
             if (loadingElement) {
                 loadingElement.style.display = 'none';
             }
+            
+            console.log('Black 3D model loaded successfully', isMobile ? '(Mobile)' : '(Desktop)');
             
             // Start animation loop
             clock = new THREE.Clock();
@@ -1612,6 +1626,23 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize Black ticket 3D model
     initBlack3DModel();
+    
+    // Add window resize handler for 3D model
+    window.addEventListener('resize', function() {
+        if (blackModelRenderer && blackModelCamera) {
+            const blackModelContainer = document.getElementById('black-credit-card-model');
+            if (blackModelContainer) {
+                const containerWidth = blackModelContainer.clientWidth || 300;
+                const containerHeight = blackModelContainer.clientHeight || 250;
+                
+                blackModelCamera.aspect = containerWidth / containerHeight;
+                blackModelCamera.updateProjectionMatrix();
+                
+                blackModelRenderer.setSize(containerWidth, containerHeight);
+                console.log('3D model resized for new dimensions:', containerWidth, 'x', containerHeight);
+            }
+        }
+    });
 });
 
 // Opening animation function
