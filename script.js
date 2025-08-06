@@ -1086,7 +1086,7 @@ function openServiceModal(tier) {
             <!-- Column 1: Testimonial Collage or 3D Model for Black -->
             <div class="modal-testimonials">
                 ${tier === 'black' ? `
-                    <div class="modal-black-3d-model" style="width: 100%; height: 350px; border-radius: 12px; overflow: hidden; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); position: relative;">
+                    <div class="modal-black-3d-model" style="width: 100%; height: 350px; border-radius: 12px; overflow: hidden; background: linear-gradient(135deg, rgba(192, 192, 192, 0.2) 0%, rgba(169, 169, 169, 0.3) 100%); backdrop-filter: blur(10px); border: 1px solid rgba(192, 192, 192, 0.3); box-shadow: 0 8px 32px rgba(192, 192, 192, 0.2); position: relative;">
                         <div id="modal-black-credit-card-model" style="width: 100%; height: 100%; position: relative; background: transparent; border: none; overflow: visible;">
                             <div class="modal-black-model-loading" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: #ffffff; z-index: 1;">
                                 <div class="modal-black-loading-spinner" style="width: 30px; height: 30px; border: 2px solid rgba(255, 255, 255, 0.3); border-top: 2px solid #ffffff; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 0.5rem;"></div>

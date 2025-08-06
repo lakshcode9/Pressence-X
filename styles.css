@@ -465,9 +465,10 @@ h1, h2, h3, h4, h5, h6 {
     margin: 1rem 0;
     border-radius: 12px;
     overflow: hidden;
-    background: rgba(255, 255, 255, 0.05);
+    background: linear-gradient(135deg, rgba(192, 192, 192, 0.2) 0%, rgba(169, 169, 169, 0.3) 100%);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(192, 192, 192, 0.3);
+    box-shadow: 0 8px 32px rgba(192, 192, 192, 0.2);
 }
 
 #black-credit-card-model {
@@ -1095,15 +1096,60 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .service-card.gold:hover {
-    box-shadow: 0 20px 40px rgba(255, 215, 0, 0.2), 0 0 0 1px rgba(255, 215, 0, 0.3);
+    box-shadow: 
+        0 0 50px rgba(255, 215, 0, 0.8),
+        0 0 100px rgba(255, 215, 0, 0.4),
+        0 0 150px rgba(255, 215, 0, 0.2),
+        0 20px 40px rgba(255, 215, 0, 0.3),
+        0 0 0 1px rgba(255, 215, 0, 0.5);
+    transform: translateY(-5px);
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 193, 7, 0.15) 100%);
+    filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.6));
+}
+
+.service-card.gold:hover::before {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.2) 0%, rgba(255, 193, 7, 0.3) 100%);
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+}
+
+.service-card.gold:hover::after {
+    color: #ffd700;
+    text-shadow: 0 0 15px rgba(255, 215, 0, 1), 0 0 25px rgba(255, 215, 0, 0.8);
 }
 
 .service-card.platinum:hover {
-    box-shadow: 0 20px 40px rgba(229, 228, 226, 0.2), 0 0 0 1px rgba(229, 228, 226, 0.3);
+    box-shadow: 
+        0 0 60px rgba(30, 144, 255, 0.9),
+        0 0 120px rgba(30, 144, 255, 0.5),
+        0 0 180px rgba(30, 144, 255, 0.3),
+        0 0 80px rgba(138, 43, 226, 0.6),
+        0 0 160px rgba(138, 43, 226, 0.3),
+        0 20px 40px rgba(30, 144, 255, 0.3),
+        0 0 0 1px rgba(30, 144, 255, 0.6);
+    transform: translateY(-8px) scale(1.02);
+    background: linear-gradient(135deg, rgba(30, 144, 255, 0.15) 0%, rgba(138, 43, 226, 0.2) 100%);
+    filter: drop-shadow(0 0 30px rgba(30, 144, 255, 0.8)) drop-shadow(0 0 40px rgba(138, 43, 226, 0.6));
+}
+
+.service-card.platinum:hover::before {
+    background: linear-gradient(135deg, rgba(30, 144, 255, 0.3) 0%, rgba(138, 43, 226, 0.4) 100%);
+    box-shadow: 0 0 40px rgba(30, 144, 255, 0.9), 0 0 60px rgba(138, 43, 226, 0.7);
+}
+
+.service-card.platinum:hover::after {
+    color: #1e90ff;
+    text-shadow: 0 0 20px rgba(30, 144, 255, 1), 0 0 35px rgba(30, 144, 255, 0.8), 0 0 50px rgba(138, 43, 226, 0.9);
 }
 
 .service-card.black:hover {
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.4);
+    box-shadow: 
+        0 0 50px rgba(255, 255, 255, 0.8),
+        0 0 100px rgba(255, 255, 255, 0.4),
+        0 0 150px rgba(255, 255, 255, 0.2),
+        0 20px 40px rgba(0, 0, 0, 0.6),
+        0 0 0 1px rgba(255, 255, 255, 0.4);
+    transform: translateY(-5px);
+    filter: drop-shadow(0 0 25px rgba(255, 255, 255, 0.7));
 }
 
 .card-header {
