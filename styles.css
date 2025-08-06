@@ -1091,6 +1091,46 @@ h1, h2, h3, h4, h5, h6 {
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.2);
 }
 
+/* Permanent Silver Shine */
+.service-card.silver {
+    box-shadow: 
+        0 0 20px rgba(192, 192, 192, 0.6),
+        0 0 40px rgba(192, 192, 192, 0.3),
+        0 8px 32px rgba(0, 0, 0, 0.3);
+    filter: drop-shadow(0 0 15px rgba(192, 192, 192, 0.5));
+    background: 
+        rgba(255, 255, 255, 0.05),
+        radial-gradient(circle at center, rgba(192, 192, 192, 0.08) 0%, transparent 70%);
+}
+
+/* Permanent Gold Shine */
+.service-card.gold {
+    box-shadow: 
+        0 0 30px rgba(255, 215, 0, 0.6),
+        0 0 60px rgba(255, 215, 0, 0.3),
+        0 0 90px rgba(255, 215, 0, 0.2),
+        0 8px 32px rgba(0, 0, 0, 0.3);
+    filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.5)) drop-shadow(0 0 30px rgba(255, 215, 0, 0.3));
+    background: 
+        rgba(255, 255, 255, 0.05),
+        radial-gradient(circle at center, rgba(255, 215, 0, 0.08) 0%, transparent 70%);
+}
+
+/* Permanent Platinum Blue Mystic Shine */
+.service-card.platinum {
+    box-shadow: 
+        0 0 40px rgba(30, 144, 255, 0.7),
+        0 0 80px rgba(30, 144, 255, 0.4),
+        0 0 120px rgba(30, 144, 255, 0.3),
+        0 0 60px rgba(138, 43, 226, 0.5),
+        0 0 100px rgba(138, 43, 226, 0.3),
+        0 8px 32px rgba(0, 0, 0, 0.3);
+    filter: drop-shadow(0 0 25px rgba(30, 144, 255, 0.6)) drop-shadow(0 0 35px rgba(138, 43, 226, 0.4)) drop-shadow(0 0 50px rgba(30, 144, 255, 0.3));
+    background: 
+        rgba(255, 255, 255, 0.05),
+        radial-gradient(circle at center, rgba(30, 144, 255, 0.12) 0%, rgba(138, 43, 226, 0.08) 50%, transparent 70%);
+}
+
 .service-card.silver:hover {
     box-shadow: 0 20px 40px rgba(192, 192, 192, 0.2), 0 0 0 1px rgba(192, 192, 192, 0.3);
 }
