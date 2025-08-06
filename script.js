@@ -674,14 +674,14 @@ function initializeGSAPAnimations() {
             // Also set up ScrollTrigger version
             gsap.to(counter, {
                 value: targetNumber,
-                duration: 2,
-                ease: "power2.out",
-                scrollTrigger: {
-                    trigger: price,
-                    start: "top 80%",
-                    toggleActions: "play none none reverse"
-                },
-                onUpdate: function() {
+                    duration: 2,
+                    ease: "power2.out",
+                    scrollTrigger: {
+                        trigger: price,
+                        start: "top 80%",
+                        toggleActions: "play none none reverse"
+                    },
+                    onUpdate: function() {
                     const currentValue = Math.floor(counter.value);
                     price.textContent = currentValue + " NZD";
                 },
@@ -1139,19 +1139,19 @@ function openServiceModal(tier) {
                     `).join('')}
                 </div>
                 
-                <div class="service-details">
+            <div class="service-details">
                     <h3 style="color: #ffffff; margin-bottom: 1rem;">Target Publications</h3>
                     <ul style="color: #cccccc; line-height: 1.8;">
-                        ${data.outlets.map(outlet => `<li>${outlet}</li>`).join('')}
-                    </ul>
-                    
+                    ${data.outlets.map(outlet => `<li>${outlet}</li>`).join('')}
+                </ul>
+                
                     <div class="testimonial" style="margin-top: 2rem; padding: 1.5rem; background: rgba(255, 255, 255, 0.05); border-radius: 12px; border-left: 4px solid #ffd700;">
                         <blockquote style="color: #ffffff; font-style: italic; margin-bottom: 0.5rem;">"${data.testimonials[0].quote}"</blockquote>
                         <cite style="color: #cccccc; font-size: 0.9rem;">— ${data.testimonials[0].author}, ${data.testimonials[0].company}</cite>
                     </div>
+                    </div>
                 </div>
-            </div>
-            
+                
             <!-- Column 3: Ticket and CTA -->
             <div class="modal-cta">
                 ${tier === 'black' ? '' : `<img src="pricing images/${tier}.png" alt="${data.title} Package" class="modal-ticket">`}
@@ -1162,9 +1162,9 @@ function openServiceModal(tier) {
                     <div style="margin-bottom: 1rem;">
                         <strong style="color: #ffd700; font-size: 1.2rem;">${data.price}</strong>
                         <p style="color: #cccccc; margin-top: 0.5rem;">Timeline: ${data.timeline}</p>
-                    </div>
-                    <button class="btn-primary" onclick="contactForPackage('${tier}')" style="width: 100%; padding: 1rem 2rem; font-size: 1.1rem;">Get Started Now</button>
                 </div>
+                    <button class="btn-primary" onclick="contactForPackage('${tier}')" style="width: 100%; padding: 1rem 2rem; font-size: 1.1rem;">Get Started Now</button>
+            </div>
             </div>
         </div>
     `;
