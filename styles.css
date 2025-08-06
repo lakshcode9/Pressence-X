@@ -1166,8 +1166,106 @@ h1, h2, h3, h4, h5, h6 {
     display: flex;
     justify-content: center;
     align-items: center;
-    max-width: 500px;
+    max-width: 1200px;
     margin: 0 auto;
+}
+
+/* Horizontal Layout for Black Ticket */
+.service-card.black.horizontal-layout {
+    display: flex;
+    flex-direction: row;
+    max-width: 1000px;
+    width: 100%;
+    min-height: 400px;
+    padding: 2rem;
+    gap: 2rem;
+}
+
+.black-content-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-right: 1rem;
+}
+
+.black-model-column {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 350px;
+}
+
+.black-3d-model {
+    width: 100%;
+    height: 100%;
+    min-height: 350px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: linear-gradient(135deg, rgba(192, 192, 192, 0.2) 0%, rgba(169, 169, 169, 0.3) 100%);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(192, 192, 192, 0.3);
+    box-shadow: 0 8px 32px rgba(192, 192, 192, 0.2);
+    position: relative;
+}
+
+.black-cta {
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.black-description {
+    color: #cccccc;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.black-btn {
+    background: linear-gradient(135deg, #ffffff, #e0e0e0);
+    color: #000000;
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+}
+
+.black-btn:hover {
+    background: linear-gradient(135deg, #f0f0f0, #d0d0d0);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 255, 255, 0.4);
+}
+
+/* Mobile responsive for horizontal layout */
+@media (max-width: 768px) {
+    .service-card.black.horizontal-layout {
+        flex-direction: column;
+        max-width: 100%;
+        padding: 1.5rem;
+        gap: 1rem;
+    }
+    
+    .black-content-column {
+        padding-right: 0;
+        padding-bottom: 1rem;
+    }
+    
+    .black-model-column {
+        min-height: 250px;
+    }
+    
+    .black-3d-model {
+        min-height: 250px;
+    }
+    
+    .black-cta {
+        margin-top: 1rem;
+    }
 }
 
 /* Permanent Black Mysterious Shine */
