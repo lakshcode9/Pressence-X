@@ -409,7 +409,7 @@ h1, h2, h3, h4, h5, h6 {
     content: '';
     position: absolute;
     inset: 0;
-    background: url('background/PC/homepage.png') center center / cover no-repeat;
+    background: url('Background/PC/home1.svg') center center / cover no-repeat;
     z-index: 0;
 }
 
