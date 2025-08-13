@@ -208,7 +208,7 @@ html {
 }
 
 body {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Saira Condensed', 'Inter', sans-serif;
     line-height: 1.6;
     color: #ffffff;
     background-color: #000000;
@@ -329,6 +329,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .nav-link {
     color: #ffffff;
+    font-family: 'Saira Condensed', 'Inter', sans-serif;
     text-decoration: none;
     font-weight: 400;
     transition: all 0.3s ease;
@@ -381,6 +382,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .chapter-title {
     font-size: 3rem;
+    font-family: 'DM Serif Display', serif;
     margin-bottom: 1rem;
     color: #ffffff;
 }
