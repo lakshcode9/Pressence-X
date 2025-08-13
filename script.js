@@ -1832,7 +1832,7 @@ function initHomeHorizontalScroll() {
 
     gsap.set(track, { width: panels.length * window.innerWidth });
 
-    gsap.to(track, {
+    const horizontalTween = gsap.to(track, {
         x: () => -(track.scrollWidth - window.innerWidth),
         ease: 'none',
         scrollTrigger: {
@@ -1846,6 +1846,9 @@ function initHomeHorizontalScroll() {
         }
     });
 
+    // After the horizontal finishes, pin the hero and advance phone stories
+    setupPhoneStoriesInHero();
+
     // Refresh on resize to keep layout accurate
     window.addEventListener('resize', () => {
         if (window.innerWidth >= 1025) {
@@ -1854,4 +1857,64 @@ function initHomeHorizontalScroll() {
     });
 
     // Scroll indicator removed
+}
+
+// Phone stories sequence: pin section and map scroll to vertical story progression
+function setupPhoneStoriesInHero() {
+    const container = document.getElementById('phone-stories');
+    const track = container && container.querySelector('.story-track');
+    const slides = container && container.querySelectorAll('.story-slide');
+    const skipBtn = document.getElementById('skip-stories-btn');
+    if (!container || !track || !slides || slides.length === 0 || typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+        return;
+    }
+
+    // Build a tall track by stacking slides vertically using translateY during scroll
+    const slidesCount = slides.length;
+
+    // Create a timeline that moves the track up by 100% per slide
+    const tl = gsap.timeline({ paused: true });
+    for (let i = 1; i < slidesCount; i++) {
+        tl.to(track, { yPercent: -i * 100, duration: 1, ease: 'none' }, i - 1);
+    }
+
+    // Create a dedicated pin that starts when the quotes panel hits the viewport
+    const homeEl = document.getElementById('home');
+    const pinDistance = slidesCount * window.innerHeight; // one viewport per story
+
+    const horizontalEnd = () => {
+        const panelsLen = document.querySelectorAll('#home .panel').length;
+        return Math.max(0, (panelsLen - 1) * window.innerWidth);
+    };
+
+    const startPos = () => horizontalEnd() + window.innerHeight * 0.14; // wait until phone is fully in view
+
+    ScrollTrigger.create({
+        trigger: homeEl,
+        start: () => startPos(),
+        end: () => startPos() + pinDistance,
+        pin: homeEl,
+        pinSpacing: true,
+        scrub: true,
+        anticipatePin: 1,
+        onEnter: () => gsap.set(track, { yPercent: 0 }),
+        onUpdate: self => {
+            tl.progress(self.progress);
+            // Show skip after 4 slides (~progress threshold)
+            if (skipBtn) {
+                const threshold = Math.min(4 / slidesCount, 0.75);
+                skipBtn.style.display = self.progress >= threshold ? 'inline-flex' : 'none';
+            }
+        }
+    });
+
+    // Skip button scrolls to the next section after hero
+    if (skipBtn) {
+        skipBtn.addEventListener('click', () => {
+            const nextSection = document.getElementById('about') || document.querySelector('.chapter.about');
+            if (nextSection) {
+                nextSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    }
 }
