@@ -827,6 +827,28 @@ h1, h2, h3, h4, h5, h6 {
     .quotes-phone-row { grid-template-columns: minmax(0,560px) auto; }
 }
 
+/* Mobile-specific layout and background */
+@media (max-width: 768px) {
+    /* Use mobile background artwork */
+    .hero::before {
+        background: url('Background/Mobile/pressence-homepage-mobile.png') center center / cover no-repeat;
+    }
+
+    /* Stack panels vertically so content flows */
+    #home .home-horizontal { display: block; height: auto; }
+    #home .panel { height: auto; min-height: 100vh; }
+
+    /* Put the headline higher on the screen */
+    .panel-hero .hero-content { justify-content: flex-start; padding-top: 96px; }
+
+    /* Quotes + phone in one column, phone centered */
+    .quotes-phone-row { grid-template-columns: 1fr; }
+    .phone-col { justify-self: center; }
+
+    /* Ensure mobile testimonials ticker is visible */
+    .desktop-only { display: none !important; }
+    .mobile-only { display: block !important; }
+}
 /* About Section */
 .about {
     background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
