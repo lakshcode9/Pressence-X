@@ -627,6 +627,8 @@ function initializeGSAPAnimations() {
     
     console.log('GSAP ScrollTrigger registered:', typeof ScrollTrigger !== 'undefined');
 
+    // Thermometer removed
+
     // Animate service cards on scroll
     gsap.utils.toArray('.service-card').forEach((card, index) => {
         gsap.fromTo(card, 
@@ -919,6 +921,22 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 3D Model commented out - Mobile-specific optimizations
     // optimizeForMobile();
+
+    // Global scroll progress bar
+    (function initScrollProgressBar() {
+        const bar = document.getElementById('progress-bar');
+        if (!bar) return;
+        const update = () => {
+            const doc = document.documentElement;
+            const scrollTop = doc.scrollTop || document.body.scrollTop;
+            const scrollHeight = (doc.scrollHeight - doc.clientHeight) || 1;
+            const pct = Math.min(100, Math.max(0, (scrollTop / scrollHeight) * 100));
+            bar.style.width = pct + '%';
+        };
+        update();
+        window.addEventListener('scroll', update, { passive: true });
+        window.addEventListener('resize', update);
+    })();
 });
 
 /* 3D Model commented out - Mobile optimization function

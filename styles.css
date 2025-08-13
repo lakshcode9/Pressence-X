@@ -3352,6 +3352,18 @@ h1, h2, h3, h4, h5, h6 {
     }
 }
 
+/* Global subtle scroll progress bar */
+#progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 2px;
+    width: 0%;
+    background: rgba(0,0,0,0.5);
+    z-index: 9999;
+    transition: width 0.25s ease-out;
+}
+
 /* Enhanced accessibility for mobile */
 @media (max-width: 768px) {
     /* Better focus states for mobile */
@@ -3556,3 +3568,5 @@ h1, h2, h3, h4, h5, h6 {
         font-size: 1.5rem;
     }
 } 
+
+/* Thermometer removed */
