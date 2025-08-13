@@ -1817,7 +1817,7 @@ function initLogoSlider() {
 
 // Horizontal scroll for homepage (desktop only)
 function initHomeHorizontalScroll() {
-    const isDesktop = window.innerWidth >= 1025;
+    const isDesktop = window.innerWidth >= 768; // enable on tablets/phones too with tweaks
     const home = document.getElementById('home');
     const track = home && home.querySelector('.home-horizontal');
     if (!isDesktop || !home || !track || typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
