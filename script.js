@@ -1630,6 +1630,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize Black ticket 3D model
     initBlack3DModel();
+    // Initialize horizontal scrolling for homepage (desktop only)
+    initHomeHorizontalScroll();
     
     // Add window resize handler for 3D model
     window.addEventListener('resize', function() {
@@ -1811,4 +1813,45 @@ function initLogoSlider() {
         const newIsMobile = window.innerWidth <= 768;
         logoSliderTrack.style.animationDuration = newIsMobile ? '15s' : '20s';
     });
+}
+
+// Horizontal scroll for homepage (desktop only)
+function initHomeHorizontalScroll() {
+    const isDesktop = window.innerWidth >= 1025;
+    const home = document.getElementById('home');
+    const track = home && home.querySelector('.home-horizontal');
+    if (!isDesktop || !home || !track || typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+        return;
+    }
+
+    const panels = gsap.utils.toArray('#home .panel');
+    if (panels.length <= 1) return;
+
+    // Ensure body can scroll horizontally via GSAP pinning, but page remains vertical
+    const totalScroll = (panels.length - 1) * window.innerWidth;
+
+    gsap.set(track, { width: panels.length * window.innerWidth });
+
+    gsap.to(track, {
+        x: () => -(track.scrollWidth - window.innerWidth),
+        ease: 'none',
+        scrollTrigger: {
+            trigger: home,
+            start: 'top top',
+            end: () => `+=${totalScroll}`,
+            scrub: true,
+            pin: true,
+            anticipatePin: 1,
+            invalidateOnRefresh: true
+        }
+    });
+
+    // Refresh on resize to keep layout accurate
+    window.addEventListener('resize', () => {
+        if (window.innerWidth >= 1025) {
+            ScrollTrigger.refresh();
+        }
+    });
+
+    // Scroll indicator removed
 }
