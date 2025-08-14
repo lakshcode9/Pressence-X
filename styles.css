@@ -690,6 +690,15 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 600;
 }
 
+/* Summarized output */
+.pressence-summary {
+    padding: 1rem 1.25rem;
+    color: #ffffff;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-top: 1px solid rgba(255,255,255,0.08);
+}
+
 @media (max-width: 768px) { .pressence-search-form .form-row { flex-direction: column; } }
 
 .scroll-indicator {

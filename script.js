@@ -1674,6 +1674,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const nameInput = document.getElementById('pressenceFullName');
         const queryInput = nameInput; // single field used for search term and name
         const messageEl = document.getElementById('pressence-message');
+        const summaryEl = document.getElementById('pressence-summary');
 
         function updateMessage() {
             const name = (nameInput && nameInput.value || '').trim();
@@ -1690,22 +1691,26 @@ document.addEventListener('DOMContentLoaded', function() {
         // Do NOT show message while typing to avoid feeling disingenuous
         if (messageEl) messageEl.style.display = 'none';
 
-        form.addEventListener('submit', function(e) {
+        form.addEventListener('submit', async function(e) {
             e.preventDefault();
             const q = (queryInput && queryInput.value) ? queryInput.value : '';
+            if (summaryEl) summaryEl.textContent = 'Analyzing your visibility...';
             try {
-                if (window.google && google.search && google.search.cse && google.search.cse.element) {
-                    const inst = google.search.cse.element.getElement('pressenceResults');
-                    if (inst && typeof inst.execute === 'function') {
-                        inst.execute(q);
-                    }
+                const res = await fetch('/.netlify/functions/summarizeSearch', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name: q })
+                });
+                const data = await res.json();
+                if (summaryEl) {
+                    summaryEl.textContent = data.summary || 'No summary available.';
                 }
             } catch (err) {
-                console.warn('CSE execute failed:', err);
+                if (summaryEl) summaryEl.textContent = 'Unable to analyze right now. Please try again.';
+                console.warn('summarize call failed:', err);
             }
-            // Show the personalized note only after submit
-            // small delay to feel tied to results rendering
-            setTimeout(updateMessage, 400);
+            // Show the personalized message after summary
+            setTimeout(updateMessage, 300);
         });
     })();
 });
