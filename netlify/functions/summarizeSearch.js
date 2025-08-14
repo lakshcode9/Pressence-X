@@ -3,6 +3,15 @@
 
 // Default to OpenRouter auto router for maximum compatibility
 const MODEL = 'openrouter/auto';
+// Additional free/low-cost fallbacks (order matters)
+const FALLBACK_MODELS = [
+  'meta-llama/llama-3.1-8b-instruct',
+  'mistralai/mistral-7b-instruct',
+  'qwen/qwen-2-7b-instruct',
+  'google/gemma-2-9b',
+  'deepseek/deepseek-r1-distill-llama-70b',
+  'openai/gpt-3.5-turbo'
+];
 
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
@@ -115,29 +124,24 @@ ${JSON.stringify(condensed, null, 2)}
       return r;
     }
 
-    // First try requested/auto model
-    let resp = await callOpenRouter(MODEL);
-    diagnostics.openrouterStatus = resp.status;
+    // Try primary, then fallbacks sequentially
     let data;
-    if (!resp.ok) {
-      const text = await resp.text();
-      console.error('OpenRouter error', resp.status, text);
-      // Fallback: try a known compact model as a secondary
-      if ([400,403,404,405].includes(resp.status)) {
-        diagnostics.fallbackModel = 'openai/gpt-3.5-turbo';
-        const fallback = await callOpenRouter('openai/gpt-3.5-turbo');
-        diagnostics.openrouterFallbackStatus = fallback.status;
-        if (!fallback.ok) {
-          const ftxt = await fallback.text();
-          console.error('OpenRouter fallback error', fallback.status, ftxt);
-          return { statusCode: 502, body: JSON.stringify({ error: 'OpenRouter request failed', status: resp.status, diagnostics }) };
-        }
-        data = await fallback.json();
-      } else {
-        return { statusCode: 502, body: JSON.stringify({ error: 'OpenRouter request failed', status: resp.status, diagnostics }) };
+    const attempts = [];
+    const tryModels = [MODEL, ...FALLBACK_MODELS];
+    for (const m of tryModels) {
+      const resp = await callOpenRouter(m);
+      attempts.push({ model: m, status: resp.status });
+      diagnostics.openrouterStatus = resp.status;
+      if (resp.ok) {
+        data = await resp.json();
+        diagnostics.openrouterOk = true;
+        diagnostics.modelUsed = m;
+        break;
       }
-    } else {
-      data = await resp.json();
+    }
+    diagnostics.attempts = attempts;
+    if (!data) {
+      return { statusCode: 502, body: JSON.stringify({ error: 'OpenRouter request failed (all models)', diagnostics }) };
     }
     const content = data.choices?.[0]?.message?.content?.trim() || '';
     diagnostics.openrouterOk = true;
