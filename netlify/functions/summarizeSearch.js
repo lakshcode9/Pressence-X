@@ -1,8 +1,8 @@
 // netlify/functions/summarizeSearch.js
 // Summarize the first 5-6 Google CSE results via OpenRouter, returning a premium, concise output
 
-// Safety: Only allow specific models and enforce short output
-const MODEL = 'deepseek/deepseek-r1-distill-qwen-7b';
+// Default to OpenRouter auto router for maximum compatibility
+const MODEL = 'openrouter/auto';
 
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
@@ -111,17 +111,17 @@ ${JSON.stringify(condensed, null, 2)}
       return r;
     }
 
-    // First try requested model
+    // First try requested/auto model
     let resp = await callOpenRouter(MODEL);
     diagnostics.openrouterStatus = resp.status;
     let data;
     if (!resp.ok) {
       const text = await resp.text();
       console.error('OpenRouter error', resp.status, text);
-      // Fallback: use auto router if model unavailable (404/400/403)
+      // Fallback: try a known compact model as a secondary
       if ([400,403,404,405].includes(resp.status)) {
-        diagnostics.fallbackModel = 'openrouter/auto';
-        const fallback = await callOpenRouter('openrouter/auto');
+        diagnostics.fallbackModel = 'openai/gpt-3.5-turbo';
+        const fallback = await callOpenRouter('openai/gpt-3.5-turbo');
         diagnostics.openrouterFallbackStatus = fallback.status;
         if (!fallback.ok) {
           const ftxt = await fallback.text();
