@@ -1,8 +1,6 @@
 // netlify/functions/summarizeSearch.js
 // Summarize the first 5-6 Google CSE results via OpenRouter, returning a premium, concise output
 
-const fetch = require('node-fetch');
-
 // Safety: Only allow specific models and enforce short output
 const MODEL = 'deepseek/deepseek-r1-distill-qwen-7b';
 
@@ -19,7 +17,7 @@ exports.handler = async (event) => {
 
     // Fetch Google CSE results server-side to avoid flashing raw UI on client
     // Prefer env var CSE key if provided; otherwise rely on provided key (optional)
-    const googleApiKey = process.env.GOOGLE_CSE_KEY || cseKey;
+    const googleApiKey = process.env.GOOGLE_API_KEY || process.env.GOOGLE_CSE_KEY || cseKey;
     const googleCx = process.env.GOOGLE_CSE_CX || cx || '901473b4d9b1445ec';
 
     const cseUrl = `https://www.googleapis.com/customsearch/v1?q=${encodeURIComponent(name)}&key=${encodeURIComponent(googleApiKey || '')}&cx=${encodeURIComponent(googleCx)}`;
@@ -67,7 +65,7 @@ ${JSON.stringify(condensed, null, 2)}
       headers: {
         'Authorization': `Bearer ${openrouterKey}`,
         'Content-Type': 'application/json',
-        'HTTP-Referer': 'https://pressence360.com',
+        'HTTP-Referer': 'https://pressence-x.netlify.app/',
         'X-Title': 'Pressence360 Search Summary'
       },
       body: JSON.stringify({
