@@ -80,17 +80,17 @@ exports.handler = async (event) => {
 
     const prompt = `You are a premium PR strategist for luxury real estate.
 Speak directly to the person in a conversational, human tone (second person, friendly, punchy).
-Avoid essay vibes and jargon. Short sentences. Contractions allowed. No emojis.
+No academic tone. Short sentences. Contractions allowed. No emojis.
 
-Task: Use the search results for "${name}" to write two crisp lines that create FOMO about their press presence.
+Goal: After reading your output, they should feel clear, urgent FOMO that they need significantly MORE press.
 
-Output format (exactly these two lines):
-Summary: <<=180 chars. What shows up at first glance. If a couple of outlets exist (e.g., Forbes/Bloomberg/local biz journal), mention up to 2 and say it's a start, not authority.>
-Conclusion: <<1–2 short sentences, <=240 chars. Tell them they’re leaving trust and deals on the table and need strategic placements in elite publications. Friendly but direct.>>
+Output (exactly two lines, nothing else):
+Summary: <<140–200 chars. What shows up at first glance. If you see a couple of outlets (e.g., Forbes/Bloomberg/local biz journal), mention up to 2, then say it's a start, not authority. If it’s mostly profiles/directories/social, say that plainly.>>
+Conclusion: <<ALWAYS 2 sentences, 230–340 chars total. Friendly but direct. Tell them they’re getting out‑positioned when people Google them, that silence or scattered links cost trust and deals, and that strategic placements in elite publications are the fix—now. Always end with a forward‑leaning nudge (e.g., "Let’s fix this.")>>
 
-If results are mostly profiles/directories/social links, say that plainly.
-No hedging, no disclaimers, no lists, no extra lines.
-Your final conclusion should always revolve around the idea that they need to get more press.
+Rules:
+- Never hedge or add disclaimers. No lists. No extra lines.
+- Always, without exception, conclude that they need more press to win authority and trust.
 
 Results JSON (first 5–6):
 ${JSON.stringify(condensed, null, 2)}
