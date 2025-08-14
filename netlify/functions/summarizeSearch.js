@@ -22,15 +22,38 @@ exports.handler = async (event) => {
 
     const cseUrl = `https://www.googleapis.com/customsearch/v1?q=${encodeURIComponent(name)}&key=${encodeURIComponent(googleApiKey || '')}&cx=${encodeURIComponent(googleCx)}`;
 
-    // If no API key is configured, fall back to client-side CSE if needed
+    // Try Google CSE JSON first (if API key is present). Otherwise fall back to DuckDuckGo HTML scraping.
     let items = [];
     if (googleApiKey) {
-      const cseRes = await fetch(cseUrl);
-      if (!cseRes.ok) {
-        throw new Error(`CSE error: ${cseRes.status}`);
+      try {
+        const cseRes = await fetch(cseUrl);
+        if (cseRes.ok) {
+          const cseJson = await cseRes.json();
+          items = Array.isArray(cseJson.items) ? cseJson.items.slice(0, 6) : [];
+        }
+      } catch (e) {
+        console.warn('CSE fetch failed, will try DuckDuckGo fallback');
       }
-      const cseJson = await cseRes.json();
-      items = Array.isArray(cseJson.items) ? cseJson.items.slice(0, 6) : [];
+    }
+
+    if (!items || items.length === 0) {
+      try {
+        const ddgHtml = await fetch(`https://duckduckgo.com/html/?q=${encodeURIComponent(name)}`, {
+          headers: { 'User-Agent': 'Mozilla/5.0 (compatible; PressenceBot/1.0)' }
+        }).then(r => r.text());
+
+        const results = [];
+        const anchorRegex = /<a[^>]*class=["']result__a["'][^>]*href=["']([^"']+)["'][^>]*>([\s\S]*?)<\/a>/gi;
+        let match;
+        while ((match = anchorRegex.exec(ddgHtml)) && results.length < 6) {
+          const link = match[1];
+          const title = match[2].replace(/<[^>]+>/g, '').replace(/&amp;/g, '&').trim();
+          results.push({ title, link, snippet: '', displayLink: '' });
+        }
+        items = results;
+      } catch (e) {
+        console.warn('DuckDuckGo fallback failed');
+      }
     }
 
     // Shape minimal input for LLM
@@ -43,7 +66,7 @@ exports.handler = async (event) => {
     }));
 
     const prompt = `You are a premium PR analyst for luxury real estate professionals.
-Given the following top search results for the name: "${name}", produce:
+ Given the following top search results for the name: "${name}", produce:
 - A single concise sentence summarizing what shows up at first glance (avoid filler, 250 characters max).
 - Then a definitive conclusion that their current press presence is not sufficient and they need stronger PR and placements. Keep tone authoritative, not negative.
 

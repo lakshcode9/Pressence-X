@@ -1703,7 +1703,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
                 const data = await res.json();
                 if (summaryEl) {
-                    summaryEl.textContent = data.summary || 'No summary available.';
+                    summaryEl.textContent = data.summary && data.summary.trim().length > 0
+                        ? data.summary
+                        : `${q}, your current pressence isn't enough. Let's elevate your PR and make sure you're seen as #1.`;
                 }
             } catch (err) {
                 if (summaryEl) summaryEl.textContent = 'Unable to analyze right now. Please try again.';
