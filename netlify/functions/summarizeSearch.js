@@ -90,6 +90,7 @@ Conclusion: <<1–2 short sentences, <=240 chars. Tell them they’re leaving tr
 
 If results are mostly profiles/directories/social links, say that plainly.
 No hedging, no disclaimers, no lists, no extra lines.
+Your final conclusion should always revolve around the idea that they need to get more press.
 
 Results JSON (first 5–6):
 ${JSON.stringify(condensed, null, 2)}
