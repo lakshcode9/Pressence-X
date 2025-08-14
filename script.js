@@ -1698,9 +1698,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 const res = await fetch('/.netlify/functions/summarizeSearch', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name: q })
+                    body: JSON.stringify({ name: q, debug: true })
                 });
                 const data = await res.json();
+                console.log('Pressence summarize diagnostics:', data.diagnostics || {});
                 if (summaryEl) {
                     summaryEl.textContent = data.summary && data.summary.trim().length > 0
                         ? data.summary

@@ -10,7 +10,7 @@ exports.handler = async (event) => {
   }
 
   try {
-    const { name, cx, cseKey } = JSON.parse(event.body || '{}');
+    const { name, cx, cseKey, debug } = JSON.parse(event.body || '{}');
     if (!name) {
       return { statusCode: 400, body: JSON.stringify({ error: 'Missing name' }) };
     }
@@ -24,12 +24,15 @@ exports.handler = async (event) => {
 
     // Try Google CSE JSON first (if API key is present). Otherwise fall back to DuckDuckGo HTML scraping.
     let items = [];
+    const diagnostics = { cseAttempted: false, cseOk: false, ddgUsed: false, model: MODEL, openrouterOk: false, openrouterStatus: null };
     if (googleApiKey) {
       try {
+        diagnostics.cseAttempted = true;
         const cseRes = await fetch(cseUrl);
         if (cseRes.ok) {
           const cseJson = await cseRes.json();
           items = Array.isArray(cseJson.items) ? cseJson.items.slice(0, 6) : [];
+          diagnostics.cseOk = true;
         }
       } catch (e) {
         console.warn('CSE fetch failed, will try DuckDuckGo fallback');
@@ -38,6 +41,7 @@ exports.handler = async (event) => {
 
     if (!items || items.length === 0) {
       try {
+        diagnostics.ddgUsed = true;
         const ddgHtml = await fetch(`https://duckduckgo.com/html/?q=${encodeURIComponent(name)}`, {
           headers: { 'User-Agent': 'Mozilla/5.0 (compatible; PressenceBot/1.0)' }
         }).then(r => r.text());
@@ -80,7 +84,7 @@ ${JSON.stringify(condensed, null, 2)}
 
     const openrouterKey = process.env.OPENROUTER_API_KEY;
     if (!openrouterKey) {
-      return { statusCode: 500, body: JSON.stringify({ error: 'Missing OpenRouter API key' }) };
+      return { statusCode: 500, body: JSON.stringify({ error: 'Missing OpenRouter API key', diagnostics }) };
     }
 
     const resp = await fetch('https://openrouter.ai/api/v1/chat/completions', {
@@ -88,6 +92,7 @@ ${JSON.stringify(condensed, null, 2)}
       headers: {
         'Authorization': `Bearer ${openrouterKey}`,
         'Content-Type': 'application/json',
+        'Referer': 'https://pressence-x.netlify.app/',
         'HTTP-Referer': 'https://pressence-x.netlify.app/',
         'X-Title': 'Pressence360 Search Summary'
       },
@@ -102,17 +107,20 @@ ${JSON.stringify(condensed, null, 2)}
       })
     });
 
+    diagnostics.openrouterStatus = resp.status;
     if (!resp.ok) {
       const text = await resp.text();
-      throw new Error(`OpenRouter error: ${resp.status} ${text}`);
+      console.error('OpenRouter error', resp.status, text);
+      return { statusCode: 502, body: JSON.stringify({ error: 'OpenRouter request failed', status: resp.status, diagnostics }) };
     }
 
     const data = await resp.json();
     const content = data.choices?.[0]?.message?.content?.trim() || '';
+    diagnostics.openrouterOk = true;
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ summary: content, rawCount: condensed.length })
+      body: JSON.stringify({ summary: content, rawCount: condensed.length, diagnostics: debug ? diagnostics : undefined })
     };
   } catch (err) {
     console.error('summarizeSearch error', err);
