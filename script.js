@@ -1667,6 +1667,47 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
+    // Pressence Search: form + personalized message
+    (function initPressenceSearch() {
+        const form = document.getElementById('pressence-search-form');
+        if (!form) return;
+        const nameInput = document.getElementById('pressenceFullName');
+        const queryInput = nameInput; // single field used for search term and name
+        const messageEl = document.getElementById('pressence-message');
+
+        function updateMessage() {
+            const name = (nameInput && nameInput.value || '').trim();
+            if (!messageEl) return;
+            if (name.length === 0) {
+                messageEl.textContent = '';
+                messageEl.style.display = 'none';
+                return;
+            }
+            messageEl.textContent = `${name}, your current pressence isn\'t enough. Let\'s elevate your PR and make sure you\'re seen as #1.`;
+            messageEl.style.display = 'block';
+        }
+
+        // Do NOT show message while typing to avoid feeling disingenuous
+        if (messageEl) messageEl.style.display = 'none';
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const q = (queryInput && queryInput.value) ? queryInput.value : '';
+            try {
+                if (window.google && google.search && google.search.cse && google.search.cse.element) {
+                    const inst = google.search.cse.element.getElement('pressenceResults');
+                    if (inst && typeof inst.execute === 'function') {
+                        inst.execute(q);
+                    }
+                }
+            } catch (err) {
+                console.warn('CSE execute failed:', err);
+            }
+            // Show the personalized note only after submit
+            // small delay to feel tied to results rendering
+            setTimeout(updateMessage, 400);
+        });
+    })();
 });
 
 // Opening animation function

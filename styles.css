@@ -619,6 +619,79 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 0.9rem;
 }
 
+/* Pressence Search Experience */
+.search-experience {
+    background: rgba(0, 0, 0, 0.45);
+    padding: 1.5rem;
+    border-radius: 16px;
+    border: 1px solid rgba(255,255,255,0.12);
+    backdrop-filter: blur(10px);
+}
+
+.search-headline {
+    font-family: 'DM Serif Display', serif;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    font-size: clamp(20px, 2.6vw, 32px);
+    line-height: 1.15;
+    color: #ffffff;
+    margin: 0 0 1rem 0;
+    text-shadow: 0 2px 24px rgba(0,0,0,0.35);
+}
+
+.pressence-search-form { display: flex; flex-direction: column; gap: 0.75rem; }
+.pressence-search-form .form-row { display: flex; gap: 0.75rem; }
+.pressence-search-form .query-row { align-items: center; }
+
+.pressence-input {
+    flex: 1;
+    padding: 0.9rem 1rem;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.18);
+    color: #fff;
+    background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.06) 100%);
+}
+
+.pressence-input::placeholder { color: #bbb; }
+
+.pressence-results-card {
+    margin-top: 1rem;
+    background: rgba(0,0,0,0.35);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+/* CSE results theming to fit Pressence style */
+#pressence-results {
+    --cse-text: #ffffff;
+    --cse-muted: #cccccc;
+}
+
+.gsc-control-cse, .gsc-control-cse .gsc-table-result, .gsc-result-info, .gs-title, .gs-snippet {
+    color: #ffffff !important;
+}
+.gsc-webResult.gsc-result, .gsc-results .gsc-imageResult {
+    background: transparent !important;
+    border: 0 !important;
+}
+.gs-title a:link, .gs-title a:visited { color: #ffffff !important; text-decoration: none; }
+.gs-title a:hover { text-decoration: underline; }
+.gsc-result .gs-snippet { color: #cccccc !important; }
+.gsc-cursor-page { color: #ffffff !important; border-color: rgba(255,255,255,0.2) !important; }
+.gsc-cursor-current-page { background: rgba(255,255,255,0.15) !important; }
+.gsc-above-wrapper-area, .gsc-above-wrapper-area-container { background: transparent !important; border: 0 !important; }
+
+.pressence-message {
+    padding: 1rem 1.25rem;
+    border-top: 1px solid rgba(255,255,255,0.12);
+    background: linear-gradient(135deg, rgba(255,215,0,0.12), rgba(255,255,255,0.06));
+    color: #ffffff;
+    font-weight: 600;
+}
+
+@media (max-width: 768px) { .pressence-search-form .form-row { flex-direction: column; } }
+
 .scroll-indicator {
     position: absolute;
     bottom: 2rem;

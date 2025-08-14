@@ -98,15 +98,36 @@
                     <div class="quotes-phone-row">
 						<div class="quotes-col">
 							<h2 class="quotes-kicker">DON'T JUST TAKE OUR WORD FOR IT,</h2>
-                            <div class="hero-quotes">
-                                <div class="quote-card">
-                            <p>"Pressence360 helped me land my Forbes feature in under 30 days—it didn’t feel like PR, it felt like someone got my story right. They understood my voice and made sure it landed where it mattered."</p>
-                            <span class="quote-author">— Hana Cha, Real Estate Professional</span>
+                            <div class="search-experience">
+                                <h3 class="search-headline">Use our PRESSENCE 360 engine to check your visibility</h3>
+                                <form id="pressence-search-form" class="pressence-search-form" autocomplete="off">
+                                    <div class="form-row query-row">
+                                        <input type="text" id="pressenceFullName" class="pressence-input name" placeholder="Full Name" aria-label="Full Name" />
+                                        <button type="submit" class="btn-primary">Search</button>
+                                    </div>
+                                </form>
+
+                                <div id="pressence-results-card" class="pressence-results-card">
+                                    <div id="pressence-results"></div>
+                                    <div id="pressence-message" class="pressence-message" aria-live="polite"></div>
                                 </div>
-                                <div class="quote-card">
-                            <p>"Pressence360 got me featured in Entrepreneur. They didn’t overhype—it was about the grind and hundreds of deals, and they made it real for the right audience."</p>
-                            <span class="quote-author">— Samuel Leeds, Property Investor</span>
-                                </div>
+
+                                <script>
+                                    window.__gcse = {
+                                        callback: function() {
+                                            try {
+                                                google.search.cse.element.render({
+                                                    div: 'pressence-results',
+                                                    tag: 'searchresults-only',
+                                                    gname: 'pressenceResults'
+                                                });
+                                            } catch (e) {
+                                                console.warn('CSE render failed:', e);
+                                            }
+                                        }
+                                    };
+                                </script>
+                                <script async src="https://cse.google.com/cse.js?cx=901473b4d9b1445ec"></script>
                             </div>
 							<h3 class="quotes-cta">SEE FOR YOURSELF!!!</h3>
                         </div>
