@@ -69,16 +69,21 @@ exports.handler = async (event) => {
       displayLink: it.displayLink
     }));
 
-    const prompt = `You are a premium PR analyst for luxury real estate professionals.
- Given the following top search results for the name: "${name}", produce:
-- A single concise sentence summarizing what shows up at first glance (avoid filler, 250 characters max).
-- Then a definitive conclusion that their current press presence is not sufficient and they need stronger PR and placements. Keep tone authoritative, not negative.
+    const prompt = `You are a premium PR strategist for luxury real estate markets.
+Analyze the following top search results for the person: "${name}".
 
-Only output two lines:
-1) Summary: <your one-line summary>
-2) Conclusion: <your definitive statement>
+GOAL: Create crisp, persuasive copy that creates urgency and FOMO around missing press.
 
-Results JSON:
+Rules for output:
+1) Output EXACTLY two sections with these labels:
+   Summary: <one sharp sentence (<=220 characters) describing what appears at first glance>
+   Conclusion: <1–2 sentences persuading that their current presence is NOT enough and that they need strategic PR in elite publications>
+2) If you find any notable outlets in the results (e.g., Forbes, Bloomberg, local business journals), briefly acknowledge them in the Summary or start of Conclusion (max 2–3 names), then state they do NOT establish authority yet.
+3) If results are mostly profiles/directories/social links, say so plainly and emphasize lack of authority signals.
+4) Use confident, high-status tone; no hedging, no apologies, no disclaimers.
+5) Focus on FOMO and opportunity cost (lost trust, deals, and positioning) without sounding scammy.
+
+Results JSON (first 5–6):
 ${JSON.stringify(condensed, null, 2)}
 `;
 
@@ -104,8 +109,8 @@ ${JSON.stringify(condensed, null, 2)}
             { role: 'system', content: 'Be concise, premium, and authoritative. Never include code fences or JSON in responses. Max 2 lines total.' },
             { role: 'user', content: prompt }
           ],
-          temperature: 0.3,
-          max_tokens: 220
+          temperature: 0.6,
+          max_tokens: 320
         })
       });
       return r;
