@@ -839,7 +839,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .phone-screen {
     position: absolute;
-    /* Match to the phone PNG’s inner glass after we scaled the bezel inward */
+    /* Match to the phone PNG's inner glass after we scaled the bezel inward */
     inset: 18% 15.5%;
     border-radius: 26px;
     overflow: hidden;
@@ -3646,3 +3646,112 @@ h1, h2, h3, h4, h5, h6 {
 } 
 
 /* Thermometer removed */
+
+/* Immersive Constellation (scoped: .px-constellation) */
+.px-constellation {
+	background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+}
+
+.pxc-nav {
+	position: sticky;
+	top: 0;
+	z-index: 2;
+	background: rgba(0,0,0,0.6);
+	backdrop-filter: blur(10px);
+	border: 1px solid rgba(255,255,255,0.08);
+	border-radius: 12px;
+	padding: 12px;
+	margin-bottom: 24px;
+}
+
+.pxc-tabs {
+	display: flex;
+	gap: 12px;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+.pxc-tab {
+	appearance: none;
+	border: 1px solid rgba(255,255,255,0.15);
+	background: rgba(255,255,255,0.06);
+	color: #fff;
+	border-radius: 12px;
+	padding: 10px 16px;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	font-weight: 600;
+}
+
+.pxc-tab:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+.pxc-tab.active { border-color: rgba(255,255,255,0.35); background: rgba(255,255,255,0.12); }
+
+.pxc-tab-reach { display: block; font-size: 12px; opacity: 0.7; margin-top: 4px; font-weight: 400; }
+
+.pxc-space {
+	position: relative;
+	height: 500px;
+	background: rgba(255,255,255,0.03);
+	border: 1px solid rgba(255,255,255,0.08);
+	border-radius: 16px;
+	overflow: hidden;
+}
+
+.pxc-particles { position: absolute; inset: 0; pointer-events: none; }
+
+.pxc-galaxy { position: absolute; inset: 0; opacity: 0; visibility: hidden; transform: scale(0.96); transition: all .6s ease; }
+.pxc-galaxy.active { opacity: 1; visibility: visible; transform: scale(1); }
+
+.pxc-constellation { width: 100%; height: 100%; display: block; }
+.pxc-lines line { stroke-dasharray: 8 4; stroke: rgba(255,255,255,0.6); animation: pxcPulse 2s ease-in-out infinite; }
+
+.pxc-star { fill: #E8E8E8; stroke: rgba(0,0,0,0.2); stroke-width: 1; filter: drop-shadow(0 0 10px rgba(255,255,255,0.4)); transition: all .3s ease; cursor: pointer; }
+.pxc-galaxy[data-tier="gold"] .pxc-star { fill: #FFE55C; }
+.pxc-galaxy[data-tier="platinum"] .pxc-star { fill: #87CEEB; }
+
+.pxc-star:hover { transform: scale(1.4); filter: drop-shadow(0 0 18px currentColor); }
+
+.pxc-tooltip { position: absolute; background: rgba(0,0,0,0.95); border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; max-width: 320px; min-width: 220px; padding: 16px; opacity: 0; visibility: hidden; transform: translateY(8px); transition: all .2s ease; z-index: 3; }
+.pxc-tooltip.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+.pxc-tooltip-header { display: flex; gap: 12px; align-items: center; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 12px; }
+.pxc-tooltip-logo { width: 40px; height: 40px; border-radius: 8px; background: linear-gradient(135deg, #FFD700, #C0C0C0); color: #111; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+.pxc-tooltip-title { color: #fff; font-size: 18px; margin: 0; }
+.pxc-tooltip-body { color: #ddd; font-size: 14px; }
+.pxc-tooltip-reach { color: #FFD700; font-weight: 600; }
+
+.pxc-metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin: 24px 0; }
+.pxc-metric { text-align: center; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 16px; }
+.pxc-metric-number { color: #FFD700; font-size: 32px; font-weight: 800; }
+.pxc-metric-text { color: #4A9EFF; font-weight: 700; font-size: 18px; }
+.pxc-metric-label { color: #ddd; font-size: 14px; }
+
+.pxc-cta { text-align: center; margin-top: 8px; }
+.pxc-cta-btn { font-weight: 700; }
+
+@keyframes pxcPulse { 0%,100%{ stroke-opacity:.3; } 50%{ stroke-opacity:1; } }
+
+@media (max-width: 768px) { .pxc-space { height: 400px; } }
+
+/* pxc screens and toggle */
+.pxc-screen { display: none; }
+.pxc-screen.active { display: block; }
+.pxc-landing-card, .pxc-current-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 24px; text-align: center; }
+.pxc-landing-title { color: #fff; font-size: 1.5rem; margin-bottom: 16px; }
+.pxc-landing-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.pxc-current-heading { color: #fff; font-size: 1.25rem; margin-bottom: 16px; }
+.pxc-compare-toggle { position: sticky; bottom: 16px; left: 0; right: 0; width: fit-content; margin: 16px auto 0; background: rgba(0,0,0,0.85); border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 999px; padding: 10px 16px; backdrop-filter: blur(10px); cursor: pointer; box-shadow: 0 8px 25px rgba(0,0,0,0.4); }
+.pxc-quotes { position: absolute; inset: 0; pointer-events: none; }
+.pxc-quote { position: absolute; color: rgba(255,255,255,0.85); font-size: 14px; font-style: italic; background: rgba(255,255,255,0.06); padding: 8px 12px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.1); opacity: 0; animation: pxcQuoteFloat 15s ease-in-out infinite; }
+@keyframes pxcQuoteFloat { 0%,15%,85%,100%{ opacity:0; transform: translateY(20px);} 20%,80%{ opacity:1; transform: translateY(0);} }
+
+/* pxc current reality content */
+.pxc-current-metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin: 16px 0 24px; }
+.pxc-current-metric { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 16px; text-align: center; }
+.pxc-empty-title { color: #ddd; text-align: center; margin: 8px 0 12px; font-weight: 600; }
+.pxc-empty-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+.pxc-empty-card { background: rgba(255,255,255,0.03); border: 1px dashed rgba(255,255,255,0.15); border-radius: 12px; padding: 14px; text-align: center; }
+.pxc-empty-name { color: #e0e0e0; font-weight: 600; margin-bottom: 4px; }
+.pxc-empty-stats { color: #aaa; font-size: 13px; margin-bottom: 6px; }
+.pxc-empty-status { color: #999; font-size: 12px; font-style: italic; }
+.pxc-reality-cta { text-align: center; margin-top: 16px; }
+#pxc-current { position: relative; z-index: 2; }

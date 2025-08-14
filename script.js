@@ -1983,3 +1983,337 @@ function setupPhoneStoriesInHero() {
         });
     }
 }
+
+// =======================
+// Press Constellation (pxc)
+// =======================
+(function initPressConstellation() {
+	let pxcInitialized = false;
+	const pxcData = {
+		silver: [
+			{ name: 'Medium', client: 'Hana Cha - Real Estate Professional', date: 'Feb 2024', reach: '2M+ readers' },
+			{ name: 'Time Bulletin', client: 'Samuel Leeds - Property Investor', date: 'Mar 2024', reach: '500K+ readers' },
+			{ name: 'US Times Now', client: 'Alex Kowtun - Entrepreneur', date: 'Jan 2024', reach: '1M+ readers' },
+			{ name: 'Globe Stats', client: 'Andy Daro - Real Estate Developer', date: 'Apr 2024', reach: '750K+ readers' },
+			{ name: 'Insta Bulletin', client: 'Dhirendra Singh - Hospitality Trainer', date: 'May 2024', reach: '300K+ readers' }
+		],
+		gold: [
+			{ name: 'Digital Journal', client: 'Frantisek - Crypto Investor', date: 'Jun 2024', reach: '2.5M+ readers' },
+			{ name: 'Time Business News', client: 'Gerry Gadoury - Executive Coach', date: 'Mar 2024', reach: '1.8M+ readers' },
+			{ name: 'Fox Interviewer', client: 'Hamzah Kassab - Entrepreneur', date: 'Apr 2024', reach: '3M+ readers' },
+			{ name: 'Voyage NY', client: 'Karan Bindra - Founder & CEO', date: 'May 2024', reach: '1.2M+ readers' },
+			{ name: 'London Reporter', client: 'Luis Faiardo - Founder', date: 'Feb 2024', reach: '900K+ readers' },
+			{ name: 'Tech Bullion', client: 'Seth Vandaele - Co-Founder', date: 'Jul 2024', reach: '2.1M+ readers' }
+		],
+		platinum: [
+			{ name: 'Forbes', client: 'Top-tier CEO', date: 'Jun 2024', reach: '8M+ readers' },
+			{ name: 'Entrepreneur', client: 'Tech Visionary', date: 'May 2024', reach: '6M+ readers' },
+			{ name: 'NY Weekly', client: 'Tomas Chlup - Health Entrepreneur', date: 'Apr 2024', reach: '4M+ readers' },
+			{ name: 'CEO Weekly', client: 'Sunil Tulisani - Real Estate Investor', date: 'Jun 2024', reach: '3.5M+ readers' },
+			{ name: 'Wall Street Times', client: 'Trenton Wisecup - CEO Arrow Roofing', date: 'Mar 2024', reach: '5M+ readers' }
+		]
+	};
+
+	function getPublication(tier, publicationName) {
+		const tiers = tier ? [tier] : ['silver', 'gold', 'platinum'];
+		for (const t of tiers) {
+			const hit = (pxcData[t] || []).find(p => p.name === publicationName);
+			if (hit) return hit;
+		}
+		return null;
+	}
+
+	function animateGalaxyEntrance(root) {
+		const stars = root.querySelectorAll('.pxc-star');
+		const lines = root.querySelectorAll('.pxc-lines line');
+		stars.forEach((star, i) => {
+			star.style.opacity = '0';
+			star.style.transform = 'scale(0)';
+			setTimeout(() => {
+				star.style.transition = 'all .6s cubic-bezier(0.34, 1.56, 0.64, 1)';
+				star.style.opacity = '1';
+				star.style.transform = 'scale(1)';
+			}, i * 120);
+		});
+		lines.forEach((line, i) => {
+			line.style.strokeDasharray = '1000';
+			line.style.strokeDashoffset = '1000';
+			setTimeout(() => {
+				line.style.transition = 'stroke-dashoffset 1s ease-out';
+				line.style.strokeDashoffset = '0';
+			}, stars.length * 120 + i * 80);
+		});
+	}
+
+	function bindStarEvents(spaceEl, currentTierRef) {
+		const tooltip = document.getElementById('pxc-tooltip');
+		const stars = spaceEl.querySelectorAll('.pxc-star');
+		stars.forEach(star => {
+			const clone = star.cloneNode(true);
+			star.parentNode.replaceChild(clone, star);
+			clone.addEventListener('mouseenter', e => {
+				if (!tooltip) return;
+				const name = clone.getAttribute('data-publication');
+				const pub = getPublication(currentTierRef.value, name) || getPublication(null, name);
+				if (!pub) return;
+				tooltip.querySelector('.pxc-tooltip-title').textContent = pub.name;
+				tooltip.querySelector('.pxc-tooltip-client').textContent = `Client: ${pub.client}`;
+				tooltip.querySelector('.pxc-tooltip-date').textContent = `Published: ${pub.date}`;
+				tooltip.querySelector('.pxc-tooltip-reach').textContent = `Reach: ${pub.reach}`;
+				const logo = tooltip.querySelector('.pxc-tooltip-logo');
+				if (logo) logo.textContent = pub.name.charAt(0).toUpperCase();
+				tooltip.classList.add('visible');
+			});
+			clone.addEventListener('mouseleave', () => { if (tooltip) tooltip.classList.remove('visible'); });
+			clone.addEventListener('mousemove', e => positionTooltip(spaceEl, e));
+		});
+		spaceEl.addEventListener('mouseleave', () => { if (tooltip) tooltip.classList.remove('visible'); });
+	}
+
+	function positionTooltip(spaceEl, mouseEvent) {
+		const tooltip = document.getElementById('pxc-tooltip');
+		if (!tooltip) return;
+		const rect = spaceEl.getBoundingClientRect();
+		const x = mouseEvent.clientX - rect.left;
+		const y = mouseEvent.clientY - rect.top;
+		let left = x + 14;
+		let top = y + 14;
+		const tRect = tooltip.getBoundingClientRect();
+		if (left + tRect.width > rect.width) left = x - tRect.width - 14;
+		if (top + tRect.height > rect.height) top = y - tRect.height - 14;
+		tooltip.style.left = Math.max(0, left) + 'px';
+		tooltip.style.top = Math.max(0, top) + 'px';
+	}
+
+	function bindTabs(containerEl, currentTierRef) {
+		const tabs = containerEl.querySelectorAll('.pxc-tab');
+		const galaxies = containerEl.querySelectorAll('.pxc-galaxy');
+		tabs.forEach(tab => {
+			tab.addEventListener('click', e => {
+				e.preventDefault();
+				tabs.forEach(t => t.classList.remove('active'));
+				tab.classList.add('active');
+				const tier = tab.getAttribute('data-tier');
+				currentTierRef.value = tier;
+				galaxies.forEach(g => g.classList.remove('active'));
+				const active = containerEl.querySelector(`.pxc-galaxy[data-tier="${tier}"]`);
+				if (active) {
+					active.classList.add('active');
+					bindStarEvents(containerEl.querySelector('.pxc-space'), currentTierRef);
+					animateGalaxyEntrance(active);
+				}
+			});
+		});
+	}
+
+	function initCounters(root) {
+		const numbers = root.querySelectorAll('.pxc-metric-number[data-target]');
+		if (numbers.length === 0) return;
+		let started = false;
+		const io = new IntersectionObserver((entries) => {
+			if (started) return;
+			if (entries.some(e => e.isIntersecting)) {
+				started = true;
+				numbers.forEach(el => {
+					const target = parseInt(el.getAttribute('data-target') || '0', 10);
+					let current = 0;
+					const step = Math.max(1, Math.floor(target / 60));
+					const timer = setInterval(() => {
+						current += step;
+						if (current >= target) { current = target; clearInterval(timer); }
+						el.textContent = current + (target >= 100 ? '+' : '');
+					}, 30);
+				});
+				io.disconnect();
+			}
+		}, { threshold: 0.2 });
+		numbers.forEach(n => io.observe(n));
+	}
+
+	function ensureParticleKeyframes() {
+		if (document.getElementById('pxc-particle-style')) return;
+		const style = document.createElement('style');
+		style.id = 'pxc-particle-style';
+		style.textContent = `@keyframes pxcParticleFloat { 0%{ transform: translateY(0) translateX(0); opacity:.4;} 50%{ transform: translateY(-40vh) translateX(20px); opacity:.8;} 100%{ transform: translateY(-80vh) translateX(-10px); opacity:.2;} }`;
+		document.head.appendChild(style);
+	}
+
+	function initParticles(spaceEl) {
+		const layer = spaceEl.querySelector('.pxc-particles');
+		if (!layer) return;
+		ensureParticleKeyframes();
+		const count = 45;
+		for (let i = 0; i < count; i++) {
+			const d = document.createElement('div');
+			const size = 1 + Math.random() * 3;
+			d.style.position = 'absolute';
+			d.style.width = size + 'px';
+			d.style.height = size + 'px';
+			d.style.left = (Math.random() * 100) + '%';
+			d.style.top = (Math.random() * 100) + '%';
+			d.style.borderRadius = '50%';
+			d.style.background = 'radial-gradient(circle, #FFD700, transparent)';
+			d.style.animation = `pxcParticleFloat ${6 + Math.random() * 10}s linear infinite`;
+			d.style.animationDelay = (Math.random() * 5) + 's';
+			d.style.pointerEvents = 'none';
+			layer.appendChild(d);
+		}
+	}
+
+	function createShootingStar() {
+		const star = document.createElement('div');
+		const startX = Math.random() * window.innerWidth;
+		const startY = Math.random() * window.innerHeight * 0.4;
+		const endX = startX + (180 + Math.random() * 260);
+		const endY = startY + (90 + Math.random() * 180);
+		star.style.position = 'fixed';
+		star.style.left = startX + 'px';
+		star.style.top = startY + 'px';
+		star.style.width = '2px';
+		star.style.height = '2px';
+		star.style.borderRadius = '50%';
+		star.style.background = 'linear-gradient(45deg, #ffffff, #FFD700)';
+		star.style.boxShadow = '0 0 6px #FFD700, 0 0 12px #FFD700, 0 0 18px #FFD700';
+		star.style.pointerEvents = 'none';
+		star.style.zIndex = '50';
+		document.body.appendChild(star);
+		star.animate([
+			{ transform: 'translate(0,0) scale(0)', opacity: 0 },
+			{ transform: `translate(${(endX - startX) * 0.3}px, ${(endY - startY) * 0.3}px) scale(1)`, opacity: 1 },
+			{ transform: `translate(${endX - startX}px, ${endY - startY}px) scale(0)`, opacity: 0 }
+		], { duration: 1400, easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)' }).addEventListener('finish', () => {
+			if (star.parentNode) star.remove();
+		});
+	}
+
+	function startShootingStars(sectionEl) {
+		let intervalId = setInterval(() => {
+			const rect = sectionEl.getBoundingClientRect();
+			if (rect.top < window.innerHeight && rect.bottom > 0) {
+				if (Math.random() < 0.35) createShootingStar();
+			}
+		}, 3000);
+		// Optional: clear when not needed; keep simple for now
+	}
+
+	function initCTA(containerEl) {
+		const btn = containerEl.querySelector('.pxc-cta-btn');
+		if (!btn) return;
+		btn.addEventListener('click', () => {
+			for (let i = 0; i < 10; i++) {
+				const sp = document.createElement('div');
+				const rect = btn.getBoundingClientRect();
+				sp.style.position = 'fixed';
+				sp.style.left = (rect.left + Math.random() * rect.width) + 'px';
+				sp.style.top = (rect.top + Math.random() * rect.height) + 'px';
+				const s = 3 + Math.random() * 6;
+				sp.style.width = s + 'px';
+				sp.style.height = s + 'px';
+				sp.style.borderRadius = '50%';
+				sp.style.background = 'radial-gradient(circle, #FFD700, #FFA500)';
+				sp.style.pointerEvents = 'none';
+				sp.style.zIndex = '1000';
+				document.body.appendChild(sp);
+				const dx = (Math.random() - 0.5) * 120;
+				const dy = (Math.random() - 0.5) * 120;
+				sp.animate([
+					{ transform: 'translate(0,0) scale(0)', opacity: 1 },
+					{ transform: `translate(${dx}px, ${dy}px) scale(1)`, opacity: 1 },
+					{ transform: `translate(${dx * 1.2}px, ${dy * 1.2}px) scale(0)`, opacity: 0 }
+				], { duration: 600 + Math.random() * 400, easing: 'ease-out' }).addEventListener('finish', () => sp.remove());
+			}
+		});
+	}
+
+	function showPxcScreen(section, target, currentTierRef) {
+		const landing = section.querySelector('#pxc-landing');
+		const current = section.querySelector('#pxc-current');
+		const constellation = section.querySelector('#pxc-constellation');
+		[landing, current, constellation].forEach(el => el && el.classList.remove('active'));
+		switch (target) {
+			case 'landing':
+				if (landing) landing.classList.add('active');
+				break;
+			case 'current':
+				if (current) current.classList.add('active');
+				break;
+			case 'constellation':
+				if (constellation) {
+					constellation.classList.add('active');
+					const space = section.querySelector('.pxc-space');
+					bindStarEvents(space, currentTierRef);
+					animateGalaxyEntrance(section.querySelector('.pxc-galaxy.active') || section);
+					initCounters(section);
+					initParticles(space);
+					startShootingStars(section);
+				}
+				break;
+		}
+	}
+
+	function bindFlowButtons(section, currentTierRef) {
+		const btnCurrent = section.querySelector('#pxc-show-current');
+		const btnFuture = section.querySelector('#pxc-show-future');
+		const btnToConst = section.querySelector('#pxc-to-constellation');
+
+		if (btnCurrent) {
+			const handler = (e) => { e.preventDefault(); e.stopPropagation(); showPxcScreen(section, 'current', currentTierRef); };
+			btnCurrent.addEventListener('click', handler);
+			btnCurrent.addEventListener('touchstart', handler, { passive: false });
+		}
+		if (btnFuture) {
+			const handler = (e) => { e.preventDefault(); e.stopPropagation(); showPxcScreen(section, 'constellation', currentTierRef); };
+			btnFuture.addEventListener('click', handler);
+			btnFuture.addEventListener('touchstart', handler, { passive: false });
+		}
+		if (btnToConst) {
+			const handler = (e) => { e.preventDefault(); e.stopPropagation(); showPxcScreen(section, 'constellation', currentTierRef); };
+			btnToConst.addEventListener('click', handler);
+			btnToConst.addEventListener('touchstart', handler, { passive: false });
+		}
+	}
+
+	function bindCompareToggle(section, currentTierRef) {
+		const toggle = document.getElementById('pxc-toggle');
+		if (!toggle) return;
+		toggle.addEventListener('click', (e) => {
+			e.preventDefault();
+			e.stopPropagation();
+			const state = toggle.getAttribute('data-state') || 'current';
+			const textEl = toggle.querySelector('.pxc-toggle-text');
+			if (state === 'current') {
+				showPxcScreen(section, 'constellation', currentTierRef);
+				toggle.setAttribute('data-state', 'constellation');
+				if (textEl) textEl.textContent = 'See Current Reality';
+			} else {
+				showPxcScreen(section, 'current', currentTierRef);
+				toggle.setAttribute('data-state', 'current');
+				if (textEl) textEl.textContent = 'See Future Potential';
+			}
+		});
+	}
+
+	function setup() {
+		if (pxcInitialized) return;
+		const section = document.getElementById('press-constellation');
+		if (!section) return;
+		pxcInitialized = true;
+		const space = section.querySelector('.pxc-space');
+		const currentTierRef = { value: 'silver' };
+		bindTabs(section, currentTierRef);
+		bindStarEvents(space, currentTierRef);
+		animateGalaxyEntrance(section.querySelector('.pxc-galaxy.active') || section);
+		initCounters(section);
+		initParticles(space);
+		initCTA(section);
+		startShootingStars(section);
+		bindFlowButtons(section, currentTierRef);
+		bindCompareToggle(section, currentTierRef);
+	}
+
+	document.addEventListener('DOMContentLoaded', setup);
+	// Fallback if DOMContentLoaded has already fired
+	if (document.readyState !== 'loading') {
+		setTimeout(setup, 0);
+	}
+})();

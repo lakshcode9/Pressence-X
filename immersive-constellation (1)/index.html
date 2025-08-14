@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pressence360 - Where Are You Now?</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="immersive-app">
+        <!-- Landing Screen -->
+        <section class="landing-screen active" id="landing">
+            <div class="container">
+                <header class="landing-header">
+                    <h1 class="brand-title">Pressence360</h1>
+                    <p class="brand-subtitle">Premium Press Placement Authority</p>
+                </header>
+                
+                <div class="landing-content">
+                    <h2 class="landing-question">Where are you right now in your media presence?</h2>
+                    
+                    <div class="choice-buttons">
+                        <button class="choice-btn choice-btn--current" id="showCurrent">
+                            <span class="choice-icon">😔</span>
+                            <span class="choice-text">Show me where I am now</span>
+                            <span class="choice-subtext">The harsh reality</span>
+                        </button>
+                        
+                        <button class="choice-btn choice-btn--future" id="showFuture">
+                            <span class="choice-icon">✨</span>
+                            <span class="choice-text">Show me where I can be</span>
+                            <span class="choice-subtext">The golden opportunity</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Current State Section -->
+        <section class="current-state-screen" id="currentState">
+            <div class="container">
+                <header class="current-header">
+                    <h1 class="current-title">This is where you are now...</h1>
+                    <p class="current-subtitle">Lost in the void of media obscurity</p>
+                </header>
+
+                <div class="current-content">
+                    <div class="current-metrics">
+                        <div class="metric-card">
+                            <div class="metric-number">0</div>
+                            <div class="metric-label">Features</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-number">0</div>
+                            <div class="metric-label">Authority</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-number">0</div>
+                            <div class="metric-label">Recognition</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-number">0</div>
+                            <div class="metric-label">Leads</div>
+                        </div>
+                    </div>
+
+                    <div class="irrelevant-publications">
+                        <h3 class="publications-title">Your current "press coverage"</h3>
+                        <div class="publication-grid">
+                            <div class="publication-card empty">
+                                <div class="publication-name">Local Town Newsletter</div>
+                                <div class="publication-stats">127 subscribers • Minimal reach</div>
+                                <div class="publication-status">No features yet...</div>
+                            </div>
+                            <div class="publication-card empty">
+                                <div class="publication-name">Community Bulletin</div>
+                                <div class="publication-stats">89 subscribers • Neighborhood</div>
+                                <div class="publication-status">No features yet...</div>
+                            </div>
+                            <div class="publication-card empty">
+                                <div class="publication-name">Small Business Weekly</div>
+                                <div class="publication-stats">234 subscribers • Local</div>
+                                <div class="publication-status">No features yet...</div>
+                            </div>
+                            <div class="publication-card empty">
+                                <div class="publication-name">Neighborhood News</div>
+                                <div class="publication-stats">156 subscribers • Limited</div>
+                                <div class="publication-status">No features yet...</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="reality-message">
+                        <h4>This doesn't have to be your reality</h4>
+                        <button class="transition-btn" id="transitionToFuture">
+                            Discover Your Media Potential
+                            <span class="btn-arrow">→</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Animated Crickets -->
+                <div class="crickets-container">
+                    <div class="cricket cricket-1">🦗</div>
+                    <div class="cricket cricket-2">🦗</div>
+                    <div class="cricket cricket-3">🦗</div>
+                    <div class="cricket cricket-4">🦗</div>
+                    <div class="cricket cricket-5">🦗</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Enhanced Constellation Section -->
+        <section class="constellation-screen" id="constellation">
+            <div class="particles-container">
+                <div class="particle-system"></div>
+            </div>
+            
+            <div class="container">
+                <header class="constellation-header">
+                    <h1 class="constellation-title">This is where you can be...</h1>
+                    <p class="constellation-subtitle">A galaxy of premium press authority</p>
+                </header>
+
+                <!-- Navigation Tabs -->
+                <nav class="galaxy-nav">
+                    <div class="nav-tabs">
+                        <button class="nav-tab active" data-tier="silver">
+                            <span class="tab-icon">⭐</span>
+                            Silver Galaxy
+                            <span class="tab-reach">2M+ Reach</span>
+                        </button>
+                        <button class="nav-tab" data-tier="gold">
+                            <span class="tab-icon">🌟</span>
+                            Gold Galaxy
+                            <span class="tab-reach">5M+ Reach</span>
+                        </button>
+                        <button class="nav-tab" data-tier="platinum">
+                            <span class="tab-icon">💎</span>
+                            Platinum Galaxy
+                            <span class="tab-reach">10M+ Reach</span>
+                        </button>
+                    </div>
+                </nav>
+
+                <!-- Constellation Container -->
+                <div class="constellation-wrapper">
+                    <!-- Silver Galaxy -->
+                    <div class="galaxy active" data-tier="silver">
+                        <svg class="constellation-svg" viewBox="0 0 800 500">
+                            <!-- Constellation Lines -->
+                            <g class="constellation-lines">
+                                <line x1="120" y1="100" x2="200" y2="150" stroke="url(#silverGradient)" stroke-width="2" opacity="0.6"/>
+                                <line x1="200" y1="150" x2="320" y2="120" stroke="url(#silverGradient)" stroke-width="2" opacity="0.6"/>
+                                <line x1="320" y1="120" x2="450" y2="180" stroke="url(#silverGradient)" stroke-width="2" opacity="0.6"/>
+                                <line x1="450" y1="180" x2="600" y2="140" stroke="url(#silverGradient)" stroke-width="2" opacity="0.6"/>
+                            </g>
+                            <!-- Publication Stars -->
+                            <g class="publication-stars">
+                                <circle class="star" cx="120" cy="100" r="12" data-publication="Medium"/>
+                                <circle class="star" cx="200" cy="150" r="12" data-publication="Time Bulletin"/>
+                                <circle class="star" cx="320" cy="120" r="12" data-publication="US Times Now"/>
+                                <circle class="star" cx="450" cy="180" r="12" data-publication="Globe Stats"/>
+                                <circle class="star" cx="600" cy="140" r="12" data-publication="Insta Bulletin"/>
+                            </g>
+                            <!-- Gradient Definitions -->
+                            <defs>
+                                <linearGradient id="silverGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#E8E8E8;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#C0C0C0;stop-opacity:1" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+
+                    <!-- Gold Galaxy -->
+                    <div class="galaxy" data-tier="gold">
+                        <svg class="constellation-svg" viewBox="0 0 800 500">
+                            <!-- Constellation Lines -->
+                            <g class="constellation-lines">
+                                <line x1="80" y1="80" x2="150" y2="110" stroke="url(#goldGradient)" stroke-width="2" opacity="0.6"/>
+                                <line x1="150" y1="110" x2="230" y2="90" stroke="url(#goldGradient)" stroke-width="2" opacity="0.6"/>
+                                <line x1="230" y1="90" x2="320" y2="130" stroke="url(#goldGradient)" stroke-width="2" opacity="0.6"/>
+                                <line x1="320" y1="130" x2="410" y2="100" stroke="url(#goldGradient)" stroke-width="2" opacity="0.6"/>
+                                <line x1="410" y1="100" x2="500" y2="140" stroke="url(#goldGradient)" stroke-width="2" opacity="0.6"/>
+                                <line x1="500" y1="140" x2="580" y2="110" stroke="url(#goldGradient)" stroke-width="2" opacity="0.6"/>
+                            </g>
+                            <!-- Publication Stars -->
+                            <g class="publication-stars">
+                                <circle class="star" cx="80" cy="80" r="12" data-publication="Digital Journal"/>
+                                <circle class="star" cx="150" cy="110" r="12" data-publication="Time Business News"/>
+                                <circle class="star" cx="230" cy="90" r="12" data-publication="Fox Interviewer"/>
+                                <circle class="star" cx="320" cy="130" r="12" data-publication="Voyage NY"/>
+                                <circle class="star" cx="410" cy="100" r="12" data-publication="London Reporter"/>
+                                <circle class="star" cx="500" cy="140" r="12" data-publication="Tech Bullion"/>
+                            </g>
+                            <!-- Gradient Definitions -->
+                            <defs>
+                                <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#FFE55C;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#FFD700;stop-opacity:1" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+
+                    <!-- Platinum Galaxy -->
+                    <div class="galaxy" data-tier="platinum">
+                        <svg class="constellation-svg" viewBox="0 0 800 500">
+                            <!-- Constellation Lines -->
+                            <g class="constellation-lines">
+                                <line x1="60" y1="60" x2="130" y2="90" stroke="url(#platinumGradient)" stroke-width="2" opacity="0.6"/>
+                                <line x1="130" y1="90" x2="210" y2="70" stroke="url(#platinumGradient)" stroke-width="2" opacity="0.6"/>
+                                <line x1="210" y1="70" x2="290" y2="100" stroke="url(#platinumGradient)" stroke-width="2" opacity="0.6"/>
+                                <line x1="290" y1="100" x2="370" y2="80" stroke="url(#platinumGradient)" stroke-width="2" opacity="0.6"/>
+                                <line x1="370" y1="80" x2="450" y2="110" stroke="url(#platinumGradient)" stroke-width="2" opacity="0.6"/>
+                            </g>
+                            <!-- Publication Stars -->
+                            <g class="publication-stars">
+                                <circle class="star" cx="60" cy="60" r="12" data-publication="Forbes"/>
+                                <circle class="star" cx="130" cy="90" r="12" data-publication="Entrepreneur"/>
+                                <circle class="star" cx="210" cy="70" r="12" data-publication="NY Weekly"/>
+                                <circle class="star" cx="290" cy="100" r="12" data-publication="CEO Weekly"/>
+                                <circle class="star" cx="370" cy="80" r="12" data-publication="Wall Street Times"/>
+                            </g>
+                            <!-- Gradient Definitions -->
+                            <defs>
+                                <linearGradient id="platinumGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#87CEEB;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#4A9EFF;stop-opacity:1" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+
+                    <!-- Tooltip -->
+                    <div class="tooltip" id="tooltip">
+                        <div class="tooltip-content">
+                            <div class="tooltip-header">
+                                <div class="tooltip-logo"></div>
+                                <h3 class="tooltip-title"></h3>
+                            </div>
+                            <div class="tooltip-body">
+                                <p class="tooltip-client"></p>
+                                <p class="tooltip-date"></p>
+                                <p class="tooltip-reach"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Floating Inspirational Quotes -->
+                <div class="floating-quotes">
+                    <div class="quote" data-quote="When people know you, you don't chase leads. You attract them."></div>
+                    <div class="quote" data-quote="Authority is earned through visibility."></div>
+                    <div class="quote" data-quote="Your story deserves to be heard by millions."></div>
+                    <div class="quote" data-quote="From unknown to unstoppable."></div>
+                    <div class="quote" data-quote="Transform your presence into influence."></div>
+                </div>
+
+                <!-- Enhanced Metrics -->
+                <div class="enhanced-metrics">
+                    <div class="metric-enhanced">
+                        <div class="metric-number-enhanced" data-target="50">0</div>
+                        <div class="metric-label-enhanced">Premium Features</div>
+                    </div>
+                    <div class="metric-enhanced">
+                        <div class="metric-text-enhanced">Industry Leader</div>
+                        <div class="metric-label-enhanced">Authority Level</div>
+                    </div>
+                    <div class="metric-enhanced">
+                        <div class="metric-text-enhanced">Global</div>
+                        <div class="metric-label-enhanced">Recognition</div>
+                    </div>
+                    <div class="metric-enhanced">
+                        <div class="metric-number-enhanced" data-target="1000">0</div>
+                        <div class="metric-label-enhanced">Monthly Leads</div>
+                    </div>
+                </div>
+
+                <!-- Call to Action -->
+                <div class="constellation-cta">
+                    <h3>Ready to join the constellation of media authority?</h3>
+                    <button class="cta-btn">
+                        Start Your Journey to Media Dominance
+                        <span class="btn-sparkle">✨</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Comparison Toggle -->
+        <div class="comparison-toggle" id="comparisonToggle">
+            <button class="toggle-btn" data-state="current">
+                <span class="toggle-icon">⚡</span>
+                <span class="toggle-text">Compare Before & After</span>
+            </button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
