@@ -69,19 +69,18 @@ exports.handler = async (event) => {
       displayLink: it.displayLink
     }));
 
-    const prompt = `You are a premium PR strategist for luxury real estate markets.
-Analyze the following top search results for the person: "${name}".
+    const prompt = `You are a premium PR strategist for luxury real estate.
+Speak directly to the person in a conversational, human tone (second person, friendly, punchy).
+Avoid essay vibes and jargon. Short sentences. Contractions allowed. No emojis.
 
-GOAL: Create crisp, persuasive copy that creates urgency and FOMO around missing press.
+Task: Use the search results for "${name}" to write two crisp lines that create FOMO about their press presence.
 
-Rules for output:
-1) Output EXACTLY two sections with these labels:
-   Summary: <one sharp sentence (<=220 characters) describing what appears at first glance>
-   Conclusion: <1–2 sentences persuading that their current presence is NOT enough and that they need strategic PR in elite publications>
-2) If you find any notable outlets in the results (e.g., Forbes, Bloomberg, local business journals), briefly acknowledge them in the Summary or start of Conclusion (max 2–3 names), then state they do NOT establish authority yet.
-3) If results are mostly profiles/directories/social links, say so plainly and emphasize lack of authority signals.
-4) Use confident, high-status tone; no hedging, no apologies, no disclaimers.
-5) Focus on FOMO and opportunity cost (lost trust, deals, and positioning) without sounding scammy.
+Output format (exactly these two lines):
+Summary: <<=180 chars. What shows up at first glance. If a couple of outlets exist (e.g., Forbes/Bloomberg/local biz journal), mention up to 2 and say it's a start, not authority.>
+Conclusion: <<1–2 short sentences, <=240 chars. Tell them they’re leaving trust and deals on the table and need strategic placements in elite publications. Friendly but direct.>>
+
+If results are mostly profiles/directories/social links, say that plainly.
+No hedging, no disclaimers, no lists, no extra lines.
 
 Results JSON (first 5–6):
 ${JSON.stringify(condensed, null, 2)}
@@ -109,8 +108,8 @@ ${JSON.stringify(condensed, null, 2)}
             { role: 'system', content: 'Be concise, premium, and authoritative. Never include code fences or JSON in responses. Max 2 lines total.' },
             { role: 'user', content: prompt }
           ],
-          temperature: 0.6,
-          max_tokens: 320
+          temperature: 0.65,
+          max_tokens: 260
         })
       });
       return r;
