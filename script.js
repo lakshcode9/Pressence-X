@@ -1673,7 +1673,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!form) return;
         const nameInput = document.getElementById('pressenceFullName');
         const queryInput = nameInput; // single field used for search term and name
-        const messageEl = document.getElementById('pressence-message');
+        const messageEl = null; // message removed to prevent duplicate lines
         const summaryEl = document.getElementById('pressence-summary');
 
         function updateMessage() {
@@ -1688,8 +1688,7 @@ document.addEventListener('DOMContentLoaded', function() {
             messageEl.style.display = 'block';
         }
 
-        // Do NOT show message while typing to avoid feeling disingenuous
-        if (messageEl) messageEl.style.display = 'none';
+        // message removed
 
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -1711,8 +1710,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (summaryEl) summaryEl.textContent = 'Unable to analyze right now. Please try again.';
                 console.warn('summarize call failed:', err);
             }
-            // Show the personalized message after summary
-            setTimeout(updateMessage, 300);
+            // message removed
         });
     })();
 });

@@ -682,13 +682,7 @@ h1, h2, h3, h4, h5, h6 {
 .gsc-cursor-current-page { background: rgba(255,255,255,0.15) !important; }
 .gsc-above-wrapper-area, .gsc-above-wrapper-area-container { background: transparent !important; border: 0 !important; }
 
-.pressence-message {
-    padding: 1rem 1.25rem;
-    border-top: 1px solid rgba(255,255,255,0.12);
-    background: linear-gradient(135deg, rgba(255,215,0,0.12), rgba(255,255,255,0.06));
-    color: #ffffff;
-    font-weight: 600;
-}
+/* removed secondary message bar to avoid duplicate text */
 
 /* Summarized output */
 .pressence-summary {
