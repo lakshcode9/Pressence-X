@@ -87,34 +87,54 @@ ${JSON.stringify(condensed, null, 2)}
       return { statusCode: 500, body: JSON.stringify({ error: 'Missing OpenRouter API key', diagnostics }) };
     }
 
-    const resp = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${openrouterKey}`,
-        'Content-Type': 'application/json',
-        'Referer': 'https://pressence-x.netlify.app/',
-        'HTTP-Referer': 'https://pressence-x.netlify.app/',
-        'X-Title': 'Pressence360 Search Summary'
-      },
-      body: JSON.stringify({
-        model: MODEL,
-        messages: [
-          { role: 'system', content: 'Be concise, premium, and authoritative. Never include code fences or JSON in responses. Max 2 lines total.' },
-          { role: 'user', content: prompt }
-        ],
-        temperature: 0.3,
-        max_tokens: 220
-      })
-    });
+    async function callOpenRouter(model) {
+      const r = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${openrouterKey}`,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Referer': 'https://pressence-x.netlify.app/',
+          'HTTP-Referer': 'https://pressence-x.netlify.app/',
+          'X-Title': 'Pressence360 Search Summary'
+        },
+        body: JSON.stringify({
+          model,
+          messages: [
+            { role: 'system', content: 'Be concise, premium, and authoritative. Never include code fences or JSON in responses. Max 2 lines total.' },
+            { role: 'user', content: prompt }
+          ],
+          temperature: 0.3,
+          max_tokens: 220
+        })
+      });
+      return r;
+    }
 
+    // First try requested model
+    let resp = await callOpenRouter(MODEL);
     diagnostics.openrouterStatus = resp.status;
+    let data;
     if (!resp.ok) {
       const text = await resp.text();
       console.error('OpenRouter error', resp.status, text);
-      return { statusCode: 502, body: JSON.stringify({ error: 'OpenRouter request failed', status: resp.status, diagnostics }) };
+      // Fallback: use auto router if model unavailable (404/400/403)
+      if ([400,403,404,405].includes(resp.status)) {
+        diagnostics.fallbackModel = 'openrouter/auto';
+        const fallback = await callOpenRouter('openrouter/auto');
+        diagnostics.openrouterFallbackStatus = fallback.status;
+        if (!fallback.ok) {
+          const ftxt = await fallback.text();
+          console.error('OpenRouter fallback error', fallback.status, ftxt);
+          return { statusCode: 502, body: JSON.stringify({ error: 'OpenRouter request failed', status: resp.status, diagnostics }) };
+        }
+        data = await fallback.json();
+      } else {
+        return { statusCode: 502, body: JSON.stringify({ error: 'OpenRouter request failed', status: resp.status, diagnostics }) };
+      }
+    } else {
+      data = await resp.json();
     }
-
-    const data = await resp.json();
     const content = data.choices?.[0]?.message?.content?.trim() || '';
     diagnostics.openrouterOk = true;
 
