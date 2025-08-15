@@ -406,12 +406,12 @@ h1, h2, h3, h4, h5, h6 {
     overflow: hidden;
 }
 
-/* Full-bleed background for homepage (user will place image at background/PC/home.jpg) */
+/* Full-bleed background for homepage (user will place image at background/PC/homepage test.png) */
 .hero::before {
     content: '';
     position: absolute;
     inset: 0;
-    background: url('Background/PC/home1.png') center center / cover no-repeat;
+    background: url('Background/PC/homepage-test.png') center center / cover no-repeat;
     z-index: 0;
 }
 
@@ -929,7 +929,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 /* About Section */
 .about {
-    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+    background: #000000;
 }
 
 .about-content {
@@ -1034,7 +1034,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Mission and Story Sections */
 .mission, .story {
-    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+    background: #000000;
     padding: 4rem 0;
 }
 
@@ -1061,7 +1061,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Testimonials Section */
 .testimonials {
-    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+    background: #000000;
 }
 
 
@@ -1150,7 +1150,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Enhanced Services Section with Glassmorphism */
 .services {
-    background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+    background: #000000;
     position: relative;
     overflow: hidden;
 }
@@ -1853,7 +1853,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Tools Section */
 .tools {
-    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+    background: #000000;
 }
 
 .tools-grid {
@@ -1891,7 +1891,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Contact Section */
 .contact {
-    background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+    background: #000000;
 }
 
 .contact-content {
@@ -3649,7 +3649,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Immersive Constellation (scoped: .px-constellation) */
 .px-constellation {
-	background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+	background: #000000;
 }
 
 .pxc-nav {
