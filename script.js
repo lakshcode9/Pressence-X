@@ -1,3 +1,56 @@
+// Custom Elegant Cursor Implementation
+function initCustomCursor() {
+    // Create custom cursor element
+    const cursor = document.createElement('div');
+    cursor.className = 'custom-cursor';
+    document.body.appendChild(cursor);
+
+    // Track mouse movement
+    document.addEventListener('mousemove', (e) => {
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
+    });
+
+    // Add hover effects for interactive elements
+    const interactiveElements = document.querySelectorAll('a, button, .btn-primary, .btn-secondary, .btn-card, .btn-tool, .service-card, .testimonial-item, .contact-method, .nav-link, input, textarea, select, .pxc-tab');
+    
+    interactiveElements.forEach(element => {
+        element.addEventListener('mouseenter', () => {
+            cursor.classList.add('hover');
+        });
+        
+        element.addEventListener('mouseleave', () => {
+            cursor.classList.remove('hover');
+        });
+    });
+
+    // Add click effect
+    document.addEventListener('mousedown', () => {
+        cursor.classList.add('click');
+    });
+    
+    document.addEventListener('mouseup', () => {
+        cursor.classList.remove('click');
+    });
+
+    // Hide cursor when leaving window
+    document.addEventListener('mouseleave', () => {
+        cursor.style.display = 'none';
+    });
+    
+    document.addEventListener('mouseenter', () => {
+        cursor.style.display = 'block';
+    });
+}
+
+// Initialize custom cursor when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    // Only initialize custom cursor on desktop
+    if (window.innerWidth > 768) {
+        initCustomCursor();
+    }
+});
+
 // Smooth scrolling functionality
 function scrollToSection(sectionId) {
     const section = document.getElementById(sectionId);
