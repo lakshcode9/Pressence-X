@@ -1009,6 +1009,9 @@ h1, h2, h3, h4, h5, h6 {
     /* Ensure mobile testimonials ticker is visible */
     .desktop-only { display: none !important; }
     .mobile-only { display: block !important; }
+    
+    /* Hide phone section on mobile devices */
+    .phone-col { display: none !important; }
 }
 /* About Section */
 .about {
