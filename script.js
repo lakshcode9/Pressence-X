@@ -49,6 +49,20 @@ document.addEventListener('DOMContentLoaded', () => {
     if (window.innerWidth > 768) {
         initCustomCursor();
     }
+
+    // Progressive image hints for better mobile perf
+    const allImages = document.querySelectorAll('img');
+    allImages.forEach(img => {
+        if (!img.hasAttribute('loading')) {
+            img.setAttribute('loading', 'lazy');
+        }
+        if (!img.hasAttribute('decoding')) {
+            img.setAttribute('decoding', 'async');
+        }
+        if (!img.hasAttribute('fetchpriority')) {
+            img.setAttribute('fetchpriority', 'low');
+        }
+    });
 });
 
 // Smooth scrolling functionality
@@ -871,23 +885,31 @@ document.addEventListener('DOMContentLoaded', function() {
     const sections = document.querySelectorAll('.chapter');
     const navItems = document.querySelectorAll('.nav-link');
 
-    window.addEventListener('scroll', function() {
-        let current = '';
-        sections.forEach(section => {
-            const sectionTop = section.offsetTop;
-            const sectionHeight = section.clientHeight;
-            if (pageYOffset >= sectionTop - 200) {
-                current = section.getAttribute('id');
-            }
-        });
+    let isScrollTicking = false;
+    window.addEventListener('scroll', () => {
+        if (!isScrollTicking) {
+            window.requestAnimationFrame(() => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    if (window.pageYOffset >= sectionTop - 200) {
+                        current = section.getAttribute('id');
+                    }
+                });
 
-        navItems.forEach(item => {
-            item.classList.remove('active');
-            if (item.getAttribute('href') === `#${current}`) {
-                item.classList.add('active');
-            }
-        });
-    });
+                navItems.forEach(item => {
+                    item.classList.remove('active');
+                    if (item.getAttribute('href') === `#${current}`) {
+                        item.classList.add('active');
+                    }
+                });
+
+                isScrollTicking = false;
+            });
+            isScrollTicking = true;
+        }
+    }, { passive: true });
 
     // Enhanced mobile touch interactions
     if ('ontouchstart' in window) {

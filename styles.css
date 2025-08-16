@@ -4085,6 +4085,23 @@ h1, h2, h3, h4, h5, h6 {
     }
 }
 
+/* Reduce heavy effects on small screens */
+@media (max-width: 768px) {
+	/* Avoid expensive blurs */
+	.carousel-container { backdrop-filter: none; }
+	/* Tone down shadows */
+	.service-card, .testimonial-item, .contact-method, .carousel-container { box-shadow: none; }
+	/* Disable hover scales on touch */
+	.btn-primary:hover, .btn-secondary:hover, .btn-card:hover, .btn-tool:hover,
+	.service-card:hover, .testimonial-item:hover, .contact-method:hover,
+	.carousel-prev:hover, .carousel-next:hover, .dot.active { transform: none; }
+}
+
+/* Respect user reduced motion */
+@media (prefers-reduced-motion: reduce) {
+	* { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+}
+
 /* Smooth slide transitions */
 .carousel-track {
     will-change: transform;
