@@ -2370,3 +2370,230 @@ function setupPhoneStoriesInHero() {
 		setTimeout(setup, 0);
 	}
 })();
+
+// =======================
+// Mobile Testimonials Carousel
+// =======================
+let currentSlide = 0;
+let totalSlides = 10;
+let autoAdvanceInterval;
+
+function initMobileTestimonialsCarousel() {
+    if (window.innerWidth <= 768) {
+        setupCarousel();
+        startAutoAdvance();
+        setupTouchSupport();
+    }
+}
+
+function setupCarousel() {
+    updateCarouselDisplay();
+    updateDots();
+}
+
+function nextCarouselSlide() {
+    currentSlide = (currentSlide + 1) % totalSlides;
+    updateCarouselDisplay();
+    updateDots();
+    resetAutoAdvance();
+}
+
+function prevCarouselSlide() {
+    currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+    updateCarouselDisplay();
+    updateDots();
+    resetAutoAdvance();
+}
+
+function goToSlide(slideIndex) {
+    currentSlide = slideIndex;
+    updateCarouselDisplay();
+    updateDots();
+    resetAutoAdvance();
+}
+
+function updateCarouselDisplay() {
+    const track = document.querySelector('.carousel-track');
+    const slides = document.querySelectorAll('.carousel-slide');
+    
+    if (track && slides.length > 0) {
+        // Update track position
+        track.style.transform = `translateX(-${currentSlide * 100}%)`;
+        
+        // Update active slide states
+        slides.forEach((slide, index) => {
+            if (index === currentSlide) {
+                slide.classList.add('active');
+            } else {
+                slide.classList.remove('active');
+            }
+        });
+    }
+}
+
+function updateDots() {
+    const dots = document.querySelectorAll('.carousel-dots .dot');
+    dots.forEach((dot, index) => {
+        if (index === currentSlide) {
+            dot.classList.add('active');
+        } else {
+            dot.classList.remove('active');
+        }
+    });
+}
+
+function startAutoAdvance() {
+    autoAdvanceInterval = setInterval(() => {
+        nextCarouselSlide();
+    }, 5000); // Change slide every 5 seconds
+}
+
+function resetAutoAdvance() {
+    if (autoAdvanceInterval) {
+        clearInterval(autoAdvanceInterval);
+        startAutoAdvance();
+    }
+}
+
+function setupTouchSupport() {
+    const carouselContainer = document.querySelector('.carousel-container');
+    if (!carouselContainer) return;
+    
+    let startX = 0;
+    let currentX = 0;
+    let isDragging = false;
+    
+    carouselContainer.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+        isDragging = true;
+        carouselContainer.style.transition = 'none';
+    });
+    
+    carouselContainer.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        
+        currentX = e.touches[0].clientX;
+        const diff = startX - currentX;
+        
+        if (Math.abs(diff) > 10) {
+            e.preventDefault();
+        }
+    });
+    
+    carouselContainer.addEventListener('touchend', (e) => {
+        if (!isDragging) return;
+        
+        const diff = startX - currentX;
+        const threshold = 50;
+        
+        if (Math.abs(diff) > threshold) {
+            if (diff > 0) {
+                nextCarouselSlide();
+            } else {
+                prevCarouselSlide();
+            }
+        }
+        
+        isDragging = false;
+        carouselContainer.style.transition = '';
+    });
+    
+    // Mouse drag support for desktop testing
+    carouselContainer.addEventListener('mousedown', (e) => {
+        startX = e.clientX;
+        isDragging = true;
+        carouselContainer.style.transition = 'none';
+        carouselContainer.style.cursor = 'grabbing';
+    });
+    
+    carouselContainer.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        
+        currentX = e.clientX;
+        const diff = startX - currentX;
+        
+        if (Math.abs(diff) > 10) {
+            e.preventDefault();
+        }
+    });
+    
+    carouselContainer.addEventListener('mouseup', (e) => {
+        if (!isDragging) return;
+        
+        const diff = startX - currentX;
+        const threshold = 50;
+        
+        if (Math.abs(diff) > threshold) {
+            if (diff > 0) {
+                nextCarouselSlide();
+            } else {
+                prevCarouselSlide();
+            }
+        }
+        
+        isDragging = false;
+        carouselContainer.style.transition = '';
+        carouselContainer.style.cursor = 'grab';
+    });
+    
+    carouselContainer.addEventListener('mouseleave', () => {
+        if (isDragging) {
+            isDragging = false;
+            carouselContainer.style.transition = '';
+            carouselContainer.style.cursor = 'grab';
+        }
+    });
+}
+
+// Pause auto-advance when user interacts
+function pauseAutoAdvance() {
+    if (autoAdvanceInterval) {
+        clearInterval(autoAdvanceInterval);
+    }
+}
+
+function resumeAutoAdvance() {
+    startAutoAdvance();
+}
+
+// Keyboard navigation support
+document.addEventListener('keydown', (e) => {
+    if (window.innerWidth <= 768) {
+        if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            prevCarouselSlide();
+        } else if (e.key === 'ArrowRight') {
+            e.preventDefault();
+            nextCarouselSlide();
+        }
+    }
+});
+
+// Initialize carousel when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    initMobileTestimonialsCarousel();
+});
+
+// Reinitialize on window resize
+window.addEventListener('resize', () => {
+    if (window.innerWidth <= 768) {
+        initMobileTestimonialsCarousel();
+    } else {
+        // Clean up on desktop
+        if (autoAdvanceInterval) {
+            clearInterval(autoAdvanceInterval);
+        }
+    }
+});
+
+// Pause auto-advance when page is not visible
+document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+        pauseAutoAdvance();
+    } else {
+        resumeAutoAdvance();
+    }
+});
+
+// =======================
+// Press Constellation (pxc)
