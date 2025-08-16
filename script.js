@@ -2009,53 +2009,70 @@ function setupPhoneStoriesInHero() {
         return;
     }
 
-    // Build a tall track by stacking slides vertically using translateY during scroll
     const slidesCount = slides.length;
+    const isDesktop = window.innerWidth >= 1025;
 
-    // Create a timeline that moves the track up by 100% per slide
-    const tl = gsap.timeline({ paused: true });
-    for (let i = 1; i < slidesCount; i++) {
-        tl.to(track, { yPercent: -i * 100, duration: 1, ease: 'none' }, i - 1);
+    if (isDesktop) {
+        // Desktop: decouple from scroll and autoplay at steady pace
+        gsap.set(track, { yPercent: 0 });
+        const secondsPerSlide = 3.5;
+        const desktopTl = gsap.timeline({ repeat: -1, defaults: { ease: 'none' } });
+        for (let i = 1; i < slidesCount; i++) {
+            desktopTl.to(track, { yPercent: -i * 100, duration: secondsPerSlide });
+        }
+        // Reset to first slide instantly at loop
+        desktopTl.add(() => gsap.set(track, { yPercent: 0 }));
+
+        // Show skip button after a few slides worth of time
+        if (skipBtn) {
+            skipBtn.style.display = 'none';
+            const showAfterMs = Math.min(4, slidesCount - 1) * secondsPerSlide * 1000;
+            setTimeout(() => { skipBtn.style.display = 'inline-flex'; }, showAfterMs);
+        }
+    } else {
+        // Non-desktop (tablet/mobile): keep scroll-driven behavior
+        const tl = gsap.timeline({ paused: true });
+        for (let i = 1; i < slidesCount; i++) {
+            tl.to(track, { yPercent: -i * 100, duration: 1, ease: 'none' }, i - 1);
+        }
+
+        const homeEl = document.getElementById('home');
+        const pinDistance = slidesCount * window.innerHeight; // one viewport per story
+
+        const horizontalEnd = () => {
+            const panelsLen = document.querySelectorAll('#home .panel').length;
+            return Math.max(0, (panelsLen - 1) * window.innerWidth);
+        };
+
+        const startPos = () => horizontalEnd() + window.innerHeight * 0.14;
+
+        ScrollTrigger.create({
+            trigger: homeEl,
+            start: () => startPos(),
+            end: () => startPos() + pinDistance,
+            pin: homeEl,
+            pinSpacing: true,
+            scrub: true,
+            anticipatePin: 1,
+            onEnter: () => gsap.set(track, { yPercent: 0 }),
+            onUpdate: self => {
+                tl.progress(self.progress);
+                if (skipBtn) {
+                    const threshold = Math.min(4 / slidesCount, 0.75);
+                    skipBtn.style.display = self.progress >= threshold ? 'inline-flex' : 'none';
+                }
+            }
+        });
     }
 
-    // Create a dedicated pin that starts when the quotes panel hits the viewport
-    const homeEl = document.getElementById('home');
-    const pinDistance = slidesCount * window.innerHeight; // one viewport per story
-
-    const horizontalEnd = () => {
-        const panelsLen = document.querySelectorAll('#home .panel').length;
-        return Math.max(0, (panelsLen - 1) * window.innerWidth);
-    };
-
-    const startPos = () => horizontalEnd() + window.innerHeight * 0.14; // wait until phone is fully in view
-
-    ScrollTrigger.create({
-        trigger: homeEl,
-        start: () => startPos(),
-        end: () => startPos() + pinDistance,
-        pin: homeEl,
-        pinSpacing: true,
-        scrub: true,
-        anticipatePin: 1,
-        onEnter: () => gsap.set(track, { yPercent: 0 }),
-        onUpdate: self => {
-            tl.progress(self.progress);
-            // Show skip after 4 slides (~progress threshold)
-            if (skipBtn) {
-                const threshold = Math.min(4 / slidesCount, 0.75);
-                skipBtn.style.display = self.progress >= threshold ? 'inline-flex' : 'none';
-            }
-        }
-    });
-
-    // Skip button scrolls to the next section after hero
+    // Skip button scrolls to the next section after hero (works for both modes)
     if (skipBtn) {
         skipBtn.addEventListener('click', () => {
             const nextSection = document.getElementById('about') || document.querySelector('.chapter.about');
             if (nextSection) {
                 nextSection.scrollIntoView({ behavior: 'smooth' });
             }
-        });
+        }, { passive: true });
     }
 }
 
