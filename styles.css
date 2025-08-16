@@ -4131,3 +4131,35 @@ h1, h2, h3, h4, h5, h6 {
 .testimonial-image:hover::after {
     opacity: 1;
 }
+
+/* Mobile Testimonials: show only full image, hide text */
+#mobile-testimonials .carousel-header,
+#mobile-testimonials .testimonial-text,
+#mobile-testimonials .achievement-badge,
+#mobile-testimonials .swipe-instructions {
+	display: none !important;
+}
+
+#mobile-testimonials .slide-content {
+	gap: 0;
+}
+
+#mobile-testimonials .testimonial-image {
+	width: 100% !important;
+	height: auto !important;
+	border-radius: 0 !important;
+	overflow: visible;
+	border: none;
+	box-shadow: none;
+}
+
+#mobile-testimonials .testimonial-image::after {
+	content: none !important;
+}
+
+#mobile-testimonials .testimonial-image img {
+	width: 100% !important;
+	height: auto !important;
+	object-fit: contain !important;
+	transform: none !important;
+}
