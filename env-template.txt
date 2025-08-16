@@ -1,0 +1,16 @@
+# Airtable Configuration
+# Copy these variables to your Netlify environment variables or local .env file
+
+# Your Airtable API Key (get from airtable.com/account)
+AIRTABLE_API_KEY=your_airtable_api_key_here
+
+# Your Airtable Base ID (get from airtable.com/api)
+AIRTABLE_BASE_ID=your_base_id_here
+
+# Your Airtable Table Name (default: Lead Submissions)
+AIRTABLE_TABLE_NAME=Lead Submissions
+
+# Other existing environment variables (if any)
+GOOGLE_API_KEY=your_google_api_key_here
+GOOGLE_CSE_CX=your_google_cse_cx_here
+OPENROUTER_API_KEY=your_openrouter_api_key_here

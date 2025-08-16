@@ -969,14 +969,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Form submission
-    const leadForm = document.getElementById('leadForm');
-    if (leadForm) {
-        leadForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            handleFormSubmission();
-        });
-    }
+    // Form submission handled by Airtable embedded form
+    // No JavaScript form handling needed
 
     // Initialize animations
     initializeAnimations();
@@ -1060,37 +1054,8 @@ function optimizeForMobile() {
     });
 } */
 
-// Form submission handler
-function handleFormSubmission() {
-    const formData = new FormData(document.getElementById('leadForm'));
-    const data = Object.fromEntries(formData);
-    
-    // Simulate form submission
-    const submitButton = document.querySelector('#leadForm button[type="submit"]');
-    const originalText = submitButton.textContent;
-    
-    submitButton.textContent = 'Sending...';
-    submitButton.disabled = true;
-    
-    // Simulate API call
-    setTimeout(() => {
-        submitButton.textContent = 'Message Sent!';
-        submitButton.style.background = '#4CAF50';
-        
-        // Reset form
-        document.getElementById('leadForm').reset();
-        
-        // Reset button after 3 seconds
-        setTimeout(() => {
-            submitButton.textContent = originalText;
-            submitButton.disabled = false;
-            submitButton.style.background = '';
-        }, 3000);
-        
-        // Show success message
-        showNotification('Thank you! We\'ll be in touch within 24 hours.', 'success');
-    }, 2000);
-}
+// Form submission now handled by Airtable embedded form
+// No custom JavaScript needed
 
 // Service modal functionality
 function openServiceModal(tier) {
@@ -1725,6 +1690,8 @@ document.addEventListener('DOMContentLoaded', function() {
     initBlack3DModel();
     // Initialize horizontal scrolling for homepage (desktop only)
     initHomeHorizontalScroll();
+    // Initialize horizontal scrolling for Mission + Story (desktop only)
+    initMissionStoryHorizontalScroll();
     
     // Add window resize handler for 3D model
     window.addEventListener('resize', function() {
@@ -1997,6 +1964,43 @@ function initHomeHorizontalScroll() {
     });
 
     // Scroll indicator removed
+}
+
+// Horizontal scroll for Mission + Story (desktop only)
+function initMissionStoryHorizontalScroll() {
+    const isDesktop = window.innerWidth > 768;
+    const section = document.getElementById('mission-story');
+    const track = section && section.querySelector('.ms-horizontal');
+    if (!isDesktop || !section || !track || typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+        return;
+    }
+
+    const panels = Array.from(track.querySelectorAll('.panel'));
+    if (panels.length === 0) return;
+
+    gsap.set(track, { width: panels.length * window.innerWidth });
+
+    const totalScroll = panels.length * window.innerWidth;
+
+    gsap.to(track, {
+        x: () => -(track.scrollWidth - window.innerWidth),
+        ease: 'none',
+        scrollTrigger: {
+            trigger: section,
+            start: 'top top',
+            end: () => `+=${totalScroll}`,
+            scrub: true,
+            pin: true,
+            anticipatePin: 1,
+            invalidateOnRefresh: true
+        }
+    });
+
+    window.addEventListener('resize', () => {
+        if (window.innerWidth >= 1025) {
+            ScrollTrigger.refresh();
+        }
+    });
 }
 
 // Phone stories sequence: pin section and map scroll to vertical story progression

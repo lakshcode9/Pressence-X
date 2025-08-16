@@ -421,22 +421,28 @@
         </div>
     </section>
 
-    <!-- Our Mission Section -->
-    <section class="chapter mission">
-        <div class="container">
-            <div class="about-text">
-                <h3>Our Mission</h3>
-                <p>To transform real estate professionals into trusted public figures. By securing high-impact PR and strategic media placements in the world's most influential publications, we aim to build personal brands that create authority, trust, and sustainable business growth.</p>
+    <!-- Mission + Story Horizontal Section -->
+    <section id="mission-story" class="chapter mission-story">
+        <div class="grain-overlay"></div>
+        <div class="ms-horizontal">
+            <!-- Panel: Our Mission -->
+            <div class="panel panel-mission">
+                <div class="container">
+                    <div class="about-text">
+                        <h3>Our Mission</h3>
+                        <p>To transform real estate professionals into trusted public figures. By securing high-impact PR and strategic media placements in the world's most influential publications, we aim to build personal brands that create authority, trust, and sustainable business growth.</p>
+                    </div>
+                </div>
             </div>
-        </div>
-    </section>
-
-    <!-- Our Story Section -->
-    <section class="chapter story">
-        <div class="container">
-            <div class="about-text">
-                <h3>Our Story</h3>
-                <p>Founded in Dubai's dynamic real estate landscape, PRessence was born from a simple truth: in luxury markets, perception is everything. We've mastered the art of getting our clients featured in publications that matter most to high-net-worth buyers.</p>
+            
+            <!-- Panel: Our Story -->
+            <div class="panel panel-story">
+                <div class="container">
+                    <div class="about-text">
+                        <h3>Our Story</h3>
+                        <p>Founded in Dubai's dynamic real estate landscape, PRessence was born from a simple truth: in luxury markets, perception is everything. We've mastered the art of getting our clients featured in publications that matter most to high-net-worth buyers.</p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -1485,27 +1491,33 @@
                     </div>
                 </div>
                 <div class="contact-form">
-                    <form id="leadForm">
-                        <div class="form-group">
-                            <input type="text" id="name" name="name" placeholder="Your Name" required>
+                    <!-- Airtable Embedded Form -->
+                    <div class="airtable-form-container">
+                        <iframe 
+                            class="airtable-embed" 
+                            src="https://airtable.com/embed/appYy47aQFqHqmHtF/shrnWlRoZvvM5Fo97?backgroundColor=black&textColor=white"
+                            frameborder="0" 
+                            onmousewheel="" 
+                            width="100%" 
+                            height="533" 
+                            style="background: transparent; border: 1px solid #ccc;">
+                        </iframe>
+                    </div>
+                    
+                    <!-- Fallback Contact Info -->
+                    <div class="contact-fallback">
+                        <p><strong>Prefer to contact us directly?</strong></p>
+                        <div class="contact-methods">
+                            <div class="contact-method">
+                                <span class="method-icon">📞</span>
+                                <span>WhatsApp: Austin Clark +64 274 673 552</span>
+                            </div>
+                            <div class="contact-method">
+                                <span class="method-icon">✉️</span>
+                                <span>contactus@pressence360.com</span>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <input type="email" id="email" name="email" placeholder="Your Email" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" id="instagram" name="instagram" placeholder="Instagram Handle">
-                        </div>
-                        <div class="form-group">
-                            <select id="package" name="package">
-                                <option value="">Select Package Interest</option>
-                                <option value="silver">Silver</option>
-                                <option value="gold">Gold</option>
-                                <option value="platinum">Platinum</option>
-                                <option value="black">Black</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn-primary">Book a Call</button>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
