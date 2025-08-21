@@ -217,64 +217,29 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
-    /* Custom elegant cursor */
-    cursor: none;
+    /* Use default system cursor */
+    cursor: auto;
 }
 
 /* Custom cursor element */
-.custom-cursor {
-    position: fixed;
-    width: 20px;
-    height: 20px;
-    background: rgba(255, 255, 255, 0.9);
-    border: 2px solid rgba(255, 215, 0, 0.6);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9999;
-    transition: all 0.1s ease;
-    transform: translate(-50%, -50%);
-    box-shadow: 
-        0 0 10px rgba(255, 255, 255, 0.3),
-        0 0 20px rgba(255, 215, 0, 0.2);
-}
+/* Removed custom cursor element */
+.custom-cursor { display: none !important; }
 
 /* Cursor dot */
-.custom-cursor::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 4px;
-    height: 4px;
-    background: #ffffff;
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    box-shadow: 0 0 8px rgba(255, 215, 0, 0.8);
-}
+.custom-cursor::after { content: none !important; }
 
 /* Hover effect for interactive elements */
-.custom-cursor.hover {
-    width: 30px;
-    height: 30px;
-    background: rgba(255, 255, 255, 0.95);
-    border-color: rgba(255, 215, 0, 0.8);
-    box-shadow: 
-        0 0 15px rgba(255, 255, 255, 0.4),
-        0 0 30px rgba(255, 215, 0, 0.3);
-}
+.custom-cursor.hover { display: none !important; }
 
 /* Click effect */
-.custom-cursor.click {
-    transform: translate(-50%, -50%) scale(0.8);
-    background: rgba(255, 215, 0, 0.9);
-    border-color: #ffffff;
-}
+.custom-cursor.click { display: none !important; }
 
 /* Hide default cursor on interactive elements */
 a, button, .btn-primary, .btn-secondary, .btn-card, .btn-tool, 
 .service-card, .testimonial-item, .contact-method, .nav-link,
 input, textarea, select, .pxc-tab {
-    cursor: none;
+    /* Restore default cursor behavior */
+    cursor: auto;
 }
 
 /* Fallback cursor for accessibility */
@@ -4241,23 +4206,10 @@ h1, h2, h3, h4, h5, h6 {
     z-index: 1;
 }
 
-.testimonial-image::after {
-    content: '';
-    position: absolute;
-    top: -2px;
-    left: -2px;
-    right: -2px;
-    bottom: -2px;
-    background: linear-gradient(45deg, #ffd700, #ffed4e, #ffd700);
-    border-radius: 50%;
-    z-index: -1;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
+/* Remove yellow oval overlay on testimonial images */
+.testimonial-image::after { content: none !important; }
 
-.testimonial-image:hover::after {
-    opacity: 1;
-}
+.testimonial-image:hover::after { content: none !important; }
 
 /* Mobile Testimonials: show only full image, hide text */
 #mobile-testimonials .carousel-header,
